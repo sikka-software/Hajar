@@ -10,75 +10,184 @@
 
 > Opinionated UI Kit for web apps and websites.
 
-# Concept
 
-### Components
 
-The smallest elements of this UI kit are the typical low-level components. Examples of components:
+The Thesis of the structure is that each code architecture is that the user is creating items and save them as private or public. The items are editable and they can be categorized in different ways.
 
-- InputField
-- Checkboxes
-- Modal
-- Drag-Drop Image(s)
-- Button
-- etc ...
+Concept
+=======
 
-### Blocks
+Users collect stones. A single stone is a JSON object that has an \_id and other properties with flexible data. Examples of a stones:
 
-Blocks are commonly used collection of components. Examples of blocks:
+*   Menu from Qawaim
+*   Card from OneCard
+*   Worda from Worda
+*   Tweet from Twitter
+*   Image from Instagram
+*   GIF from Giphy
+*   Pin from Pinterest
+*   Post from Facebook
+*   etc
 
-- Sign-In
-- Sign-Up
-- Reset Password
-- SaaS Pricing Plans
-- Payment Methods Block (to list saved methods)
-- Account Block (to edit account info)
-- etc ...
+  
 
-### Boxes
+We will abstract Qawaim and make it connected to a boilerplate that we will use to generate other Apps that have the similar structure as Qawaim but with different items.
 
-Most components and blocks will live inside **boxes**. Windows can show anything. It can show a video, image, form, iFrame, etc. Boxes make out the layout of your website or application. Boxes can be arranged in different layouts
+Benefits
+========
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/46135573/143972102-0c104239-b8f6-4a7b-9aad-54f6d91a8906.png" alt="layout-types" />
-</p>
+Many SaaS projects have the same foundation and architecture. Putting them in the same boilerplate will eliminate the time it takes to setup the project .They all need the same:
 
-Points
+Common Elements
+===============
 
-- The content inside each box can be scrollable (vertical/horizontal/Both) with one prop
-- you can control the spacing of the content inside each box with one prop
-- you can also control the spacing of all the box in the layout
-- some boxes can float (animation of open and close modal)
-- some boxes can go full screen (animation to transition)
+The follow web elements and pages exist in most SaaS projects.
 
-### Utilities
+*   Pages
+    *   Sign in
+    *   Sign Up
+    *   Reset Password
+    *   New Password
+    *   Billing
+    *   Checkout
+    *   Payment Confirmation
+    *   Error Page
+*   Billing Page
+    *   Add Payment Method
+    *   Add Wallet Balance
+    *   See Transaction History
+*   Account Page
+    *   Change Language
+    *   Change Currency
+    *   Change Profile Info
+    *   Change Password
+    *   Deactivate Account
+*   Wallet Balance System
+*   Home Page
+    *   List of Stones
+    *   Create Stone
+    *   Delete Stone
+    *   Update Stone
+*   Single Stone Page (\[id\].js)
 
-- [x] **getTextColor(bgColor)**
-determine if text should be black or white based on the contrast of `bgColor`
+The Hierarchy
+=============
 
-- [ ] **darkenColor(color,percent)**
-darken a given `color` by a given `percent`
+  
 
-- [ ] **lightenColor(color,percent)**
-lighten a given `color` by a given `percent`
+Users saved objects can be top level only or multileveled. For example:
 
-# Features
+Qawaim Hierarchy
 
-- [ ] Change borders and margin, padding in one place
-- [ ] Drag and drop tool to create a layout of boxes
+```plain
+Users
+- Menus (location, currency, language)
+-- Items (info & images)
+```
 
-## Components
+Garagi Hierarchy
 
-- [ ] Layout
-- [ ] Box
-- [ ] TextField
-- [ ] TextArea
-- [ ] Radio Selector
-- [ ] PasswordField
-- [ ] Autocomplete
-- [ ] Tabs
-- [ ] Alerts
-- [ ] Badges
+```plain
+Users
+- Garages (location, capacity)
+-- Cars (info & images)
+--- Documents (ownership, insurance, etc)
+```
+
+OneCard Hierarchy
+
+```plain
+Users
+- OneCards
+-- Actions (Download vCard, Profile Page, Central Link, Redirect to Link) 
+--- Buttons (To create central links)
+--- Inputs (To create surveys)
+```
+
+  
+
+Functions & Methods
+===================
+
+### CreateInvoice()
+
+This will be used to create an invoice with ready a ready template.
+
+Arguments:
+
+date: date of invoice
+
+### SendEmail()
+
+Send an email to the user for billing, verification, password reset, or other reasons
+
+Arguments:
+
+template: \["verification", "password-reset", "billing"\]
+
+### CreateModel()
+
+```plain
+CreateModel({
+name: 'Menu',
+public: false,
+
+})
+```
+
+To create a graphql model type that will work with MongoDB
+
+### CreateSchema()
+
+To create the final schema of the graphql
+
+### CreateUser()
+
+Quickly create a user in Firebase
+
+### \[BETA\] CreateUserWallet()
+
+Quickly setup the user wallet system
+
+### SetupEmail()
+
+Quickly setup the nodemailer transporter email
+
+### SetupMongoDB()
+
+Quickly setup the mongoDB
+
+arguments:
+
+username: The MongoDB username
+
+password: The mongoDB user password
+
+URL: the url to connect to the database
+
+### SetupFirebase()
+
+```plain
+SetupFirebase({
+appId: 23912093812098
+
+})
+```
+
+Quickly setup Firebase project
+
+arguments
+
+### SetupPayment()
+
+UI Design
+=========
+
+All UI elements in this boilerplate will be components that we can rearrange differently to create different layouts. This way we can design and add new components with the same [Hawa | هواء](https://app.clickup.com/613523/v/dc/jq4k-1524/jq4k-22685) UI kit.
+
+
+
+
 
 ## Install
 
