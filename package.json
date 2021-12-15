@@ -1,0 +1,23 @@
+{
+  "name": "hajar",
+  "version": "1.0.0",
+  "description": "Toolkit to create SaaS applications",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sikka-software/Hajar.git"
+  },
+  "keywords": [
+    "SaaS",
+    "Toolkit"
+  ],
+  "author": "SIKKA SOFTWARE",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sikka-software/Hajar/issues"
+  },
+  "homepage": "https://github.com/sikka-software/Hajar#readme"
+}
