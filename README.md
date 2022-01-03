@@ -4,9 +4,8 @@
 
 # Hajar | حجر
 
-[![NPM](https://img.shields.io/npm/v/@sikka/hajar.svg)](https://www.npmjs.com/package/@sikka/hajar)
-[![NPM](https://img.shields.io/npm/dt/@sikka/hajar.svg)](https://www.npmjs.com/package/@sikka/hajar)
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/@sikka/hajar.svg?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@sikka/hajar)
+[![NPM](https://img.shields.io/npm/dt/@sikka/hajar.svg?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@sikka/hajar)
 
 > Opinionated UI Kit for web apps and websites.
 
