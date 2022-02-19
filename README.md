@@ -114,7 +114,30 @@ This will be used to create an invoice with ready a ready template.
 
 Arguments:
 
-date: date of invoice
+backend_url: ""
+invoice_id: ""
+invoice_lang: ""
+invoice_company: {
+  logo: "URL TO LOGO"
+  name: "Sikka Software Est",
+  address: "Ash Shati Ash Sharqi, Dammam. Eastern Region, Saudi Arabia",
+  phone: "",
+  email: "contact@qawaim.app"
+}
+invoice_customer:{
+  full_name: "",
+  full_address: "", //address_line_1 + " " + address_line_2 + " " + city + " " + zip_code + " " + state + "," + country
+  email: ""
+}
+products: [
+  { 
+    product_name: "PRODUCT NAME",
+    product_price: 00.00 
+  }
+]
+invoice_date: "01/11/2020"
+invoice_currency: "SAR"
+return: "base64" // default: create file in the root app in folder invoice and return boolean true or false
 
 ### SendEmail()
 

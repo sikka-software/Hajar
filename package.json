@@ -19,5 +19,14 @@
   "bugs": {
     "url": "https://github.com/sikka-software/Hajar/issues"
   },
-  "homepage": "https://github.com/sikka-software/Hajar#readme"
+  "homepage": "https://github.com/sikka-software/Hajar#readme",
+  "bundleDependencies": false,
+  "dependencies": {
+    "base64-stream": "^1.0.0",
+    "ejs": "^3.1.6",
+    "fs": "0.0.1-security",
+    "moment": "^2.29.1",
+    "qrcode": "^1.5.0",
+    "wkhtmltopdf": "^0.4.0"
+  }
 }
