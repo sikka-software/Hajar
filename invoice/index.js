@@ -33,7 +33,12 @@ invoice_currency: "SAR"
 
 */
 
-async function create(dataInvoice, lang) {
+async function invoiceCreate(dataInvoice) {
+  var dirInvoice = __appdir + '/invoices';
+  if (!fs.existsSync(dirInvoice)){
+    fs.mkdirSync(dirInvoice, { recursive: true });
+  }
+
   let urlQrcode = await QRCode.toDataURL(
     `${dataInvoice.backend_url}/invoice/${dataInvoice.invoice_id}`
   );
@@ -81,19 +86,25 @@ async function create(dataInvoice, lang) {
       },
       thanks: dataInvoice.invoice_lang == "ar" ? "شكرا لك!" : "Thank you!",
       footer:
-        langdataInvoice.invoice_lang == "ar"
+      dataInvoice.invoice_lang == "ar"
           ? "تم إنشاء الفاتورة على جهاز كمبيوتر وهي صالحة بدون التوقيع والختم."
           : "Invoice was created on a computer and is valid without the signature and seal.",
       notice: dataInvoice.invoice_lang == "ar" ? "تنويه:" : "NOTICE:",
       notice_text:
-        langdataInvoice.invoice_lang == "ar"
+      dataInvoice.invoice_lang == "ar"
           ? "سيتم فرض رسوم تمويل بنسبة 1.5٪ على الأرصدة غير المدفوعة بعد 30 يومًا."
           : "A finance charge of 1.5% will be made on unpaid balances after 30 days.",
     },
   };
-  if (is_mail) {
+  var path_template = `${__basedir}/invoice/templates/tpl-invoice.ejs`;
+  var dir_override = `${__appdir}/Hajar`;
+  var file_override = `${dir_override}/tpl-invoice.ejs`;
+  if(fs.existsSync(dir_override) && fs.existsSync(file_override)){
+    path_template = file_override;
+  }
+  if (!dataInvoice?.return) {
     ejs.renderFile(
-      "template/invoice/tpl-invoice.ejs",
+      path_template,
       data,
       {},
       function (err, str) {
@@ -101,15 +112,16 @@ async function create(dataInvoice, lang) {
         console.log(str);
         wkhtmltopdf(str).pipe(
           fs.createWriteStream(
-            `invoices/invoice-${dataInvoice.invoice_id}.pdf`,
+            `${dirInvoice}/invoice-${dataInvoice.invoice_id}.pdf`,
             { flags: "w" }
           )
         );
       }
     );
+    return true;
   } else {
     ejs.renderFile(
-      "template/invoice/tpl-invoice.ejs",
+      path_template,
       data,
       {},
       function (err, str) {
@@ -123,6 +135,4 @@ async function create(dataInvoice, lang) {
   }
 }
 
-module.exports = {
-  invoice: create,
-};
+module.exports =   invoiceCreate;

@@ -20,6 +20,7 @@
     "url": "https://github.com/sikka-software/Hajar/issues"
   },
   "homepage": "https://github.com/sikka-software/Hajar#readme",
+  "bundleDependencies": false,
   "dependencies": {
     "base64-stream": "^1.0.0",
     "ejs": "^3.1.6",

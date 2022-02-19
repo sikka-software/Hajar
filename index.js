@@ -1,10 +1,9 @@
+const { dirname } = require('path');
 
-var invoice = require('./invoice');
+global.__basedir = __dirname;
+global.__appdir = dirname(require.main.filename);
+
+var Hajar = { createInvoice: require('./invoice') };
 
 
-module.exports = {
-  Hajar: {
-    /** @type {module:hajar/invoice} */
-    createInvoice: invoice
-  }
-};
+module.exports = Hajar;
