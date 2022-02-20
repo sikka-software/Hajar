@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://xakher-images.s3.ap-southeast-1.amazonaws.com/hajar-logo.png" alt="Hajar | حجر" />
+  <img src="https://xakher-images.s3.ap-southeast-1.amazonaws.com/hajar-logo-toolkit.png" alt="Hajar | حجر" />
 </p>
 
 # Hajar | حجر
@@ -7,7 +7,7 @@
 [![NPM](https://img.shields.io/npm/v/@sikka/hajar.svg?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@sikka/hajar)
 [![NPM](https://img.shields.io/npm/dt/@sikka/hajar.svg?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@sikka/hajar)
 
-> Opinionated UI Kit for web apps and websites.
+> Toolkit for creating SaaS applications
 
 [documentation](https://zakher.gitbook.io/hajar/)
 
