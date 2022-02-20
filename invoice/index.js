@@ -4,14 +4,19 @@ const moment = require("moment");
 const { Base64Encode } = require("base64-stream");
 const fs = require("fs");
 const QRCode = require("qrcode");
-const { formatCurrency } = require("../helpers");
+const { getTotals, formatCurrency } = require("../helpers");
 
 /*
 backend_url: ""
 invoice_id: ""
 invoice_lang: ""
 invoice_company: {
-  logo: "URL TO LOGO"
+  logo{
+    src: "URL TO LOGO",
+    width
+    height
+    alt
+  }
   name: "Sikka Software Est",
   address: "Ash Shati Ash Sharqi, Dammam. Eastern Region, Saudi Arabia",
   phone: "",
@@ -25,22 +30,31 @@ invoice_customer:{
 products: [
   { 
     product_name: "PRODUCT NAME",
+    product_description: "PRODUCT NAME",
     product_price: 00.00 
   }
 ]
+invoice_vat: "01/11/2020"
+invoice_discount: "01/11/2020"
 invoice_date: "01/11/2020"
 invoice_currency: "SAR"
 
 */
 
 async function invoiceCreate(dataInvoice) {
-  var dirInvoice = __appdir + '/invoices';
-  if (!fs.existsSync(dirInvoice)){
+  var dirInvoice = __appdir + "/invoices";
+  if (!fs.existsSync(dirInvoice)) {
     fs.mkdirSync(dirInvoice, { recursive: true });
   }
 
   let urlQrcode = await QRCode.toDataURL(
     `${dataInvoice.backend_url}/invoice/${dataInvoice.invoice_id}`
+  );
+
+  let totals = getTotals(
+    dataInvoice.products,
+    dataInvoice.invoice_vat,
+    dataInvoice.invoice_discount
   );
 
   let data = {
@@ -61,6 +75,12 @@ async function invoiceCreate(dataInvoice) {
         dataInvoice.invoice_lang == "ar" ? "YYYY/MM/DD" : "DD/MM/YYYY"
       ),
       products: dataInvoice.products,
+      totals: {
+        subtotal: totals.subtotal,
+        total: totals.total,
+        vat: totals.vat,
+        discount: totals.discount,
+      },
     },
     invoice_translate: {
       invoice: dataInvoice.invoice_lang == "ar" ? "فاتورة " : "INVOICE ",
@@ -81,17 +101,20 @@ async function invoiceCreate(dataInvoice) {
         total_product: dataInvoice.invoice_lang == "ar" ? "المجموع" : "TOTAL",
         subtotal:
           dataInvoice.invoice_lang == "ar" ? "المجموع الفرعي" : "SUBTOTAL",
+        discount:
+          dataInvoice.invoice_lang == "ar" ? "إجمالي الخصم" : "DISCOUNT",
+        vat: dataInvoice.invoice_lang == "ar" ? "إجمالي ضريبة" : "VAT",
         grandtotal:
           dataInvoice.invoice_lang == "ar" ? "المبلغ الإجمالي" : "GRAND TOTAL",
       },
       thanks: dataInvoice.invoice_lang == "ar" ? "شكرا لك!" : "Thank you!",
       footer:
-      dataInvoice.invoice_lang == "ar"
+        dataInvoice.invoice_lang == "ar"
           ? "تم إنشاء الفاتورة على جهاز كمبيوتر وهي صالحة بدون التوقيع والختم."
           : "Invoice was created on a computer and is valid without the signature and seal.",
       notice: dataInvoice.invoice_lang == "ar" ? "تنويه:" : "NOTICE:",
       notice_text:
-      dataInvoice.invoice_lang == "ar"
+        dataInvoice.invoice_lang == "ar"
           ? "سيتم فرض رسوم تمويل بنسبة 1.5٪ على الأرصدة غير المدفوعة بعد 30 يومًا."
           : "A finance charge of 1.5% will be made on unpaid balances after 30 days.",
     },
@@ -99,40 +122,30 @@ async function invoiceCreate(dataInvoice) {
   var path_template = `${__basedir}/invoice/templates/tpl-invoice.ejs`;
   var dir_override = `${__appdir}/Hajar`;
   var file_override = `${dir_override}/tpl-invoice.ejs`;
-  if(fs.existsSync(dir_override) && fs.existsSync(file_override)){
+  if (fs.existsSync(dir_override) && fs.existsSync(file_override)) {
     path_template = file_override;
   }
   if (!dataInvoice?.return) {
-    ejs.renderFile(
-      path_template,
-      data,
-      {},
-      function (err, str) {
-        console.log(err);
-        console.log(str);
-        wkhtmltopdf(str).pipe(
-          fs.createWriteStream(
-            `${dirInvoice}/invoice-${dataInvoice.invoice_id}.pdf`,
-            { flags: "w" }
-          )
-        );
-      }
-    );
+    ejs.renderFile(path_template, data, {}, function (err, str) {
+      console.log(err);
+      console.log(str);
+      wkhtmltopdf(str).pipe(
+        fs.createWriteStream(
+          `${dirInvoice}/invoice-${dataInvoice.invoice_id}.pdf`,
+          { flags: "w" }
+        )
+      );
+    });
     return true;
   } else {
-    ejs.renderFile(
-      path_template,
-      data,
-      {},
-      function (err, str) {
-        console.log(err);
-        //console.log(str);
-        //let stream = wkhtmltopdf(str);
-        //let blob = stream.toBlob('application/pdf');
-        wkhtmltopdf(str).pipe(new Base64Encode()).pipe(res);
-      }
-    );
+    ejs.renderFile(path_template, data, {}, function (err, str) {
+      console.log(err);
+      //console.log(str);
+      //let stream = wkhtmltopdf(str);
+      //let blob = stream.toBlob('application/pdf');
+      wkhtmltopdf(str).pipe(new Base64Encode()).pipe(res);
+    });
   }
 }
 
-module.exports =   invoiceCreate;
+module.exports = invoiceCreate;
