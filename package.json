@@ -1,5 +1,5 @@
 {
-  "name": "hajar",
+  "name": "@sikka/hajar",
   "version": "1.0.0",
   "description": "Toolkit to create SaaS applications",
   "main": "index.js",
@@ -20,7 +20,6 @@
     "url": "https://github.com/sikka-software/Hajar/issues"
   },
   "homepage": "https://github.com/sikka-software/Hajar#readme",
-  "bundleDependencies": false,
   "dependencies": {
     "base64-stream": "^1.0.0",
     "date-fns": "^2.28.0",
