@@ -13,66 +13,99 @@
 
 The Thesis of the structure is that each code architecture is that the user is creating items and save them as private or public. The items are editable and they can be categorized in different ways.
 
-Concept
-=======
+# Concept
 
 Users collect stones. A single stone is a JSON object that has an \_id and other properties with flexible data. Examples of a stones:
 
-*   Menu from Qawaim
-*   Card from OneCard
-*   Worda from Worda
-*   Tweet from Twitter
-*   Image from Instagram
-*   GIF from Giphy
-*   Pin from Pinterest
-*   Post from Facebook
-*   etc
+- Menu from Qawaim
+- Card from OneCard
+- Worda from Worda
+- Tweet from Twitter
+- Image from Instagram
+- GIF from Giphy
+- Pin from Pinterest
+- Post from Facebook
+- etc
 
-  
+### Index
+
+<table>
+  <tr>
+    <td valign="top">
+      <ul>
+        <li><a href="#cameras">Auth</a></li>
+        <ul>
+          <li><a href="#perspectivecamera">setupFirebase</a></li>
+          <li><a href="#orthographiccamera">createUser</a></li>
+          <li><a href="#cubecamera">updateUser</a></li>
+          <li><a href="#cubecamera">deactivateUser</a></li>
+          <li><a href="#cubecamera">deleteUser</a></li>
+          <li><a href="#cubecamera">signIn</a></li>
+          <li><a href="#cubecamera">signOut</a></li>
+        </ul>
+        <li><a href="#controls">Emails</a></li>
+        <ul>
+          <li><a href="#controls">setupEmail</a></li>
+          <li><a href="#controls">sendEmail</a></li>
+        </ul>
+        <li><a href="#abstractions">Payments</a></li>
+        <ul>
+          <li><a href="#image">setupWallet</a></li>
+          <li><a href="#text">setupAmazonPayments</a></li>
+          <li><a href="#line">setupPayPal</a></li>
+          <li><a href="#line">setupGooglePay</a></li>
+        </ul>
+        <li><a href="#shaders">Databases</a></li>
+        <ul>
+          <li><a href="#meshreflectormaterial">setupMongoDB</a></li>
+        </ul>
+        <li><a href="#modifiers">Invoices</a></li>
+        <ul>
+          <li><a href="#curvemodifier">createInvoice</a></li>
+        </ul>
+      </ul>
+    </td>
+  </tr>
+</table>
 
 We will abstract Qawaim and make it connected to a boilerplate that we will use to generate other Apps that have the similar structure as Qawaim but with different items.
 
-Benefits
-========
+# Benefits
 
 Many SaaS projects have the same foundation and architecture. Putting them in the same boilerplate will eliminate the time it takes to setup the project .They all need the same:
 
-Common Elements
-===============
+# Common Elements
 
 The follow web elements and pages exist in most SaaS projects.
 
-*   Pages
-    *   Sign in
-    *   Sign Up
-    *   Reset Password
-    *   New Password
-    *   Billing
-    *   Checkout
-    *   Payment Confirmation
-    *   Error Page
-*   Billing Page
-    *   Add Payment Method
-    *   Add Wallet Balance
-    *   See Transaction History
-*   Account Page
-    *   Change Language
-    *   Change Currency
-    *   Change Profile Info
-    *   Change Password
-    *   Deactivate Account
-*   Wallet Balance System
-*   Home Page
-    *   List of Stones
-    *   Create Stone
-    *   Delete Stone
-    *   Update Stone
-*   Single Stone Page (\[id\].js)
+- Pages
+  - Sign in
+  - Sign Up
+  - Reset Password
+  - New Password
+  - Billing
+  - Checkout
+  - Payment Confirmation
+  - Error Page
+- Billing Page
+  - Add Payment Method
+  - Add Wallet Balance
+  - See Transaction History
+- Account Page
+  - Change Language
+  - Change Currency
+  - Change Profile Info
+  - Change Password
+  - Deactivate Account
+- Wallet Balance System
+- Home Page
+  - List of Stones
+  - Create Stone
+  - Delete Stone
+  - Update Stone
+- Single Stone Page (\[id\].js)
 
-The Hierarchy
-=============
-
-  
+# The Hierarchy
 
 Users saved objects can be top level only or multileveled. For example:
 
@@ -98,15 +131,12 @@ OneCard Hierarchy
 ```plain
 Users
 - OneCards
--- Actions (Download vCard, Profile Page, Central Link, Redirect to Link) 
+-- Actions (Download vCard, Profile Page, Central Link, Redirect to Link)
 --- Buttons (To create central links)
 --- Inputs (To create surveys)
 ```
 
-  
-
-Functions & Methods
-===================
+# Functions & Methods
 
 ### CreateInvoice()
 
@@ -118,22 +148,22 @@ backend_url: ""
 invoice_id: ""
 invoice_lang: ""
 invoice_company: {
-  logo: "URL TO LOGO"
-  name: "Sikka Software Est",
-  address: "Ash Shati Ash Sharqi, Dammam. Eastern Region, Saudi Arabia",
-  phone: "",
-  email: "contact@qawaim.app"
+logo: "URL TO LOGO"
+name: "Sikka Software Est",
+address: "Ash Shati Ash Sharqi, Dammam. Eastern Region, Saudi Arabia",
+phone: "",
+email: "contact@qawaim.app"
 }
 invoice_customer:{
-  full_name: "",
-  full_address: "", //address_line_1 + " " + address_line_2 + " " + city + " " + zip_code + " " + state + "," + country
-  email: ""
+full_name: "",
+full_address: "", //address_line_1 + " " + address_line_2 + " " + city + " " + zip_code + " " + state + "," + country
+email: ""
 }
 products: [
-  { 
-    product_name: "PRODUCT NAME",
-    product_price: 00.00 
-  }
+{
+product_name: "PRODUCT NAME",
+product_price: 00.00
+}
 ]
 invoice_date: "01/11/2020"
 invoice_currency: "SAR"
@@ -202,14 +232,9 @@ arguments
 
 ### SetupPayment()
 
-UI Design
-=========
+# UI Design
 
 All UI elements in this boilerplate will be components that we can rearrange differently to create different layouts. This way we can design and add new components with the same [Hawa | هواء](https://app.clickup.com/613523/v/dc/jq4k-1524/jq4k-22685) UI kit.
-
-
-
-
 
 ## Install
 

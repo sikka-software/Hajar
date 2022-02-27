@@ -11,3 +11,4 @@ async function setupPaypal() {
 async function setupGooglePay() {
   console.log("setting up Google Pay");
 }
+
