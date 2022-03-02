@@ -7,26 +7,23 @@ contain of file Hajar.config
 */
 function setupEmail() {
   let listTransport = [];
-
   if (__config && __config.HAJAR_MAIL_PARAMETERS) {
-    let mails = __config.HAJAR_MAIL_PARAMETERS.split(";");
-    let counter = 0;
-    for (var i = 0; i < mails.length; i++) {
-      let config = mails[i].split(":");
-      listTransport[counter] = nodemailer.createTransport({
-        host: config[0], //replace with your email provider
-        port: config[1],
-        secure: config[2],
+    for (var i = 0; i < __config.HAJAR_MAIL_PARAMETERS.length; i++) {
+      let config = __config.HAJAR_MAIL_PARAMETERS[i];
+      listTransport[config.name] = nodemailer.createTransport({
+        host: config.host, //replace with your email provider
+        port: config.port,
+        secure: config.secure,
         auth: {
-          user: config[3],
-          pass: config[4],
+          user: config.username,
+          pass: config.password,
         },
       });
-      listTransport[counter].verify(function (error, success) {
+      listTransport[config.name].verify(function (error, success) {
         if (error) {
           console.log(error);
         } else {
-          console.log(`Server ${counter} is ready to send mail`);
+          console.log(`Server ${config.name} is ready to send mail`);
         }
       });
     }
@@ -34,14 +31,16 @@ function setupEmail() {
   return listTransport;
 }
 
-function sendEmail() {
-  transporter.sendMail(message, (error, info) => {
-    console.log(error);
-    console.log(info);
-  });
+function sendEmail(transport, message) {
+  if(transport){
+    transport.sendMail(message, (error, info) => {
+      console.log(error);
+      console.log(info);
+    });
+  }
 }
 
 module.exports = {
-  setupEmail,
-  sendEmail
+  setupEmail: setupEmail,
+  sendEmail: sendEmail
 };
