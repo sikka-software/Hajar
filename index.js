@@ -14,13 +14,19 @@ contain of file Hajar.config
     HAJAR_MONGODB_PASSWORD: ""
 }
 */
-var file_config = `${__appdir}/Hajar.config`;
+var file_config = `${__appdir}/Hajar.config.json`;
 if (fs.existsSync(file_config)) {
     global.__config = JSON.parse(fs.readFileSync(file_config, 'utf8'));;
 }
 
-
-var Hajar = { setupDB: require('./invoice'), createInvoice: require('./invoice') };
+/*
+example use
+Hajar.Database()
+Hajar.Invoice()
+Hajar.Mail.setupEmail()
+Hajar.Mail.sendEmail()
+*/
+var Hajar = { Database: require('./invoice'), Invoice: require('./invoice'), Mail:  require('./email')};
 
 
 module.exports = Hajar;
