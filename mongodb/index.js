@@ -13,7 +13,7 @@ function setupDB() {
     mongoose.set("useCreateIndex", true);
     mongoose
       .connect(
-        `mongodb+srv://dbQawaim:${process.env.MONGO_PASSWORD}@cluster0.dubdn.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`,
+        `mongodb+srv://dbQawaim:${__config.HAJAR_MONGODB_PASSWORD}@cluster0.dubdn.mongodb.net/${__config.HAJAR_MONGODB_NAME}?retryWrites=true&w=majority`,
         { useNewUrlParser: true, useUnifiedTopology: true }
       )
       .then(() => {
