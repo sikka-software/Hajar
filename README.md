@@ -68,6 +68,7 @@ This will be used to create an invoice with ready a ready template.
 
 Arguments:
 
+```
 backend_url: ""
 invoice_id: ""
 invoice_lang: ""
@@ -92,6 +93,7 @@ product_price: 00.00
 invoice_date: "01/11/2020"
 invoice_currency: "SAR"
 return: "base64" // default: create file in the root app in folder invoice and return boolean true or false
+```
 
 ### SendEmail
 
@@ -103,11 +105,10 @@ template: \["verification", "password-reset", "billing"\]
 
 ### CreateModel
 
-```plain
+```
 CreateModel({
-name: 'Menu',
-public: false,
-
+  name: 'Menu',
+  public: false,
 })
 ```
 
@@ -121,27 +122,27 @@ To create the final schema of the graphql
 
 Quickly create a user in Firebase
 
-### \[BETA\] CreateUserWallet()
+### \[BETA\] CreateUserWallet
 
 Quickly setup the user wallet system
 
-### SetupEmail()
+### SetupEmail
 
 Quickly setup the nodemailer transporter email
 
-### SetupMongoDB()
+### SetupMongoDB
 
 Quickly setup the mongoDB
 
-arguments:
 
+```
 username: The MongoDB username
-
 password: The mongoDB user password
-
 URL: the url to connect to the database
 
-### SetupFirebase()
+```
+### SetupFirebase
+Quickly setup Firebase project
 
 ```plain
 SetupFirebase({
@@ -150,21 +151,15 @@ appId: 23912093812098
 })
 ```
 
-Quickly setup Firebase project
+### SetupPayment
 
-arguments
-
-### SetupPayment()
-
-# UI Design
-
-All UI elements in this boilerplate will be components that we can rearrange differently to create different layouts. This way we can design and add new components with the same [Hawa | هواء](https://app.clickup.com/613523/v/dc/jq4k-1524/jq4k-22685) UI kit.
+Setup payment methods (Visa, Mastercard, Mada, ApplePay, GooglePay, and PayPal)
 
 ## Install
 
 ```bash
 
-npm install --save @sikka/hawa
+npm install --save @sikka/hajar
 
 ```
 
@@ -182,7 +177,7 @@ To contribute, clone this github repository and run the development server
 
 ```bash
 git clone git@github.com:sikka-software/hajar.git
-cd hawa
+cd hajar
 npm install
 ```
 
@@ -192,25 +187,14 @@ npm install
 
 ```bash
 git clone git@github.com:sikka-software/hajar.git
-cd hawa
+cd hajar
 npm install
-npm run storybook
-```
-
-- Edit **Hawa/src/stories/Hawa.stories.js\_** file
-
-- Add your custom testing component in **Hawa.stories.js** file
-
-- Or you can preview without running development server. [See Preview](https://sikka-software.github.io/Hawa/storybook-static/)
-
-```jsx
-//example coming soon inshallah
 ```
 
 ## Deployment
 
 ```bash
-npm run build-storybook
+npm run start
 ```
 
 ## Publishing (Admin)
