@@ -9,23 +9,14 @@
 
 > Toolkit for creating SaaS applications
 
-[documentation](https://zakher.gitbook.io/hajar/)
-
-The Thesis of the structure is that each code architecture is that the user is creating items and save them as private or public. The items are editable and they can be categorized in different ways.
+<!-- [documentation](https://zakher.gitbook.io/hajar/) -->
 
 # Concept
 
-Users collect stones. A single stone is a JSON object that has an \_id and other properties with flexible data. Examples of a stones:
+Most [SaaS](https://en.wikipedia.org/wiki/Software_as_a_service) projects have similar backends that users interact with, such as [CMS](https://en.wikipedia.org/wiki/Content_management_system), Auth, Payments, Billing, and more. This package aims to provides the essential tools to create a full SaaS product.
 
-- Menu from Qawaim
-- Card from OneCard
-- Worda from Worda
-- Tweet from Twitter
-- Image from Instagram
-- GIF from Giphy
-- Pin from Pinterest
-- Post from Facebook
-- etc
+For the boilerplate, check out [Tayar](https://github.com/sikka-software/tayar.git)
+
 
 ### Index
 
@@ -33,112 +24,45 @@ Users collect stones. A single stone is a JSON object that has an \_id and other
   <tr>
     <td valign="top">
       <ul>
-        <li><a href="#cameras">Auth</a></li>
+        <li><a href="#auth">Auth</a></li>
         <ul>
-          <li><a href="#perspectivecamera">setupFirebase</a></li>
-          <li><a href="#orthographiccamera">createUser</a></li>
-          <li><a href="#cubecamera">updateUser</a></li>
-          <li><a href="#cubecamera">deactivateUser</a></li>
-          <li><a href="#cubecamera">deleteUser</a></li>
-          <li><a href="#cubecamera">signIn</a></li>
-          <li><a href="#cubecamera">signOut</a></li>
+          <li><a href="#setupFirebase">setupFirebase</a></li>
+          <li><a href="#createUser">createUser</a></li>
+          <li><a href="#updateUser">updateUser</a></li>
+          <li><a href="#deactivateUser">deactivateUser</a></li>
+          <li><a href="#deleteUser">deleteUser</a></li>
+          <li><a href="#signIn">signIn</a></li>
+          <li><a href="#signOut">signOut</a></li>
         </ul>
-        <li><a href="#controls">Emails</a></li>
+        <li><a href="#emails">Emails</a></li>
         <ul>
-          <li><a href="#controls">setupEmail</a></li>
-          <li><a href="#controls">sendEmail</a></li>
+          <li><a href="#setupEmail">setupEmail</a></li>
+          <li><a href="#sendEmail">sendEmail</a></li>
         </ul>
-        <li><a href="#abstractions">Payments</a></li>
+        <li><a href="#payments">Payments</a></li>
         <ul>
-          <li><a href="#image">setupWallet</a></li>
-          <li><a href="#text">setupAmazonPayments</a></li>
-          <li><a href="#line">setupPayPal</a></li>
-          <li><a href="#line">setupGooglePay</a></li>
+          <li><a href="#setupWallet">setupWallet</a></li>
+          <li><a href="#setupAmazonPayments">setupAmazonPayments</a></li>
+          <li><a href="#setupPayPal">setupPayPal</a></li>
+          <li><a href="#setupGooglePay">setupGooglePay</a></li>
         </ul>
-        <li><a href="#shaders">Databases</a></li>
+        <li><a href="#databases">Databases</a></li>
         <ul>
-          <li><a href="#meshreflectormaterial">setupMongoDB</a></li>
+          <li><a href="#setupMongoDB">setupMongoDB</a></li>
         </ul>
-        <li><a href="#modifiers">Invoices</a></li>
+        <li><a href="#invoices">Invoices</a></li>
         <ul>
-          <li><a href="#curvemodifier">createInvoice</a></li>
+          <li><a href="#createInvoice">createInvoice</a></li>
         </ul>
       </ul>
     </td>
   </tr>
 </table>
 
-We will abstract Qawaim and make it connected to a boilerplate that we will use to generate other Apps that have the similar structure as Qawaim but with different items.
-
-# Benefits
-
-Many SaaS projects have the same foundation and architecture. Putting them in the same boilerplate will eliminate the time it takes to setup the project .They all need the same:
-
-# Common Elements
-
-The follow web elements and pages exist in most SaaS projects.
-
-- Pages
-  - Sign in
-  - Sign Up
-  - Reset Password
-  - New Password
-  - Billing
-  - Checkout
-  - Payment Confirmation
-  - Error Page
-- Billing Page
-  - Add Payment Method
-  - Add Wallet Balance
-  - See Transaction History
-- Account Page
-  - Change Language
-  - Change Currency
-  - Change Profile Info
-  - Change Password
-  - Deactivate Account
-- Wallet Balance System
-- Home Page
-  - List of Stones
-  - Create Stone
-  - Delete Stone
-  - Update Stone
-- Single Stone Page (\[id\].js)
-
-# The Hierarchy
-
-Users saved objects can be top level only or multileveled. For example:
-
-Qawaim Hierarchy
-
-```plain
-Users
-- Menus (location, currency, language)
--- Items (info & images)
-```
-
-Garagi Hierarchy
-
-```plain
-Users
-- Garages (location, capacity)
--- Cars (info & images)
---- Documents (ownership, insurance, etc)
-```
-
-OneCard Hierarchy
-
-```plain
-Users
-- OneCards
--- Actions (Download vCard, Profile Page, Central Link, Redirect to Link)
---- Buttons (To create central links)
---- Inputs (To create surveys)
-```
 
 # Functions & Methods
 
-### CreateInvoice()
+### CreateInvoice
 
 This will be used to create an invoice with ready a ready template.
 
@@ -169,7 +93,7 @@ invoice_date: "01/11/2020"
 invoice_currency: "SAR"
 return: "base64" // default: create file in the root app in folder invoice and return boolean true or false
 
-### SendEmail()
+### SendEmail
 
 Send an email to the user for billing, verification, password reset, or other reasons
 
@@ -177,7 +101,7 @@ Arguments:
 
 template: \["verification", "password-reset", "billing"\]
 
-### CreateModel()
+### CreateModel
 
 ```plain
 CreateModel({
@@ -189,11 +113,11 @@ public: false,
 
 To create a graphql model type that will work with MongoDB
 
-### CreateSchema()
+### CreateSchema
 
 To create the final schema of the graphql
 
-### CreateUser()
+### CreateUser
 
 Quickly create a user in Firebase
 
@@ -257,7 +181,7 @@ To contribute, clone this github repository and run the development server
 - clone repository
 
 ```bash
-git clone git@github.com:sikka-software/hawa.git
+git clone git@github.com:sikka-software/hajar.git
 cd hawa
 npm install
 ```
@@ -267,7 +191,7 @@ npm install
 - Run development server
 
 ```bash
-git clone git@github.com:sikka-software/hawa.git
+git clone git@github.com:sikka-software/hajar.git
 cd hawa
 npm install
 npm run storybook
@@ -296,6 +220,16 @@ npm version [major | minor | patch]
 npm run build-lib
 npm publish --access public
 ```
+
+## Use Cases
+
+- [Qawaim](https://qawaim.app)
+- [OneCard](https://onecard.zone)
+- [Worda](https://worda.app)
+- [Seera](https://seera.app)
+- [Linkat](https://linkat.app)
+
+
 
 ## License
 
