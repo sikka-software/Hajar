@@ -1,5 +1,5 @@
-const { dirname } = require('path');
-const fs = require('fs');
+const { dirname } = require("path");
+const fs = require("fs");
 
 global.__basedir = __dirname;
 global.__appdir = dirname(require.main.filename);
@@ -16,7 +16,7 @@ contain of file Hajar.config
 */
 var file_config = `${__appdir}/Hajar.config.json`;
 if (fs.existsSync(file_config)) {
-    global.__config = JSON.parse(fs.readFileSync(file_config, 'utf8'));;
+  global.__config = JSON.parse(fs.readFileSync(file_config, "utf8"));
 }
 
 /*
@@ -26,7 +26,12 @@ Hajar.Invoice()
 Hajar.Mail.setupEmail()
 Hajar.Mail.sendEmail()
 */
-var Hajar = { Database: require('./invoice'), Invoice: require('./invoice'), Mail:  require('./email')};
-
+var Hajar = {
+  Database: require("./invoice"),
+  Invoice: require("./invoice"),
+  Mail: require("./email"),
+  Payment: require("./payments"),
+  Auth: require("./auth")
+};
 
 module.exports = Hajar;

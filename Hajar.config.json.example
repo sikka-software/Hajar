@@ -39,5 +39,14 @@
             "merchant_identifier": "",
             "sha_request_passphrase": ""
         }
-    ]
+    ],
+    "HAJAR_FIREBASE": {
+        "apiKey": "",
+        "authDomain": "",
+        "projectId": "",
+        "storageBucket": "",
+        "messagingSenderId": "",
+        "appId": "",
+        "measurementId": ""
+    }
 }
