@@ -137,7 +137,9 @@ async function setupAmazonPayments(dataPayfort) {
   }
 }
 
-async function setupPaypal() {}
+async function setupPaypal() {
+
+}
 /*
 dataGooglePay = {
 nonce
@@ -227,7 +229,6 @@ async function setupGooglePay(GooglePayData) {
 module.exports = {
   setupWallet: setupWallet,
   setupAmazonPayments: setupAmazonPayments,
-  setupAmazonPayments3DS: setupAmazonPayments3DS,
   setupPaypal: setupPaypal,
   setupGooglePay: setupGooglePay,
 };
