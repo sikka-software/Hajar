@@ -1,6 +1,6 @@
 {
   "name": "@sikka/hajar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Toolkit to create SaaS applications",
   "main": "index.js",
   "scripts": {
