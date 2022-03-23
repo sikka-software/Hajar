@@ -27,7 +27,7 @@ Hajar.Mail.setupEmail()
 Hajar.Mail.sendEmail()
 */
 var Hajar = {
-  Database: require("./invoice"),
+  Database: require("./mongodb"),
   Invoice: require("./invoice"),
   Mail: require("./email"),
   Payment: require("./payments"),

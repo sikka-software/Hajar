@@ -1,4 +1,4 @@
-import firebase from "firebase/app";
+const firebase = require("firebase/app");
 /*
 let firebaseConfig = {
   apiKey:
