@@ -1,8 +1,10 @@
 const { dirname } = require("path");
 const fs = require("fs");
+const mongoose = require("mongoose");
 
 global.__basedir = __dirname;
 global.__appdir = dirname(require.main.filename);
+global.__mongoose = mongoose;
 
 //Here you must add a file Hajar.config
 //for configuration of Hajar
@@ -27,11 +29,12 @@ Hajar.Mail.setupEmail()
 Hajar.Mail.sendEmail()
 */
 var Hajar = {
-  Database: require("./mongodb"),
-  Invoice: require("./invoice"),
-  Mail: require("./email"),
-  Payment: require("./payments"),
-  Auth: require("./auth")
+  Database: require("./src/mongodb"),
+  Model: require("./src/model"),
+  Invoice: require("./src/invoice"),
+  Mail: require("./src/email"),
+  Payment: require("./src/payments"),
+  Auth: require("./src/auth")
 };
 
 module.exports = Hajar;
