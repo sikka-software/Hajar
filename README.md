@@ -17,6 +17,11 @@ Most [SaaS](https://en.wikipedia.org/wiki/Software_as_a_service) projects have s
 
 For the boilerplate, check out [Tayar](https://github.com/sikka-software/tayar.git)
 
+## Install
+
+```bash
+npm install --save @sikka/hajar
+```
 
 ### Index
 
@@ -59,117 +64,178 @@ For the boilerplate, check out [Tayar](https://github.com/sikka-software/tayar.g
   </tr>
 </table>
 
+# Documentation
 
-# Functions & Methods
+## **Auth**
 
-### CreateInvoice
+All auth functions such create, update, delete, deactivate, sign in, sign out users.
 
-This will be used to create an invoice with ready a ready template.
+</br>
 
-Arguments:
+#### **Setup Firebase**
 
-```
-backend_url: ""
-invoice_id: ""
-invoice_lang: ""
-invoice_company: {
-logo: "URL TO LOGO"
-name: "Sikka Software Est",
-address: "Ash Shati Ash Sharqi, Dammam. Eastern Region, Saudi Arabia",
-phone: "",
-email: "contact@qawaim.app"
-}
-invoice_customer:{
-full_name: "",
-full_address: "", //address_line_1 + " " + address_line_2 + " " + city + " " + zip_code + " " + state + "," + country
-email: ""
-}
-products: [
-{
-product_name: "PRODUCT NAME",
-product_price: 00.00
-}
-]
-invoice_date: "01/11/2020"
-invoice_currency: "SAR"
-return: "base64" // default: create file in the root app in folder invoice and return boolean true or false
+##### Quickly setup Firebase project
+
+```js
+Hajar.Auth.setupFirebase();
 ```
 
-### SendEmail
+#### **Create User**
 
-Send an email to the user for billing, verification, password reset, or other reasons
+##### Create a new user in firebase
 
-Arguments:
-
-template: \["verification", "password-reset", "billing"\]
-
-### CreateModel
-
-```
-CreateModel({
-  name: 'Menu',
-  public: false,
-})
+```js
+Hajar.Auth.createUser();
 ```
 
-To create a graphql model type that will work with MongoDB
+#### **Update User**
 
-### CreateSchema
+##### Update a current user in firebase
 
-To create the final schema of the graphql
-
-### CreateUser
-
-Quickly create a user in Firebase
-
-### \[BETA\] CreateUserWallet
-
-Quickly setup the user wallet system
-
-### SetupEmail
-
-Quickly setup the nodemailer transporter email
-
-### SetupMongoDB
-
-Quickly setup the mongoDB
-
-
-```
-username: The MongoDB username
-password: The mongoDB user password
-URL: the url to connect to the database
-
-```
-### SetupFirebase
-Quickly setup Firebase project
-
-```plain
-SetupFirebase({
-appId: 23912093812098
-
-})
+```js
+Hajar.Auth.updateUser();
 ```
 
-### SetupPayment
+#### **Deactivate User**
 
-Setup payment methods (Visa, Mastercard, Mada, ApplePay, GooglePay, and PayPal)
+##### Deactivate a current user
 
-## Install
-
-```bash
-
-npm install --save @sikka/hajar
-
+```js
+Hajar.Auth.deactivateUser();
 ```
 
-## Usage
+#### **Remove User**
 
-```jsx
-//example coming soon inshallah
+##### Delete a current user from firebase
+
+```js
+Hajar.Auth.removeUser();
 ```
 
-## Contributing
+#### **Sign In User**
+
+##### Sign in a user from the app
+
+```js
+Hajar.Auth.signIn();
+```
+
+#### **Sign Out User**
+
+##### Sign out a user from the app
+
+```js
+Hajar.Auth.signOut();
+```
+
+<hr/>
+
+## **Databases**
+
+subtext about the mongodb function
+
+</br>
+
+#### **initialize MongoDB**
+
+##### This will be used to create an invoice with ready a ready template.
+
+```js
+Hajar.Database({});
+```
+
+<hr/>
+
+## **Emails**
+
+Setup nodemail and send emails to users
+
+</br>
+
+#### **Setup Email**
+
+##### This will be used to create an invoice with ready a ready template.
+
+```js
+Hajar.Mail.setupEmail({});
+```
+
+#### **Send Email**
+
+##### Send an email to the user for billing, verification, password reset, or other reasons
+
+```js
+Hajar.Mail.sendEmail({});
+```
+
+<hr/>
+
+## **GraphQL**
+
+subtext about the mongodb function
+
+</br>
+
+#### **CreateModel**
+
+##### To create a graphql model type that will work with MongoDB
+
+```
+Hajar.CreateModel({})
+```
+
+#### **CreateSchema**
+
+##### To create the final schema of the graphql
+
+```
+Hajar.CreateSchema({})
+```
+
+<hr/>
+
+## **Payments**
+
+Setup payments methods for one-time and recurring transactions
+
+</br>
+
+#### **Setup Wallet**
+
+##### Quickly setup the user wallet system
+
+```js
+Hajar.Payment.Wallet({});
+```
+
+#### **Setup Amazon Payment Services**
+
+##### Setup payment methods (Visa, Mastercard, Mada, ApplePay)
+
+```js
+Hajar.Payment.Payfort({});
+```
+
+#### **Setup PayPal**
+
+##### Setup PayPal payments
+
+```js
+Hajar.Payment.Paypal({});
+```
+
+#### **Setup GooglePay**
+
+##### Enable GooglePay payments
+
+```js
+Hajar.Payment.GooglePay({});
+```
+
+</br>
+</br>
+
+# Contributing
 
 To contribute, clone this github repository and run the development server
 
@@ -212,8 +278,6 @@ npm publish --access public
 - [Worda](https://worda.app)
 - [Seera](https://seera.app)
 - [Linkat](https://linkat.app)
-
-
 
 ## License
 
