@@ -15,13 +15,8 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 16
-      - run: | 
-         if [ -e 'package-lock.json' ]; then 
-          npm ci
-         else 
-          npm install
-         fi
-      #- run: npm test
+      - run: npm install
+      - run: npm run build
 
   publish-npm:
     needs: build
@@ -33,13 +28,6 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
           always-auth: true
-      - run: | 
-         if [ -e 'package-lock.json' ]; then 
-          npm ci
-         else 
-          npm install
-         fi
-      - run: npm build
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
