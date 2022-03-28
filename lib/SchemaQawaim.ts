@@ -1,5 +1,3 @@
-import "reflect-metadata";
-import {ObjectType, InputType, Field, ID} from "type-graphql";
 import { buildSchema } from "graphql";
 
 const user = `
