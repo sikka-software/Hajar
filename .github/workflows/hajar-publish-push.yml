@@ -8,19 +8,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 16
-      - run: rm -fr package-lock.json || true
-      - run: npm install
-      - run: npm run build
-
-  publish-npm:
-    needs: build
+  build-publish-npm:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -29,6 +17,9 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
           always-auth: true
+      - run: rm -fr node_modules || true
+      - run: rm -fr package-lock.json || true
+      - run: npm install && npm run build
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
