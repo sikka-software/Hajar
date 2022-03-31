@@ -1,11 +1,12 @@
 import wkhtmltopdf from "wkhtmltopdf";
-import ejs from "ejs";
+//import ejs from "ejs";
 import { Transaction } from "./ModelsQawaim";
 import moment from "moment";
 import { Base64Encode } from "base64-stream";
-import fs from "fs";
 import QRCode from "qrcode";
 import { formatCurrency, getPrice } from "./helpers";
+import { importFs } from "./load";
+let fs: any = importFs("fs", "browserify-fs");
 
 export default async function createInvoice(transactionID:any, res:any, lang:any, is_mail:any, isWallet:any) {
   const dataUrlString = Buffer.from(`${transactionID}_${lang}_${isWallet}`).toString('base64');
@@ -140,7 +141,7 @@ export default async function createInvoice(transactionID:any, res:any, lang:any
     }
   };
   if (is_mail) {
-    ejs.renderFile(
+    /*ejs.renderFile(
       "template/invoice/tpl-invoice.ejs",
       data,
       {},
@@ -154,9 +155,9 @@ export default async function createInvoice(transactionID:any, res:any, lang:any
           )
         );
       }
-    );
+    );*/
   } else {
-    ejs.renderFile(
+    /*ejs.renderFile(
       "template/invoice/tpl-invoice.ejs",
       data,
       {},
@@ -167,6 +168,6 @@ export default async function createInvoice(transactionID:any, res:any, lang:any
         //let blob = stream.toBlob('application/pdf');
         wkhtmltopdf(str).pipe(new Base64Encode()).pipe(res);
       }
-    );
+    );*/
   }
 }
