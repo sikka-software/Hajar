@@ -1,8 +1,8 @@
 import axios from "axios";
 import sha256 from "crypto-js/sha256";
-import { importFs } from "./load";
+import Hajarimport from "./load";
 
-let braintree: any = importFs("braintree", "braintree-web");
+let braintree: any = Hajarimport("braintree", "braintree-web");
 
 export async function setupWallet() {
   console.log("setting up User Wallet");

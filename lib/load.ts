@@ -1,27 +1,25 @@
-import { detect } from './browser';
+import isReact from "./environnement";
 
-export async function importModule(moduleName: string): Promise<any> {
+export async function importModule(moduleName: string): Promise<any | null | Error> {
+  try {
     console.log("importing ", moduleName);
     const importedModule = await import(moduleName);
     console.log("\timported ...");
     return importedModule;
+  } catch (e) {
+    return e;
+  }
+  return null;
 }
-export async function importFs(moduleNameNode: string, ModuleNameBrowser: string) {
-    const result = detect();
-    let fs: any;
-    if (result) {
-        switch (result.type) {
-          case 'browser':
-            // result is an instanceof BrowserInfo
-            fs = await importModule(ModuleNameBrowser);
-            break;
-      
-          case 'node':
-            // result is an instanceof NodeInfo
-            fs = await importModule(moduleNameNode);
-            break;
-        }
-      }
-    return fs;
+
+export default async function Hajarimport(moduleNameNode: string, ModuleNameBrowser: string) {
+  let module: any;
+  if (isReact()) {
+    module = await importModule(ModuleNameBrowser);
+  }
+  else {
+    module = await importModule(moduleNameNode);
+  }
+  return module;
 }
 
