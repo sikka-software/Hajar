@@ -1,6 +1,6 @@
-import { importFs } from "./load";
+import Hajarimport from "./load";
 
-let nodemailer: any = importFs("nodemailer", "nodemailer-react");
+let nodemailer: any = Hajarimport("nodemailer", "nodemailer-react");
 
 type HajarMailParameters = {
   HAJAR_MAIL_PARAMETERS: { name: string, host: string, port: string, secure: string, username: string, password: string }[]

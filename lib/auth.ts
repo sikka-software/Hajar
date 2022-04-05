@@ -1,4 +1,4 @@
-import firebase from "firebase/app";
+import * as firebase from "firebase/app";
 import { Auth, User, getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, UserCredential, updateProfile, updatePassword, updateEmail, signInWithEmailAndPassword, signOut, deleteUser } from "firebase/auth";
 
 type HajarFirebaseParameters = {
@@ -43,6 +43,8 @@ let firebaseConfig = {
 };
 */
 
+type CallbackSignUser = (response: any, fieldValues: any, e: any) => void
+
 export async function initialize(params: HajarFirebaseParameters) {
   if (
     params &&
@@ -54,17 +56,25 @@ export async function initialize(params: HajarFirebaseParameters) {
     params.appId &&
     params.measurementId
   ) {
-    let app = (!firebase.getApps().length) ? firebase.initializeApp(params) : firebase.getApp();
+    let app = (!firebase?.getApps().length) ? firebase.initializeApp(params) : firebase.getApp();
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
-    return {
-      auth: auth,
-      provider: provider,
-    };
+    globalThis.__auth = auth;
+    globalThis.__provider =  provider;
   } else {
     new Error("Missing Required Parameters.");
   }
 }
+
+export async function signIn(fieldValues: any, e: any, callback: CallbackSignUser) {
+  try {
+    let userCredential = await signInWithEmailAndPassword(globalThis.__auth, fieldValues.email, fieldValues.password);
+    callback(userCredential, fieldValues, e);
+  } catch (error: any) {
+    callback(error.code, fieldValues, e);
+  }
+}
+
 export async function create(auth: Auth, dataUser: HajarFirebaseDataUserParameters) {
   if (auth && dataUser.email && dataUser.password) {
     let userCredential = await createUserWithEmailAndPassword(auth, dataUser.email, dataUser.password);
@@ -105,14 +115,7 @@ export async function remove(auth: Auth, callback: CallbackDeleteUser) {
     new Error("Missing Required Parameters.");
   }
 }
-export async function signIn(auth: Auth, dataUser: HajarFirebaseDataUserParameters) {
-  if (auth && dataUser.email && dataUser.password) {
-    let userCredential = await signInWithEmailAndPassword(auth, dataUser.email, dataUser.password);
-    dataUser.callback(userCredential);
-  } else {
-    new Error("Missing Required Parameters.");
-  }
-}
+
 export async function signOutUser(auth: Auth) {
   if (auth) {
     await signOut(auth);
@@ -120,4 +123,3 @@ export async function signOutUser(auth: Auth) {
     new Error("Missing Required Parameters.");
   }
 }
-

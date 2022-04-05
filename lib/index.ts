@@ -7,6 +7,8 @@ import Config from "./config";
 
 declare global {
   var __config: any;
+  var __auth: any;
+  var __provider: any;
 }
 
 /*

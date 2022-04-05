@@ -5,8 +5,8 @@ import moment from "moment";
 import { Base64Encode } from "base64-stream";
 import QRCode from "qrcode";
 import { formatCurrency, getPrice } from "./helpers";
-import { importFs } from "./load";
-let fs: any = importFs("fs", "browserify-fs");
+import Hajarimport from "./load";
+//let fs: any = importFs("fs", "bro-fs");
 
 export default async function createInvoice(transactionID:any, res:any, lang:any, is_mail:any, isWallet:any) {
   const dataUrlString = Buffer.from(`${transactionID}_${lang}_${isWallet}`).toString('base64');
