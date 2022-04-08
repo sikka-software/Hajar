@@ -2,9 +2,9 @@ import isReact from "./environnement";
 
 export async function importModule(moduleName: string): Promise<any | null | Error> {
   try {
-    console.log("importing ", moduleName);
+    //console.log("importing ", moduleName);
     const importedModule = await import(moduleName);
-    console.log("\timported ...");
+    //console.log("\timported ...");
     return importedModule;
   } catch (e) {
     return e;
