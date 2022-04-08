@@ -1,5 +1,5 @@
 import * as firebase from "firebase/app";
-import { Auth, User, getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, UserCredential, updateProfile, updatePassword, updateEmail, signInWithEmailAndPassword, signOut, deleteUser } from "firebase/auth";
+import { Auth, User, getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, UserCredential, updateProfile, updatePassword, updateEmail, signInWithEmailAndPassword, signOut, deleteUser, signInWithPopup } from "firebase/auth";
 
 type HajarFirebaseParameters = {
   apiKey: string,
@@ -44,6 +44,7 @@ let firebaseConfig = {
 */
 
 type CallbackSignUser = (response: any, fieldValues: any, e: any) => void
+type CallbackSignUserViaGoogle = (response: any, e: any) => void
 
 export async function initialize(params: HajarFirebaseParameters) {
   if (
@@ -72,6 +73,15 @@ export async function signIn(fieldValues: any, e: any, callback: CallbackSignUse
     callback(userCredential, fieldValues, e);
   } catch (error: any) {
     callback(error.code, fieldValues, e);
+  }
+}
+
+export async function signInViaGoogle(e: any, callback: CallbackSignUserViaGoogle) {
+  try {
+    let userCredential = await signInWithPopup(globalThis.__auth, globalThis.__provider);
+    callback(userCredential, e);
+  } catch (error: any) {
+    callback(error.code, e);
   }
 }
 
