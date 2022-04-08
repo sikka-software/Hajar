@@ -3,7 +3,11 @@ type HajarConfigParameters = {
     secretAccessKey: string,
     Bucket: string,
     firebaseConfig: string,
-    OOBCODE: string
+    OOBCODE: string,
+    mongodb_name: string,
+    mongodb_user: string,
+    mongodb_password: string,
+    mongodb_options: any,
 };
 export default function updateOptions(options: HajarConfigParameters) {
     globalThis.__config = options;

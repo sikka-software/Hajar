@@ -4,6 +4,7 @@ import { setup, send } from "./email";
 import { setupWallet, setupAmazonPayments, setupPaypal, setupGooglePay } from "./payments";
 import { initialize, create, update, deactivate, remove, signIn, signOutUser, signInViaGoogle } from "./auth";
 import Config from "./config";
+import * as models from "./ModelsQawaim";
 
 declare global {
   var __config: any;
@@ -19,8 +20,11 @@ Hajar.Mail.setupEmail()
 Hajar.Mail.sendEmail()
 */
 let Hajar = {
-  HajarConfig: Config,
+  Config: Config,
   Database: initializeDB,
+  Models: {
+    Qawaim: models
+  },
   Invoice: invoiceCreate,
   Mail: { setupEmail: setup, sendEmail: send },
   Payment: {
