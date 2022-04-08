@@ -2,7 +2,7 @@ import initializeDB from "./database";
 import invoiceCreate from "./invoice";
 import { setup, send } from "./email";
 import { setupWallet, setupAmazonPayments, setupPaypal, setupGooglePay } from "./payments";
-import { initialize, create, update, deactivate, remove, signIn, signOutUser } from "./auth";
+import { initialize, create, update, deactivate, remove, signIn, signOutUser, signInViaGoogle } from "./auth";
 import Config from "./config";
 
 declare global {
@@ -36,6 +36,7 @@ let Hajar = {
     deactivateUser: deactivate,
     deleteUser: remove,
     signIn: signIn,
+    signInViaGoogle: signInViaGoogle,
     signOut: signOutUser,
   }
 }
