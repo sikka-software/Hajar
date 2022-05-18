@@ -14,10 +14,10 @@ export async function importModule(moduleName: string): Promise<any | null | Err
 
 export default async function Hajarimport(moduleNameNode: string, ModuleNameBrowser: string) {
   let module: any;
-  if (isReact()) {
+  if (isReact() && ModuleNameBrowser) {
     module = await importModule(ModuleNameBrowser);
   }
-  else {
+  else if (isReact() && moduleNameNode) {
     module = await importModule(moduleNameNode);
   }
   return module;
