@@ -96,7 +96,7 @@ export async function setupPayfortApplepay(IdentifierCrtPem: any, merchant_id: a
 
     const initApplePayment = (evt: any) => {
         var runningAmount: any = parseFloat(apple_order.grand_total);
-        var runningPP = parseFloat(0);
+        var runningPP = parseFloat("0");
         var runningTotal = function () {
             return parseFloat(runningAmount + runningPP).toFixed(2);
         };
@@ -152,8 +152,10 @@ export async function setupPayfortApplepay(IdentifierCrtPem: any, merchant_id: a
         if (supported_networks.includes("mada")) {
             supported_networks_level = 5;
         }
-        var session = new ApplePaySession(supported_networks_level, paymentRequest);
 
+        const session: any = new (window as any).ApplePaySession(supported_networks_level, paymentRequest);
+        (window as any).applypaysession = session;
+        
         // Merchant Validation
         session.onvalidatemerchant = function (event: any) {
             console.log("onvalidatemerchant=", event);
@@ -181,10 +183,10 @@ export async function setupPayfortApplepay(IdentifierCrtPem: any, merchant_id: a
             promise.then(function (success) {
                 var status;
                 if (success) {
-                    status = ApplePaySession.STATUS_SUCCESS;
+                    status = (window as any).ApplePaySession.STATUS_SUCCESS;
                     sendPaymentToAps(event.payment.token);
                 } else {
-                    status = ApplePaySession.STATUS_FAILURE;
+                    status = (window as any).ApplePaySession.STATUS_FAILURE;
                 }
 
                 session.completePayment(status);
