@@ -1,5 +1,7 @@
+import { add, compareAsc } from "date-fns";
 import * as firebase from "firebase/app";
 import { Auth, User, getAuth, GoogleAuthProvider, createUserWithEmailAndPassword, UserCredential, updateProfile, updatePassword, updateEmail, signInWithEmailAndPassword, signOut, deleteUser, signInWithPopup } from "firebase/auth";
+import {EmailActions} from "./ModelsQawaim"
 
 type HajarFirebaseParameters = {
   apiKey: string,
@@ -132,4 +134,30 @@ export async function signOutUser(auth: Auth) {
   } else {
     new Error("Missing Required Parameters.");
   }
+}
+
+export async function sendPasswordResetEmail(email : string){
+  if(!globalThis.__config.OOBCODE || !globalThis.__config.URL_ACTION) new Error("Missing Required Parameters.");
+  let currentDate = new Date();
+  let expireDate = add(currentDate, {minutes: 30});
+  let codeToSend = CryptoJS.AES.encrypt(JSON.stringify({createdDate : currentDate, expireDate}), globalThis.__config.OOBCODE).toString();
+  await new EmailActions({
+    email_mode : "resetPassword",
+    email_oobCode : codeToSend,
+    email_created : currentDate,
+    email_expire : expireDate,
+    user_email : email
+  })
+
+  // here goes sending email
+}
+
+export async function resetPasswordViaEmail(oobCode : string, email : string, newPassword : string){
+  if(!oobCode || !email || !newPassword) new Error("Missing Required Parameters");
+  const findOobCode = await EmailActions.findOne({email_mode : "resetPassword", email_oobCode : oobCode, user_email : email}).exec();
+  if(!findOobCode) new Error("No requested Email found.");
+
+  if(compareAsc(new Date(), new Date(findOobCode.email_expire))) new Error("Expired link.");
+
+  // configure admin firebase to change user's password
 }
