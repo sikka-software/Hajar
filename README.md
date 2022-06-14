@@ -284,3 +284,14 @@ npm publish --access public
 <!-- https://github.com/react-component/drawer  -->
 
 MIT © [SIKKA SOFTWARE](https://sikka.sa)
+
+<!--start: logo-->
+<p align="center">
+  <a href="https://sikka.io">
+    <img width="44" alt="Sikka" src="https://i.postimg.cc/8cK4tnKQ/sikka-symbol-black.png">
+  </a>
+</p>
+<p align="center">
+  <sub>An open source project by <a href="https://sikka.io">Sikka</a></sub>
+</p>
+<!--end: logo-->
