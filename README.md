@@ -119,4 +119,176 @@ YOUR TYPESCRIPT EXAMPLE CODE HERE
 
 ## API reference documentation
 
-[Check the API](./docs/API.md)
+##### Sign out a user from the app
+
+```js
+Hajar.Auth.signOut();
+```
+
+<hr/>
+
+## **Databases**
+
+subtext about the mongodb function
+
+</br>
+
+#### **initialize MongoDB**
+
+##### This will be used to create an invoice with ready a ready template.
+
+```js
+Hajar.Database({});
+```
+
+<hr/>
+
+## **Emails**
+
+Setup nodemail and send emails to users
+
+</br>
+
+#### **Setup Email**
+
+##### This will be used to create an invoice with ready a ready template.
+
+```js
+Hajar.Mail.setupEmail({});
+```
+
+#### **Send Email**
+
+##### Send an email to the user for billing, verification, password reset, or other reasons
+
+```js
+Hajar.Mail.sendEmail({});
+```
+
+<hr/>
+
+## **GraphQL**
+
+subtext about the mongodb function
+
+</br>
+
+#### **CreateModel**
+
+##### To create a graphql model type that will work with MongoDB
+
+```
+Hajar.CreateModel({})
+```
+
+#### **CreateSchema**
+
+##### To create the final schema of the graphql
+
+```
+Hajar.CreateSchema({})
+```
+
+<hr/>
+
+## **Payments**
+
+Setup payments methods for one-time and recurring transactions
+
+</br>
+
+#### **Setup Wallet**
+
+##### Quickly setup the user wallet system
+
+```js
+Hajar.Payment.Wallet({});
+```
+
+#### **Setup Amazon Payment Services**
+
+##### Setup payment methods (Visa, Mastercard, Mada, ApplePay)
+
+```js
+Hajar.Payment.Payfort({});
+```
+
+#### **Setup PayPal**
+
+##### Setup PayPal payments
+
+```js
+Hajar.Payment.Paypal({});
+```
+
+#### **Setup GooglePay**
+
+##### Enable GooglePay payments
+
+```js
+Hajar.Payment.GooglePay({});
+```
+
+</br>
+</br>
+
+# Contributing
+
+To contribute, clone this github repository and run the development server
+
+- clone repository
+
+```bash
+git clone git@github.com:sikka-software/hajar.git
+cd hajar
+npm install
+```
+
+## TESTING
+
+- Run development server
+
+```bash
+git clone git@github.com:sikka-software/hajar.git
+cd hajar
+npm install
+```
+
+## Deployment
+
+```bash
+npm run start
+```
+
+## Publishing (Admin)
+
+```bash
+npm version [major | minor | patch]
+npm run build-lib
+npm publish --access public
+```
+
+## Use Cases
+
+- [Qawaim](https://qawaim.app)
+- [OneCard](https://onecard.zone)
+- [Worda](https://worda.app)
+- [Seera](https://seera.app)
+- [Linkat](https://linkat.app)
+
+## License
+
+<!-- https://github.com/react-component/drawer  -->
+
+MIT © [SIKKA SOFTWARE](https://sikka.sa)
+
+<!--start: logo-->
+<p align="center">
+  <a href="https://sikka.io">
+    <img width="44" alt="Sikka" src="https://i.postimg.cc/8cK4tnKQ/sikka-symbol-black.png">
+  </a>
+</p>
+<p align="center">
+  <sub>An open source project by <a href="https://sikka.io">Sikka</a></sub>
+</p>
+<!--end: logo-->

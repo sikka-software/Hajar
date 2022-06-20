@@ -430,3 +430,7 @@ export async function aps_handle_response(
     }
   }
 }
+
+export async function validateEmailLink(){
+  console.log("validate link")
+}

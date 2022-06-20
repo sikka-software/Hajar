@@ -3,6 +3,8 @@ import invoiceCreate from "./invoice";
 import { setup, send } from "./email";
 import { setupWallet, setupAmazonPayments, setupPaypal, setupGooglePay } from "./payments";
 import { initialize, create, update, deactivate, remove, signIn, signOutUser, signInViaGoogle } from "./auth";
+import initializeS3, { uploadImage, deleteImage, deleteImages} from "./AWS_S3"
+import Schedule from "./schedule"
 import Config from "./config";
 import * as models from "./ModelsQawaim";
 
@@ -42,7 +44,20 @@ let Hajar = {
     signIn: signIn,
     signInViaGoogle: signInViaGoogle,
     signOut: signOutUser,
-  }
+  },
+  S3:{
+    uploadImage,
+    deleteImage,
+    deleteImages
+  },
+  Schedule : Schedule
+  // Schedule : {
+  //   daily,
+  //   dailyAt,
+  //   weekly,
+  //   weeklyOn,
+  //   monthly
+  // }
 }
 
 export default Hajar;
