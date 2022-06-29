@@ -1,0 +1,47 @@
+# Build scripts
+build
+
+# Test files
+test
+**/*.spec.ts
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Output of 'npm pack'
+*.tgz
+
+# Visual Studio Code
+.vscode
+
+# IntelliJ
+.idea
+
+# MYC output
+.nyc_output
+coverage
+
+# GitHub
+.github
+
+# GitLab
+.gitlab-ci.yml
+.gitlab-ci.yaml
+
+# tsconfig
+tsconfig.json
+
+# SRC docs
+src/docs
+
+# Environment files
+*.env
+
+# Test temporal files
+.mocha-ts
+.tsconfig.json
+
+# docs temporal files
+.nojekyll
