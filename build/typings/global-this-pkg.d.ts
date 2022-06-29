@@ -1,4 +1,4 @@
-import * as _pkgModule from '../../src/ts/index'
+import Hajar from '../../src/ts/index'
 
 export as namespace _pkg
-export = _pkgModule
+export = Hajar
