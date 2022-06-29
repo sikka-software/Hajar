@@ -10,7 +10,7 @@
 // export { helloWorld, Response } from './hello-world'
 // export default function sayHello (): void { console.log('hello') }
 
-import { setup, send } from './email'
+import { HajarMailParameters, setup, send } from './email';
 
 declare global {
   let _config: any

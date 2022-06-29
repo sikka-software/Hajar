@@ -1,18 +1,25 @@
 import nodemailer from 'nodemailer'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
 
-interface HajarMailParameters {
-  HAJAR_MAIL_PARAMETERS: SMTPTransport.Options[]
+export interface HajarMailParameters {
+  HAJAR_MAIL_PARAMETERS: { name: string, host: string, port: number, secure: boolean, user: string, pass: string }[]
 }
 
-export function setup (params: HajarMailParameters): Array<nodemailer.Transporter<SMTPTransport.SentMessageInfo>> {
-  const listTransport: any = {}
-
+export function setup(params: HajarMailParameters): nodemailer.Transporter<SMTPTransport.SentMessageInfo>[] {
+  let listTransport: any = {};
   if (params.HAJAR_MAIL_PARAMETERS.length > 0) {
     for (let i = 0; i < params.HAJAR_MAIL_PARAMETERS.length; i++) {
-      const config = params.HAJAR_MAIL_PARAMETERS[i]
-      const nameTransporter: string = config.name ?? ''
-      const transporter = nodemailer.createTransport(config)
+      const config = params.HAJAR_MAIL_PARAMETERS[i];
+      const nameTransporter: any = config.name ?? '';
+      const transporter = nodemailer.createTransport({
+        host: config.host,
+        port: config.port,
+        secure: config.secure,
+        auth: {
+          user: config.user,
+          pass: config.pass
+        }
+      });
       listTransport[nameTransporter] = transporter;
       (listTransport[nameTransporter] as nodemailer.Transporter<SMTPTransport.SentMessageInfo>).verify(function (error, success) {
         if (error != null) {
@@ -26,11 +33,9 @@ export function setup (params: HajarMailParameters): Array<nodemailer.Transporte
   return listTransport
 }
 
-export function send (transport: nodemailer.Transporter<SMTPTransport.SentMessageInfo>, message: any): void {
-  if (transport.transporter.name.length !== 0) {
-    transport.sendMail(message, (error: any, info: any) => {
-      console.log(error)
-      console.log(info)
-    })
-  }
+export function send(transport: nodemailer.Transporter<SMTPTransport.SentMessageInfo>, params: nodemailer.SendMailOptions): void {
+  transport.sendMail(params, function (error: any, info: any) {
+    console.log(error);
+    console.log(info);
+  })
 }
