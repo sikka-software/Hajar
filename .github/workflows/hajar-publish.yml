@@ -1,0 +1,47 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
+
+name: Hajar Publish Package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  publication:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+      
+      - name: install
+        run: npm ci
+      
+      - name: lint
+        run: npm run lint
+      
+      - name: build
+        run: npm run build:js
+      
+      - name: docs
+        run: npm run docs
+      
+      - name: browser tests
+        run: npm run test:browser-headless
+      
+      - name: node tests and coverage
+        run: npm run coverage
+      
+      - name: send report to coveralls.io
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.REPO_TOKEN }}
+
+      - name: publish to NPM
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
