@@ -7,6 +7,7 @@
  * @packageDocumentation
  */
 import { setup, send } from './email';
+export { HAJAR_LIST_TRANSPORT_ARRAY } from './email';
 declare global {
     let _config: any;
     let _auth: any;

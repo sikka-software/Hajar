@@ -1,16 +1,25 @@
 import nodemailer from 'nodemailer'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
 
-export interface HajarMailParameters {
-  HAJAR_MAIL_PARAMETERS: { name: string, host: string, port: number, secure: boolean, user: string, pass: string }[]
+export interface HAJAR_MAIL_PARAMETERS {
+  name: string
+  host: string
+  port: number
+  secure: boolean
+  user: string
+  pass: string
 }
 
-export function setup(params: HajarMailParameters): nodemailer.Transporter<SMTPTransport.SentMessageInfo>[] {
-  let listTransport: any = {};
-  if (params.HAJAR_MAIL_PARAMETERS.length > 0) {
-    for (let i = 0; i < params.HAJAR_MAIL_PARAMETERS.length; i++) {
-      const config = params.HAJAR_MAIL_PARAMETERS[i];
-      const nameTransporter: any = config.name ?? '';
+export interface HAJAR_LIST_TRANSPORT_ARRAY {
+  [key: string]: nodemailer.Transporter<SMTPTransport.SentMessageInfo>
+}
+
+export function setupEmail (params: HAJAR_MAIL_PARAMETERS[]): HAJAR_LIST_TRANSPORT_ARRAY {
+  const listTransport: HAJAR_LIST_TRANSPORT_ARRAY = {}
+  if (params.length > 0) {
+    for (let i = 0; i < params.length; i++) {
+      const config = params[i]
+      const nameTransporter: string = config.name ?? ''
       const transporter = nodemailer.createTransport({
         host: config.host,
         port: config.port,
@@ -19,9 +28,9 @@ export function setup(params: HajarMailParameters): nodemailer.Transporter<SMTPT
           user: config.user,
           pass: config.pass
         }
-      });
+      })
       listTransport[nameTransporter] = transporter;
-      (listTransport[nameTransporter] as nodemailer.Transporter<SMTPTransport.SentMessageInfo>).verify(function (error, success) {
+      (listTransport[nameTransporter]).verify(function (error, success) {
         if (error != null) {
           console.log(error)
         } else {
@@ -33,9 +42,16 @@ export function setup(params: HajarMailParameters): nodemailer.Transporter<SMTPT
   return listTransport
 }
 
-export function send(transport: nodemailer.Transporter<SMTPTransport.SentMessageInfo>, params: nodemailer.SendMailOptions): void {
-  transport.sendMail(params, function (error: any, info: any) {
-    console.log(error);
-    console.log(info);
+export async function sendEmail (transport: nodemailer.Transporter<SMTPTransport.SentMessageInfo>, params: nodemailer.SendMailOptions): Promise<boolean> {
+  return await new Promise((resolve, reject) => {
+    transport.sendMail(params, function (error: any, info: any) {
+      if (error === null) {
+        console.log('error=', error)
+        resolve(false)
+      } else {
+        console.log(info)
+        resolve(true)
+      }
+    })
   })
 }
