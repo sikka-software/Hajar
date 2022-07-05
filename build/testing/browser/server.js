@@ -46,7 +46,7 @@ const indexHtml = `<!DOCTYPE html>
     </script>
     <script type="module">
       import './tests.js'
-      window._mocha = mocha.run()
+      mocha.run()
     </script>
   </html>`
 
@@ -57,7 +57,10 @@ const tsBundleOptions = {
 
 async function buildTests (testFiles) {
   // create a bundle
-  const input = testFiles ?? [path.join(rootDir, pkgJson.directories.test, '**/*.ts'), path.join(rootDir, pkgJson.directories.src, '**/*.spec.ts')]
+  const input = testFiles ?? [
+    path.join(rootDir, pkgJson.directories.test, '**/*.ts'),
+    path.join(rootDir, pkgJson.directories.src, '**/*.spec.ts')
+  ]
   const inputOptions = {
     input,
     plugins: [
@@ -80,11 +83,23 @@ async function buildTests (testFiles) {
   const { output } = await bundle.generate({ format: 'esm' })
   await bundle.close()
   let bundledCode = output[0].code
+  // console.log('bundledCode=', bundledCode)
   const replacements = _getEnvVarsReplacements(bundledCode)
   for (const replacement in replacements) {
-    bundledCode = bundledCode.replaceAll(replacement, replacements[replacement])
+    bundledCode = replaceAll(bundledCode,
+      replacement,
+      replacements[replacement]
+    )
   }
   return bundledCode
+}
+
+function escapeRegExp (string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
+}
+
+function replaceAll (str, match, replacement) {
+  return str.replace(new RegExp(escapeRegExp(match), 'g'), () => replacement)
 }
 
 class TestServer {
@@ -96,15 +111,18 @@ class TestServer {
     const tests = await buildTests(testFiles)
     this.server.on('request', function (req, res) {
       if (req.url === `/${name}.esm.js`) {
-        fs.readFile(path.join(rootDir, pkgJson.directories.dist, 'bundles/esm.js'), function (err, data) {
-          if (err) {
-            res.writeHead(404)
-            res.end(JSON.stringify(err))
-            return
+        fs.readFile(
+          path.join(rootDir, pkgJson.directories.dist, 'bundles/esm.js'),
+          function (err, data) {
+            if (err) {
+              res.writeHead(404)
+              res.end(JSON.stringify(err))
+              return
+            }
+            res.writeHead(200, { 'Content-Type': 'text/javascript' })
+            res.end(data)
           }
-          res.writeHead(200, { 'Content-Type': 'text/javascript' })
-          res.end(data)
-        })
+        )
       } else if (req.url === '/index.html' || req.url === '/') {
         res.writeHead(200)
         res.end(indexHtml)
@@ -112,25 +130,31 @@ class TestServer {
         res.writeHead(200, { 'Content-Type': 'text/javascript' })
         res.end(tests)
       } else if (req.url === '/mocha.js') {
-        fs.readFile(path.join(rootDir, 'node_modules/mocha/mocha.js'), function (err, data) {
-          if (err) {
-            res.writeHead(404)
-            res.end(JSON.stringify(err))
-            return
+        fs.readFile(
+          path.join(rootDir, 'node_modules/mocha/mocha.js'),
+          function (err, data) {
+            if (err) {
+              res.writeHead(404)
+              res.end(JSON.stringify(err))
+              return
+            }
+            res.writeHead(200, { 'Content-Type': 'text/javascript' })
+            res.end(data)
           }
-          res.writeHead(200, { 'Content-Type': 'text/javascript' })
-          res.end(data)
-        })
+        )
       } else if (req.url === '/chai.js' || req.url === '/chai') {
-        fs.readFile(path.join(rootDir, 'node_modules/chai/chai.js'), function (err, data) {
-          if (err) {
-            res.writeHead(404)
-            res.end(JSON.stringify(err))
-            return
+        fs.readFile(
+          path.join(rootDir, 'node_modules/chai/chai.js'),
+          function (err, data) {
+            if (err) {
+              res.writeHead(404)
+              res.end(JSON.stringify(err))
+              return
+            }
+            res.writeHead(200, { 'Content-Type': 'text/javascript' })
+            res.end(data)
           }
-          res.writeHead(200, { 'Content-Type': 'text/javascript' })
-          res.end(data)
-        })
+        )
       } else {
         res.writeHead(404)
         res.end()
@@ -140,7 +164,7 @@ class TestServer {
 
   listen (port = 38080) {
     return new Promise((resolve, reject) => {
-      this.server.listen(port, error => {
+      this.server.listen(port, (error) => {
         if (error) return reject(error)
         console.log(`Testing server listenning at http://localhost:${port}`)
         return resolve()
@@ -150,7 +174,7 @@ class TestServer {
 
   close () {
     return new Promise((resolve, reject) => {
-      this.server.close(error => (error) ? reject(error) : resolve())
+      this.server.close((error) => (error ? reject(error) : resolve()))
     })
   }
 }
@@ -159,6 +183,7 @@ function _getEnvVarsReplacements (testsCode) {
   const replacements = {}
   const missingEnvVars = []
   for (const match of testsCode.matchAll(/process\.env\.(\w+)/g)) {
+    console.log(JSON.stringify(match))
     const envVar = match[1]
     if (process.env[envVar] !== undefined) {
       replacements[match[0]] = '`' + process.env[envVar] + '`'
@@ -175,7 +200,10 @@ function _getEnvVarsReplacements (testsCode) {
     }
   }
   if (missingEnvVars.length > 0) {
-    throw EvalError('The folloinwg environment variables are missing in your .env file: ' + missingEnvVars)
+    throw EvalError(
+      'The folloinwg environment variables are missing in your .env file: ' +
+        missingEnvVars
+    )
   }
   return replacements
 }

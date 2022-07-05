@@ -1,4 +1,4 @@
-# @sikka/hajar - v1.0.6
+# @sikka/hajar - v1.0.7
 
 My module description. Please update with your module data.
 
@@ -6,6 +6,10 @@ My module description. Please update with your module data.
 This module runs perfectly in node.js and browsers
 
 ## Table of contents
+
+### Interfaces
+
+- [HAJAR\_LIST\_TRANSPORT\_ARRAY](interfaces/HAJAR_LIST_TRANSPORT_ARRAY.md)
 
 ### Variables
 
@@ -21,10 +25,10 @@ This module runs perfectly in node.js and browsers
 
 | Name | Type |
 | :------ | :------ |
-| `Mail` | { `sendEmail`: (`transport`: `Transporter`<`SentMessageInfo`\>, `message`: `any`) => `void` = send; `setupEmail`: (`params`: `HajarMailParameters`) => `nodemailer.Transporter`<`SMTPTransport.SentMessageInfo`\>[] = setup } |
-| `Mail.sendEmail` | (`transport`: `Transporter`<`SentMessageInfo`\>, `message`: `any`) => `void` |
-| `Mail.setupEmail` | (`params`: `HajarMailParameters`) => `nodemailer.Transporter`<`SMTPTransport.SentMessageInfo`\>[] |
+| `Mail` | { `sendEmail`: (`transport`: `Transporter`<`SentMessageInfo`\>, `params`: `Options`) => `void` = send; `setupEmail`: (`params`: `HAJAR_MAIL_PARAMETERS`[]) => [`HAJAR_LIST_TRANSPORT_ARRAY`](interfaces/HAJAR_LIST_TRANSPORT_ARRAY.md) = setup } |
+| `Mail.sendEmail` | (`transport`: `Transporter`<`SentMessageInfo`\>, `params`: `Options`) => `void` |
+| `Mail.setupEmail` | (`params`: `HAJAR_MAIL_PARAMETERS`[]) => [`HAJAR_LIST_TRANSPORT_ARRAY`](interfaces/HAJAR_LIST_TRANSPORT_ARRAY.md) |
 
 #### Defined in
 
-[index.ts:28](https://github.com/sikka-software/Hajar/blob/5dceef5/src/ts/index.ts#L28)
+[index.ts:30](https://github.com/sikka-software/Hajar/blob/b0fc5ec/src/ts/index.ts#L30)
