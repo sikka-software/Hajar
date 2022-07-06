@@ -50,9 +50,8 @@ let firebaseConfig = {
 type CallbackSignUser = (response: any, fieldValues: any, e: any) => void
 type CallbackSignUserViaGoogle = (response: any, e: any) => void
 
-export async function initialize (params: HajarFirebaseParameters): Promise<void> {
+export async function initialize (params: HajarFirebaseParameters): Promise<any> {
   if (
-    params &&
     params.apiKey !== '' &&
     params.authDomain !== '' &&
     params.projectId !== '' &&
@@ -61,17 +60,17 @@ export async function initialize (params: HajarFirebaseParameters): Promise<void
     params.appId !== '' &&
     params.measurementId !== ''
   ) {
-    const app = (!firebase?.getApps().length) ? firebase.initializeApp(params) : firebase.getApp()
+    const app: firebase.FirebaseApp = (firebase?.getApps().length > 0) ? firebase.initializeApp(params) : firebase.getApp()
     const auth = getAuth(app)
     const provider = new GoogleAuthProvider()
     globalThis._auth = auth
     globalThis._provider = provider
   } else {
-    new Error('Missing Required Parameters.')
+    Error('Missing Required Parameters.')
   }
 }
 
-export async function signIn (fieldValues: any, e: any, callback: CallbackSignUser): Promise<void> {
+export async function signIn (fieldValues: any, e: any, callback: CallbackSignUser): Promise<any> {
   try {
     const userCredential = await signInWithEmailAndPassword(globalThis._auth, fieldValues.email, fieldValues.password)
     callback(userCredential, fieldValues, e)
@@ -80,7 +79,7 @@ export async function signIn (fieldValues: any, e: any, callback: CallbackSignUs
   }
 }
 
-export async function signInViaGoogle (e: any, callback: CallbackSignUserViaGoogle): Promise<void> {
+export async function signInViaGoogle (e: any, callback: CallbackSignUserViaGoogle): Promise<any> {
   try {
     const userCredential = await signInWithPopup(globalThis._auth, globalThis._provider)
     callback(userCredential, e)
@@ -89,65 +88,61 @@ export async function signInViaGoogle (e: any, callback: CallbackSignUserViaGoog
   }
 }
 
-export async function create (auth: Auth, dataUser: HajarFirebaseDataUserParameters): Promise<void> {
-  if (auth && dataUser.email && dataUser.password) {
+export async function create (auth: Auth, dataUser: HajarFirebaseDataUserParameters): Promise<any> {
+  if (dataUser.email !== '' && dataUser.password !== '') {
     const userCredential = await createUserWithEmailAndPassword(auth, dataUser.email, dataUser.password)
     dataUser.callback(userCredential)
   } else {
-    new Error('Missing Required Parameters.')
+    Error('Missing Required Parameters.')
   }
 }
-export async function update (auth: Auth, type: string, dataUserUpdate: HajarFirebaseDataUserUpdateParameters): Promise<void> {
+export async function update (auth: Auth, type: string, dataUserUpdate: HajarFirebaseDataUserUpdateParameters): Promise<any> {
   const user = auth.currentUser
   if (user != null) {
     switch (type) {
       case 'profile':
-        updateProfile(user, { displayName: dataUserUpdate.displayName, photoURL: dataUserUpdate.photoUrl })
+        await updateProfile(user, { displayName: dataUserUpdate.displayName, photoURL: dataUserUpdate.photoUrl })
         break
       case 'email':
-        updateEmail(user, dataUserUpdate.newEmail)
+        await updateEmail(user, dataUserUpdate.newEmail)
         break
       case 'password':
-        updatePassword(user, dataUserUpdate.newPassword)
+        await updatePassword(user, dataUserUpdate.newPassword)
         break
     }
     dataUserUpdate.callback(user, type, dataUserUpdate)
   } else {
-    new Error('Missing Required Parameters.')
+    Error('Missing Required Parameters.')
   }
 }
-export async function deactivate (): Promise<void> {
+export async function deactivate (): Promise<any> {
   console.log('deactivating user')
 }
-export async function remove (auth: Auth, callback: CallbackDeleteUser): Promise<void> {
+export async function remove (auth: Auth, callback: CallbackDeleteUser): Promise<any> {
   const user = auth.currentUser
   if (user != null) {
     await deleteUser(user)
     callback(user)
   } else {
-    new Error('Missing Required Parameters.')
+    Error('Missing Required Parameters.')
   }
 }
 
 export async function signOutUser (auth: Auth): Promise<void> {
-  if (auth) {
-    await signOut(auth)
-  } else {
-    new Error('Missing Required Parameters.')
-  }
+  return await signOut(auth)
 }
 
-export async function sendPasswordResetEmail (email: string, callback: CallbackResetPassword): Promise<void> {
-  if (!globalThis._config.OOBCODE || !globalThis._config.URL_ACTION) new Error('Missing Required Parameters.')
+export async function sendPasswordResetEmail (email: string, callback: CallbackResetPassword): Promise<any> {
+  if (globalThis._config.OOBCODE === '' || globalThis._config.URL_ACTION === '') Error('Missing Required Parameters.')
   const currentDate = new Date()
   const expireDate = add(currentDate, { minutes: 30 })
-  const codeToSend = CryptoJS.AES.encrypt(JSON.stringify({ createdDate: currentDate, expireDate }), globalThis.__config.OOBCODE).toString()
+  const codeToSend = CryptoJS.AES.encrypt(JSON.stringify({ createdDate: currentDate, expireDate }), globalThis._config.OOBCODE).toString()
   callback(globalThis._config.OOBCODE, globalThis._config.URL_ACTION, expireDate, codeToSend)
 
   // here goes sending email
 }
 
-export async function resetPasswordViaEmail (oobCode: string, email: string, newPassword: string): Promise<void> {
-  if (!oobCode || !email || !newPassword) new Error('Missing Required Parameters')
+export async function resetPasswordViaEmail (oobCode: string, email: string, newPassword: string): Promise<any> {
+  if (oobCode === '' || email === '' || newPassword === '') Error('Missing Required Parameters')
   // configure admin firebase to change user's password
 }

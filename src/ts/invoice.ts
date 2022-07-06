@@ -9,9 +9,9 @@ import { Base64Encode } from 'base64-stream'
 import QRCode from 'qrcode'
 import { formatCurrency, getPrice } from './helpers'
 
-export default async function createInvoice (transactionID: any, res: any, lang: any, isMail: any, isWallet: any): Promise<void> {
-  const dataUrlString: string = Buffer.from(`${transactionID}_${lang}_${isWallet}`).toString('base64')
-  const urlQrcode: string = await QRCode.toDataURL(`${process.env.QAWAIM_USER_PORTAL_URL}/invoice/${dataUrlString}`)
+export default async function createInvoice (transactionID: string, res: any, lang: string, isMail: Boolean, isWallet: Boolean): Promise<void> {
+  const dataUrlString: string = Buffer.from(`${String(transactionID)}_${String(lang)}_${String(isWallet)}`).toString('base64')
+  const urlQrcode: string = await QRCode.toDataURL(`${String(process.env.QAWAIM_USER_PORTAL_URL)}/invoice/${String(dataUrlString)}`)
   console.log(urlQrcode)
   const transaction = await Transaction.findOne({
     _id: transactionID
@@ -29,7 +29,7 @@ export default async function createInvoice (transactionID: any, res: any, lang:
   let pack_title_text
   let pack_price_value
 
-  if (!isWallet) {
+  if (isWallet === false) {
     price = getPrice(
       transaction?.pack_user.recurring,
       transaction?.currency,
@@ -63,14 +63,14 @@ export default async function createInvoice (transactionID: any, res: any, lang:
       }
     }
     pack_title_text =
-            lang === 'ar'
-              ? transaction?.pack.title_ar + '-' + cycletexteinvoice
-              : transaction?.pack.title + '-' + cycletexteinvoice
+      lang === 'ar'
+        ? String(transaction?.pack.title_ar) + '-' + String(cycletexteinvoice)
+        : String(transaction?.pack.title) + '-' + String(cycletexteinvoice)
     pack_subtitle_text =
-            lang === 'ar' ? transaction?.pack.subtitle_ar : transaction?.pack.subtitle
+      lang === 'ar' ? String(transaction?.pack.subtitle_ar) : String(transaction?.pack.subtitle)
     pack_price_value = formatCurrency(price, transaction?.currency)
   }
-  if (isWallet) {
+  if (isWallet === true) {
     price = ((transaction?.amount) != null) ? transaction?.amount : 0 as number
     pack_title_text = lang === 'ar' ? 'مبلغ المحفظة' : 'Wallet Amount'
     pack_price_value = formatCurrency(transaction?.amount, transaction?.currency)
@@ -86,30 +86,28 @@ export default async function createInvoice (transactionID: any, res: any, lang:
     },
     invoice_customer: {
       full_name:
-                transaction?.billing_address.first_name +
-                ' ' +
-                transaction?.billing_address.last_name,
+        String(transaction?.billing_address.first_name) + ' ' + String(transaction?.billing_address.last_name),
       address:
-                transaction?.billing_address.address_line_1 +
-                ' ' +
-                transaction?.billing_address.address_line_2 +
-                ' ' +
-                transaction?.billing_address.city +
-                ' ' +
-                transaction?.billing_address.zip_code +
-                ' ' +
-                transaction?.billing_address.state +
-                ',' +
-                transaction?.billing_address.country,
+        String(transaction?.billing_address.address_line_1) +
+        ' ' +
+        String(transaction?.billing_address.address_line_2) +
+        ' ' +
+        String(transaction?.billing_address.city) +
+        ' ' +
+        String(transaction?.billing_address.zip_code) +
+        ' ' +
+        String(transaction?.billing_address.state) +
+        ',' +
+        String(transaction?.billing_address.country),
       email: transaction?.billing_address.email
     },
     invoice_data: {
       qrCodeURL: urlQrcode,
-      invoice_id: '#' + transaction?.invoice_id,
-      date_invoice: moment(new Date((transaction?.createdAt) ? transaction?.createdAt : '')).format(
+      invoice_id: '#' + String(transaction?.invoice_id),
+      date_invoice: moment(new Date((transaction?.createdAt !== undefined) ? transaction?.createdAt : '')).format(
         lang === 'ar' ? 'YYYY/MM/DD' : 'DD/MM/YYYY'
       ),
-      date_due: moment(new Date((transaction?.updatedAt) ? transaction?.updatedAt : '')).format(
+      date_due: moment(new Date((transaction?.updatedAt !== undefined) ? transaction?.updatedAt : '')).format(
         lang === 'ar' ? 'YYYY/MM/DD' : 'DD/MM/YYYY'
       ),
       pack_title: pack_title_text,
@@ -131,17 +129,17 @@ export default async function createInvoice (transactionID: any, res: any, lang:
       },
       thanks: lang === 'ar' ? 'شكرا لك!' : 'Thank you!',
       footer:
-                lang === 'ar'
-                  ? 'تم إنشاء الفاتورة على جهاز كمبيوتر وهي صالحة بدون التوقيع والختم.'
-                  : 'Invoice was created on a computer and is valid without the signature and seal.',
+        lang === 'ar'
+          ? 'تم إنشاء الفاتورة على جهاز كمبيوتر وهي صالحة بدون التوقيع والختم.'
+          : 'Invoice was created on a computer and is valid without the signature and seal.',
       notice: lang === 'ar' ? 'تنويه:' : 'NOTICE:',
       notice_text:
-                lang === 'ar'
-                  ? 'سيتم فرض رسوم تمويل بنسبة 1.5٪ على الأرصدة غير المدفوعة بعد 30 يومًا.'
-                  : 'A finance charge of 1.5% will be made on unpaid balances after 30 days.'
+        lang === 'ar'
+          ? 'سيتم فرض رسوم تمويل بنسبة 1.5٪ على الأرصدة غير المدفوعة بعد 30 يومًا.'
+          : 'A finance charge of 1.5% will be made on unpaid balances after 30 days.'
     }
   }
-  if (isMail) {
+  if (isMail === true) {
     ejs.renderFile(
       'template/invoice/tpl-invoice.ejs',
       data,
@@ -151,8 +149,8 @@ export default async function createInvoice (transactionID: any, res: any, lang:
         console.log(str)
         wkhtmltopdf(str).pipe(
           fs.createWriteStream(
-                        `invoices/invoice-${transaction?.invoice_id}.pdf`,
-                        { flags: 'w' }
+            `invoices/invoice-${String(transaction?.invoice_id)}.pdf`,
+            { flags: 'w' }
           )
         )
       }

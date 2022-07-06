@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 
-export default function initializeDB (callback: mongoose.CallbackWithoutResult) {
+export default function initializeDB (callback: mongoose.CallbackWithoutResult): void {
   mongoose
     .connect(
-        `mongodb+srv://${globalThis.__config.mongodb_name}:${global.__config.mongodb_password}@cluster0.dubdn.mongodb.net/${global.__config.mongodb_user}?retryWrites=true&w=majority`, global.__config.mongodb_options, callback
+        `mongodb+srv://${String(globalThis._config.mongodb_name)}:${String(global._config.mongodb_password)}@cluster0.dubdn.mongodb.net/${String(global._config.mongodb_user)}?retryWrites=true&w=majority`, global._config.mongodb_options, callback
     )
 }

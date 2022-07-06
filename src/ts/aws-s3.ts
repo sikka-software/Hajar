@@ -4,7 +4,7 @@ type callbackUploadImage = (response: AWS.S3.PutObjectOutput, e: any) => void
 type callbackDeleteImage = (response: AWS.S3.DeleteObjectOutput, e: any) => void
 type callbackDeleteImages = (response: AWS.S3.DeleteObjectsOutput, e: any) => void
 
-export default function initializeS3 () {
+export function initializeS3 (): AWS.S3 {
   const config: AWS.ConfigurationOptions = {
     accessKeyId: globalThis._config.accessKeyId,
     secretAccessKey: globalThis._config.secretAccessKey

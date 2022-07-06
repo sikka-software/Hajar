@@ -9,6 +9,6 @@ interface HajarConfigParameters {
   mongodb_password: string
   mongodb_options: any
 }
-export default function updateOptions (options: HajarConfigParameters) {
+export default function updateOptions (options: HajarConfigParameters): void {
   globalThis._config = options
 }
