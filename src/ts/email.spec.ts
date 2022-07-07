@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import Hajar, { HAJAR_LIST_TRANSPORT_ARRAY } from './index'
 
 describe('testing function setupEmail() sendEmail() with .spec.ts file', function () {

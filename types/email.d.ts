@@ -11,6 +11,6 @@ export interface HAJAR_MAIL_PARAMETERS {
 export interface HAJAR_LIST_TRANSPORT_ARRAY {
     [key: string]: nodemailer.Transporter<SMTPTransport.SentMessageInfo>;
 }
-export declare function setup(params: HAJAR_MAIL_PARAMETERS[]): HAJAR_LIST_TRANSPORT_ARRAY;
-export declare function send(transport: nodemailer.Transporter<SMTPTransport.SentMessageInfo>, params: nodemailer.SendMailOptions): void;
+export declare function setupEmail(params: HAJAR_MAIL_PARAMETERS[]): HAJAR_LIST_TRANSPORT_ARRAY;
+export declare function sendEmail(transport: nodemailer.Transporter<SMTPTransport.SentMessageInfo>, params: nodemailer.SendMailOptions): Promise<boolean>;
 //# sourceMappingURL=email.d.ts.map

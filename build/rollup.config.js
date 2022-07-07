@@ -1,151 +1,181 @@
-'use strict'
+"use strict";
 
-import { nodeResolve as resolve } from '@rollup/plugin-node-resolve'
-import replace from '@rollup/plugin-replace'
-import { terser } from 'rollup-plugin-terser'
-import typescriptPlugin from '@rollup/plugin-typescript'
-import commonjs from '@rollup/plugin-commonjs'
-import json from '@rollup/plugin-json'
+import { nodeResolve as resolve } from "@rollup/plugin-node-resolve";
+import replace from "@rollup/plugin-replace";
+import { terser } from "rollup-plugin-terser";
+import typescriptPlugin from "@rollup/plugin-typescript";
+import commonjs from "@rollup/plugin-commonjs";
+import json from "@rollup/plugin-json";
+import nodePolyfills from "rollup-plugin-polyfill-node";
+import nodemailer from 'nodemailer'
 
-import { join } from 'path'
-import { existsSync } from 'fs-extra'
-import { directories, name as _name, dependencies, peerDependencies, exports } from '../package.json'
-import { compile } from './rollup-plugin-dts.js'
+import { join } from "path";
+import { existsSync } from "fs-extra";
+import {
+  directories,
+  name as _name,
+  dependencies,
+  peerDependencies,
+  exports,
+} from "../package.json";
+import { compile } from "./rollup-plugin-dts.js";
 
-const rootDir = join(__dirname, '..')
-const dstDir = join(rootDir, directories.dist)
-const srcDir = join(rootDir, 'src', 'ts')
+const rootDir = join(__dirname, "..");
+const dstDir = join(rootDir, directories.dist);
+const srcDir = join(rootDir, "src", "ts");
 
-function camelise (str) {
-  return str.replace(/-([a-z])/g,
-    function (m, w) {
-      return w.toUpperCase()
-    })
+function camelise(str) {
+  return str.replace(/-([a-z])/g, function (m, w) {
+    return w.toUpperCase();
+  });
 }
 
-const regex = /^(?:(?<scope>@.*?)\/)?(?<name>.*)/ // We are going to take only the package name part if there is a scope, e.g. @my-org/package-name
-const { name } = _name.match(regex).groups
-const pkgCamelisedName = camelise(name)
+const regex = /^(?:(?<scope>@.*?)\/)?(?<name>.*)/; // We are going to take only the package name part if there is a scope, e.g. @my-org/package-name
+const { name } = _name.match(regex).groups;
+const pkgCamelisedName = camelise(name);
 
-const input = join(srcDir, 'index.ts')
-if (existsSync(input) !== true) throw new Error('The entry point should be index.ts')
+const input = join(srcDir, "index.ts");
+if (existsSync(input) !== true)
+  throw new Error("The entry point should be index.ts");
 
 const tsBundleOptions = {
-  tsconfig: join(rootDir, 'tsconfig.json'),
+  tsconfig: join(rootDir, "tsconfig.json"),
   outDir: undefined, // ignore outDir in tsconfig.json
-  include: ['src/ts/**/*', 'build/typings/is-browser.d.ts'],
-  exclude: ['src/**/*.spec.ts']
-}
+  include: ["src/ts/**/*", "build/typings/is-browser.d.ts"],
+  exclude: ["src/**/*.spec.ts"],
+};
 
-const external = [...Object.keys(dependencies || {}), ...Object.keys(peerDependencies || {})]
+const external = [
+  ...Object.keys(dependencies || {}),
+  ...Object.keys(peerDependencies || {}),
+];
 
 const sourcemapOutputOptions = {
-  sourcemap: 'inline',
-  sourcemapExcludeSources: true
-}
+  sourcemap: "inline",
+  sourcemapExcludeSources: true,
+};
 
-function compileDts () {
+function compileDts() {
   return {
-    name: 'compile-dts',
-    closeBundle () {
-      compile()
-    }
-  }
+    name: "compile-dts",
+    closeBundle() {
+      compile();
+    },
+  };
 }
 
 export default [
-  { // ESM for browsers and declarations
+  {
+    // ESM for browsers and declarations
     input: input,
     output: [
       {
-        file: join(rootDir, exports['.'].default),
+        file: join(rootDir, exports["."].default),
         ...sourcemapOutputOptions,
-        format: 'es'
-      }
+        format: "es",
+      },
     ],
+    onwarn(warning, warn) {
+      if (warning.code === "THIS_IS_UNDEFINED") return;
+      warn(warning);
+    },
     plugins: [
       replace({
         IS_BROWSER: true,
-        preventAssignment: true
+        preventAssignment: true,
       }),
+      nodePolyfills(/* options */),
       typescriptPlugin(tsBundleOptions),
       compileDts(),
-      json()
+      json(),
     ],
-    external
+    external,
   },
-  { // Browser bundles
+  {
+    // Browser bundles
     input: input,
     output: [
       {
-        file: join(dstDir, 'bundles/iife.js'),
-        format: 'iife',
+        file: join(dstDir, "bundles/iife.js"),
+        format: "iife",
         name: pkgCamelisedName,
-        plugins: [terser()]
+        plugins: [terser()],
       },
       {
-        file: join(dstDir, 'bundles/esm.js'),
+        file: join(dstDir, "bundles/esm.js"),
         ...sourcemapOutputOptions,
-        format: 'es'
+        format: "es",
       },
       {
-        file: join(dstDir, 'bundles/esm.min.js'),
-        format: 'es',
-        plugins: [terser()]
+        file: join(dstDir, "bundles/esm.min.js"),
+        format: "es",
+        plugins: [terser()],
       },
       {
-        file: join(dstDir, 'bundles/umd.js'),
-        format: 'umd',
+        file: join(dstDir, "bundles/umd.js"),
+        format: "umd",
         name: pkgCamelisedName,
-        plugins: [terser()]
-      }
+        plugins: [terser()],
+      },
     ],
+    onwarn(warning, warn) {
+      if (warning.code === "THIS_IS_UNDEFINED") return;
+      warn(warning);
+    },
     plugins: [
       replace({
         IS_BROWSER: true,
-        preventAssignment: true
+        preventAssignment: true,
       }),
+      nodePolyfills(/* options */),
       typescriptPlugin(tsBundleOptions),
       resolve({
         browser: true,
-        exportConditions: ['browser', 'module', 'import', 'default'],
-        mainFields: ['browser', 'module', 'main']
+        exportConditions: ["browser", "module", "import", "default"],
+        mainFields: ["browser", "module", "main"],
       }),
       commonjs({
         namedExports: {
-          'bn.js': ['BN'],
-          'hash.js': ['hmac', 'ripemd160', 'sha256', 'sha512'],
-          elliptic: ['ec'],
-          'scrypt-js': ['scrypt', 'syncScrypt']
-        }
+          "bn.js": ["BN"],
+          "hash.js": ["hmac", "ripemd160", "sha256", "sha512"],
+          elliptic: ["ec"],
+          "scrypt-js": ["scrypt", "syncScrypt"],
+          'nodemailer': Object.keys(nodemailer)
+        },
       }),
-      json()
-    ]
+      json(),
+    ],
   },
-  { // Node
+  {
+    // Node
     input: input,
     output: [
       {
-        file: join(rootDir, exports['.'].node.require),
+        file: join(rootDir, exports["."].node.require),
         ...sourcemapOutputOptions,
-        format: 'cjs',
-        exports: 'auto'
+        format: "cjs",
+        exports: "auto",
       },
       {
-        file: join(rootDir, exports['.'].node.import),
+        file: join(rootDir, exports["."].node.import),
         ...sourcemapOutputOptions,
-        format: 'es'
-      }
+        format: "es",
+      },
     ],
+    onwarn(warning, warn) {
+      if (warning.code === "THIS_IS_UNDEFINED") return;
+      warn(warning);
+    },
     plugins: [
       replace({
         IS_BROWSER: false,
-        preventAssignment: true
+        preventAssignment: true,
       }),
+      nodePolyfills(/* options */),
       typescriptPlugin(tsBundleOptions),
-      commonjs({ extensions: ['.js', '.cjs', '.ts', '.jsx', '.cjsx', '.tsx'] }), // the ".ts" extension is required
-      json()
+      commonjs({ extensions: [".js", ".cjs", ".ts", ".jsx", ".cjsx", ".tsx"] }), // the ".ts" extension is required
+      json(),
     ],
-    external
-  }
-]
+    external,
+  },
+];

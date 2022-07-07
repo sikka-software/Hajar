@@ -1,4 +1,4 @@
-import { Schema, model, connect, Types } from 'mongoose'
+import { Schema, model, Types } from 'mongoose'
 import { addMonths } from 'date-fns'
 
 export interface IAddresses {
@@ -592,9 +592,9 @@ export interface IUser {
   payment_status: string
   auto_renew: Boolean
   pack_user: Types.ObjectId
-  amount_payed: Number; // used in upgrade/downgrade difference
-  default_currency: string; // used in upgrade/downgrade difference
-  original_default_currency: string; // when user switch default_currency backup original default_currency used for amount conversion
+  amount_payed: Number // used in upgrade/downgrade difference
+  default_currency: string // used in upgrade/downgrade difference
+  original_default_currency: string // when user switch default_currency backup original default_currency used for amount conversion
   source: string
   geoip: string
   createdAt: string

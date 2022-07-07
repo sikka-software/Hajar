@@ -16,27 +16,19 @@ import invoiceCreate from './invoice'
 import setupCron from './cron'
 import updateOptions from './options'
 import initializeDB from './database'
-import initializeS3, { uploadImage, deleteImage, deleteImages } from './aws-s3'
+import { initializeS3, uploadImage, deleteImage, deleteImages } from './aws-s3'
 import { initialize, create, update, deactivate, remove, signIn, signOutUser, signInViaGoogle } from './auth'
 
 export { HAJAR_LIST_TRANSPORT_ARRAY } from './email'
 
-interface HajarConfigParameters {
-  accessKeyId: string
-  secretAccessKey: string
-  Bucket: string
-  firebaseConfig: string
-  OOBCODE: string
-  mongodb_name: string
-  mongodb_user: string
-  mongodb_password: string
-  mongodb_options: any
-}
-
-declare module global{
-  let _config: HajarConfigParameters
-  let _auth: any
-  let _provider: any
+declare global {
+  var _config: any;
+  var _auth: any;
+  var _provider: any;
+  var SIKKA_SOFTWARE_APPLEPAY_PAYFOR_SHA_REQUEST_PHRASE: any;
+  var SIKKA_SOFTWARE_APPLEPAY_PAYFOR_SHA_RESPONSE_PHRASE: any;
+  var SIKKA_SOFTWARE_PAYFOR_SHA_REQUEST_PHRASE: any;
+  var SIKKA_SOFTWARE_PAYFOR_SHA_RESPONSE_PHRASE: any;
 }
 
 /*
@@ -72,6 +64,7 @@ const Hajar = {
     SignOut: signOutUser
   },
   S3: {
+    InitializeS3: initializeS3,
     UploadImage: uploadImage,
     DeleteImage: deleteImage,
     DeleteImages: deleteImages
