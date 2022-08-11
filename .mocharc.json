@@ -1,0 +1,12 @@
+{
+  "extension": [
+    "ts",
+    "js"
+  ],
+  "full-trace": true,
+  "require": [
+    "ts-node/register",
+    "source-map-support"
+  ],
+  "loader": "ts-node/esm"
+}

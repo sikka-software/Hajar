@@ -29,17 +29,10 @@ jobs:
         run: npm run lint
       
       - name: build
-        run: npm run build:js
-      
-      - name: docs
-        run: npm run docs
+        run: npm run build:d
       
       - name: node tests
-        run: npm run test:node
-
-      - if: matrix.node-version == '16.x'
-        name: browser tests
-        run: npm run test:browser-headless
+        run: npm run test
 
   publication:
     needs: build
@@ -70,25 +63,17 @@ jobs:
       
       - name: build
         if: steps.check.outputs.changed == 'true'
-        run: npm run build:js
+        run: npm run build
       
-      - name: docs
-        if: steps.check.outputs.changed == 'true'
-        run: npm run docs
+      #- name: node tests and coverage
+      #  if: steps.check.outputs.changed == 'true'
+      #  run: npm run coverage
       
-      - name: browser tests
-        if: steps.check.outputs.changed == 'true'
-        run: npm run test:browser-headless
-      
-      - name: node tests and coverage
-        if: steps.check.outputs.changed == 'true'
-        run: npm run coverage
-      
-      - name: send report to coveralls.io
-        if: steps.check.outputs.changed == 'true'
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.REPO_TOKEN }}
+      #- name: send report to coveralls.io
+      #  if: steps.check.outputs.changed == 'true'
+      #  uses: coverallsapp/github-action@master
+      #  with:
+      #    github-token: ${{ secrets.REPO_TOKEN }}
 
       - name: publish to NPM
         if: steps.check.outputs.changed == 'true'

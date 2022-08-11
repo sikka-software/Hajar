@@ -2,132 +2,126 @@
   "name": "@sikka/hajar",
   "version": "1.0.7",
   "description": "Toolkit to create SaaS applications",
+  "type": "module",
+  "main": "dist/nodejs-esm-starter-src-bundle.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/nodejs-esm-starter-src-bundle.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=14.17.0"
+  },
+  "eslintConfig": {
+    "rules": {
+      "no-var": 0
+    }
+  },
+  "scripts": {
+    "clean": "gulp clean",
+    "build": "gulp build-prod",
+    "build:d": "gulp build-dev",
+    "prod": "gulp prod",
+    "dev": "gulp dev",
+    "watch": "gulp watch",
+    "lint": "gulp lint",
+    "fix": "gulp fix",
+    "check:18": "gulp i18next",
+    "test": "gulp mocha",
+    "t": "gulp retest",
+    "coverage": "nyc --reporter=lcov --reporter=text npm run test",
+    "exec": "node ./dist/nodejs-esm-starter-src-bundle.js",
+    "audit": "npm audit --production",
+    "dep": "echo 'todo: define a dependency checker like npm-check-updates (ncu) or depcheck'",
+    "release": "npm run _standard:rel",
+    "_gulp:rel": "release",
+    "_standard:rel": "standard-version",
+    "standard:f": "standard-version --first-release",
+    "change:all": "npx conventional-changelog -p angular -i CHANGELOG.md -s",
+    "remm": "rm -rf node_modules"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sikka-software/Hajar.git"
+  },
   "keywords": [
     "SaaS",
     "Toolkit"
   ],
   "license": "MIT",
   "author": "SIKKA SOFTWARE",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sikka-software/Hajar.git"
-  },
   "bugs": {
     "url": "https://github.com/sikka-software/Hajar/issues"
   },
-  "types": "./types/index.d.ts",
-  "main": "./dist/cjs/index.node.cjs",
-  "browser": "./dist/esm/index.browser.js",
-  "module": "./dist/esm/index.node.js",
-  "exports": {
-    ".": {
-      "node": {
-        "require": "./dist/cjs/index.node.cjs",
-        "import": "./dist/esm/index.node.js"
-      },
-      "default": "./dist/esm/index.browser.js"
-    },
-    "./esm-browser-bundle": "./dist/bundles/esm.min.js",
-    "./iife-browser-bundle": "./dist/bundles/iife.js",
-    "./umd-browser-bundle": "./dist/bundles/umd.js",
-    "./types": "./types/index.d.ts"
-  },
-  "directories": {
-    "build": "./build",
-    "dist": "./dist",
-    "docs": "./docs",
-    "src": "./src",
-    "test": "./test"
-  },
-  "scripts": {
-    "build": "run-s lint build:js docs",
-    "build:js": "rollup -c build/rollup.config.js",
-    "clean": "rimraf .nyc_output .mocha-ts coverage dist types docs",
-    "coverage": "nyc --check-coverage --exclude build --exclude '{src/ts/**/*.spec.ts,test/**/*.ts,.mocha-ts/**/*}' --reporter=text --reporter=lcov node ./build/bin/mocha-ts.js --require build/testing/mocha/mocha-init.js '{src/ts/**/*.spec.ts,test/**/*.ts}'",
-    "docs": "node build/build.docs.js",
-    "git:add": "git add -A",
-    "lint": "ts-standard --fix",
-    "mocha-ts": "node ./build/bin/mocha-ts.js --require build/testing/mocha/mocha-init.js ",
-    "mocha-ts:browser": "node build/testing/browser/index.js ",
-    "mocha-ts:browser-headless": "node build/testing/browser/index.js headless ",
-    "preversion": "run-s clean lint build:js coverage test:browser-headless",
-    "version": "run-s docs git:add",
-    "postversion": "git push --follow-tags",
-    "test": "run-s test:browser-headless test:node",
-    "test:browser": "npm run mocha-ts:browser ",
-    "test:browser-headless": "npm run mocha-ts:browser-headless ",
-    "test:node": "npm run mocha-ts -- '{src/ts/**/*.spec.ts,test/**/*.ts}'",
-    "watch": "npm run mocha-ts:node -- --watch '{src/ts/**/*.spec.ts,test/**/*.ts}'"
-  },
-  "ts-standard": {
-    "env": [
-      "mocha"
-    ],
-    "globals": [
-      "IS_BROWSER",
-      "browser",
-      "page",
-      "_pkg",
-      "chai"
-    ],
-    "project": "./tsconfig.json",
-    "ignore": [
-      "dist/**/*",
-      "types/**/*",
-      "build/testing/types/**/*"
-    ]
-  },
+  "homepage": "https://github.com/sikka-software/Hajar#readme",
   "devDependencies": {
-    "@aws-sdk/types": "^3.110.0",
-    "@rollup/plugin-commonjs": "^21.0.0",
+    "@firebase/app": "^0.7.30",
+    "@firebase/auth": "^0.20.5",
+    "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-multi-entry": "^4.0.0",
-    "@rollup/plugin-node-resolve": "^13.0.5",
-    "@rollup/plugin-replace": "^4.0.0",
-    "@rollup/plugin-typescript": "^8.2.0",
+    "@rollup/plugin-multi-entry": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-typescript": "^8.3.0",
     "@types/base64-stream": "^1.0.2",
     "@types/chai": "^4.2.22",
     "@types/crypto-js": "^4.1.1",
+    "@types/dirty-chai": "^2.0.2",
     "@types/ejs": "^3.1.1",
+    "@types/i18next-fs-backend": "^1.1.2",
     "@types/mocha": "^9.0.0",
+    "@types/node": "^16.11.7",
     "@types/node-schedule": "^2.1.0",
-    "@types/nodemailer": "^6.4.4",
+    "@types/nodemailer": "^6.4.5",
     "@types/qrcode": "^1.4.2",
+    "@types/sinon": "^10.0.6",
+    "@types/sinon-chai": "^3.2.5",
     "@types/wkhtmltopdf": "^0.3.4",
-    "chai": "^4.3.3",
-    "dotenv": "^16.0.0",
-    "fs-extra": "^10.0.0",
-    "glob": "^8.0.1",
-    "json5": "^2.2.0",
-    "minimatch": "^5.0.1",
-    "mocha": "^9.1.1",
-    "npm-run-all": "^4.1.5",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "aws-sdk": "^2.1191.0",
+    "chai": "^4.3.4",
+    "conventional-changelog-cli": "^2.1.1",
+    "conventional-github-releaser": "^3.1.5",
+    "conventional-recommended-bump": "^6.1.0",
+    "cpr": "^3.0.1",
+    "cross-env": "^7.0.3",
+    "date-fns": "^2.29.1",
+    "deep-copy-all": "^1.3.4",
+    "deepmerge": "^4.2.2",
+    "del": "^6.0.0",
+    "dirty-chai": "^2.0.1",
+    "dotenv": "^10.0.0",
+    "eslint": "^8.2.0",
+    "eslint-plugin-i18next": "^5.1.2",
+    "eslint-plugin-node": "^11.1.0",
+    "esm": "^3.2.25",
+    "execa": "^6.0.0",
+    "fs": "0.0.1-security",
+    "gulp": "^4.0.2",
+    "gulp-eslint": "^6.0.0",
+    "gulp-mocha": "^8.0.0",
+    "i18next-parser": "^5.3.0",
+    "mocha": "^9.1.3",
+    "moment": "^2.29.4",
+    "mongoose": "^6.5.2",
     "nyc": "^15.1.0",
-    "pirates": "^4.0.1",
-    "puppeteer": "^13.0.1",
-    "rimraf": "^3.0.2",
-    "rollup": "^2.57.0",
-    "rollup-plugin-polyfill-node": "^0.10.0",
+    "rollup": "^2.60.0",
+    "rollup-plugin-esformatter": "^2.0.1",
     "rollup-plugin-terser": "^7.0.2",
-    "ts-standard": "^11.0.0",
+    "sinon": "^12.0.1",
+    "sinon-chai": "^3.7.0",
+    "source-map-support": "^0.5.20",
+    "standard-version": "^9.3.2",
+    "ts-node": "^10.4.0",
     "tslib": "^2.3.1",
-    "typedoc": "^0.22.0",
-    "typedoc-plugin-markdown": "^3.11.0",
-    "typescript": "^4.4.3"
+    "typescript": "^4.4.4"
   },
   "dependencies": {
-    "aws-sdk": "^2.1167.0",
-    "base64-stream": "^1.0.0",
-    "crypto-js": "^4.1.1",
-    "date-fns": "^2.28.0",
-    "ejs": "^3.1.8",
-    "firebase": "^9.8.4",
-    "fs": "0.0.1-security",
-    "moment": "^2.29.3",
-    "mongoose": "^6.4.3",
-    "node-schedule": "^2.1.0",
-    "nodemailer": "^6.7.6",
-    "qrcode": "^1.5.0",
-    "wkhtmltopdf": "^0.4.0"
+    "i18next": "^21.5.3",
+    "i18next-cli-language-detector": "^1.1.0",
+    "i18next-fs-backend": "^1.1.4"
   }
 }
