@@ -25,21 +25,15 @@ jobs:
         run: npm run lint
       
       - name: build
-        run: npm run build:js
+        run: npm run build
       
-      - name: docs
-        run: npm run docs
+      #- name: node tests and coverage
+      #  run: npm run coverage
       
-      - name: browser tests
-        run: npm run test:browser-headless
-      
-      - name: node tests and coverage
-        run: npm run coverage
-      
-      - name: send report to coveralls.io
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.REPO_TOKEN }}
+      #- name: send report to coveralls.io
+      #  uses: coverallsapp/github-action@master
+      #  with:
+      #    github-token: ${{ secrets.REPO_TOKEN }}
 
       - name: publish to NPM
         run: npm publish --access public
