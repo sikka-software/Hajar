@@ -27,6 +27,7 @@ jobs:
 
     - name: build, test, lint, publish
       run: |
+        rm -fr package-lock.json || true
         npm install
         npm run test:coverage --if-present
         npm run lint --if-present
