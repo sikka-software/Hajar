@@ -26,7 +26,7 @@ export async function initialize (params){
     params.appId !== "" &&
     params.measurementId !== ""
   ) {
-    const app = (firebase?.getApps().length > 0) ? firebase.initializeApp(params) : firebase.getApp();
+    const app = (firebase.getApps().length > 0) ? firebase.initializeApp(params) : firebase.getApp();
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
     globalThis._auth = auth;

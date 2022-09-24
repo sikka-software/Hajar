@@ -6,7 +6,7 @@ export function setupEmail(params) {
   if (params.length > 0) {
     for (let i = 0; i < params.length; i++) {
       const config = params[i];
-      const nameTransporter = config.name ?? "";
+      const nameTransporter = config.name;
       let mailConfig = {
         host: config.host,
         port: config.port,
