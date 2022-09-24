@@ -1,23 +1,14 @@
-import Library from '../src';
-
-let library;
+import Hajar from '../src';
 
 // Replace with actual tests
-describe('Library.src.js', () => {
-  beforeEach(() => library = new Library());
+describe('Hajar.src.js', () => {
 
   it('should get the library\'s version', () => {
-    expect(library.version).toEqual('1.0.0');
+    expect(Hajar.version).toEqual('1.0.8');
   });
 
   it('should get the library\'s name', () => {
-    const spy = jest.spyOn(library, 'name');
-    const name = library.name();
-
-    expect(name).toEqual('Library');
-
-    expect(spy).toHaveBeenCalled();
-
-    spy.mockRestore();
+    const name = Hajar._name;
+    expect(name).toEqual('Hajar');
   });
 });
