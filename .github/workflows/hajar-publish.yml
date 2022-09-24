@@ -1,41 +1,40 @@
-# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
-# For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
 name: Hajar Publish Package
 
 on:
-  release:
-    types: [created]
+  push:
+    branches: [ main ]
 
 jobs:
-  publication:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
-      
-      - name: install
-        run: npm ci
-      
-      - name: lint
-        run: npm run lint
-      
-      - name: build
-        run: npm run build
-      
-      #- name: node tests and coverage
-      #  run: npm run coverage
-      
-      #- name: send report to coveralls.io
-      #  uses: coverallsapp/github-action@master
-      #  with:
-      #    github-token: ${{ secrets.REPO_TOKEN }}
+  build:
 
-      - name: publish to NPM
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: build, test, lint
+      run: |
+        npm install
+        npm run test:coverage --if-present
+        npm run lint --if-present
+        npm run build --if-present
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.NPM_TOKEN }}
+    - name: publish to NPM
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
