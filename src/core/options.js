@@ -1,3 +1,3 @@
   export default function updateOptions (options){
-    globalThis._config = options;
+    global._config = options;
   }

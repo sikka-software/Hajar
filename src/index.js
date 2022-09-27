@@ -9,15 +9,13 @@ import setupCron from "./core/cron";
 //import initializeDB from "./core/database";
 //export { HAJAR_LIST_TRANSPORT_ARRAY } from "./core/email";
 
-/*declare global {
-    var _config: any;
-    var _auth: any;
-    var _provider: any;
-    var SIKKA_SOFTWARE_APPLEPAY_PAYFOR_SHA_REQUEST_PHRASE: any;
-    var SIKKA_SOFTWARE_APPLEPAY_PAYFOR_SHA_RESPONSE_PHRASE: any;
-    var SIKKA_SOFTWARE_PAYFOR_SHA_REQUEST_PHRASE: any;
-    var SIKKA_SOFTWARE_PAYFOR_SHA_RESPONSE_PHRASE: any;
-};*/
+global._config;
+global._auth;
+global._provider;
+global.SIKKA_SOFTWARE_APPLEPAY_PAYFOR_SHA_REQUEST_PHRASE;
+global.SIKKA_SOFTWARE_APPLEPAY_PAYFOR_SHA_RESPONSE_PHRASE;
+global.SIKKA_SOFTWARE_PAYFOR_SHA_REQUEST_PHRASE;
+global.SIKKA_SOFTWARE_PAYFOR_SHA_RESPONSE_PHRASE;
 
 /*
 example use
