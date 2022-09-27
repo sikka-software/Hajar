@@ -52,6 +52,7 @@
   "dependencies": {
     "@firebase/app": "~0.7.33",
     "@firebase/auth": "~0.20.7",
+    "aws-sdk": "~2.1224.0",
     "crypto-js": "~4.1.1",
     "date-fns": "~2.29.3",
     "handlebars": "~4.7.7",
