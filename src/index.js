@@ -1,12 +1,12 @@
 import { LIB_NAME, LIB_VERSION } from './constants';
 import { setupEmail, sendEmail, sendEmailVerify } from "./core/email";
+import { initializeS3, uploadImage, deleteImage, deleteImages } from "./core/aws-s3";
 import { initialize, create, update, deactivate, remove, signIn, signOutUser, signInViaGoogle } from "./core/auth";
 import updateOptions from "./core/options";
 import setupCron from "./core/cron";
 //import * as models from "./models/qawaim";
 //import invoiceCreate from "./core/invoice";
 //import initializeDB from "./core/database";
-//import { initializeS3, uploadImage, deleteImage, deleteImages } from "./core/aws-s3";
 //export { HAJAR_LIST_TRANSPORT_ARRAY } from "./core/email";
 
 /*declare global {
@@ -53,12 +53,12 @@ const Hajar = {
       SignInViaGoogle: signInViaGoogle,
       SignOut: signOutUser
     },
-    /* S3: {
+    S3: {
       InitializeS3: initializeS3,
       UploadImage: uploadImage,
       DeleteImage: deleteImage,
       DeleteImages: deleteImages
-    }, */
+    },
     Schedule: setupCron
   };
 
