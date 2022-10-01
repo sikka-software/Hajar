@@ -1,4 +1,6 @@
 
+import Handlebars from "handlebars";
+
 const emailInvoiceHtml = `
 <!DOCTYPE html>
 <html {{#if invoice_lang == "ar"}}dir="rtl"{{/if}} lang="{{ invoice_lang }}">

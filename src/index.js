@@ -31,8 +31,8 @@ const Hajar = {
     /*Database: initializeDB,
     Models: {
       Qawaim: models
-    },
-    Invoice: invoiceCreate,*/
+    },*/
+    Invoice: invoiceCreate,
     Mail: { SetupEmail: setupEmail, SendEmail: sendEmail },
     // will be added next release
     /* Payment: {

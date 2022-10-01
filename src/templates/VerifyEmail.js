@@ -1,3 +1,4 @@
+import Handlebars from "handlebars";
 /*
 List Variable:
 email_lang

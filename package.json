@@ -53,12 +53,17 @@
     "@firebase/app": "~0.7.33",
     "@firebase/auth": "~0.20.7",
     "aws-sdk": "~2.1224.0",
+    "base64-stream": "~1.0.0",
     "crypto-js": "~4.1.1",
     "date-fns": "~2.29.3",
+    "fs": "0.0.1-security",
     "handlebars": "~4.7.7",
+    "moment": "~2.29.4",
     "mongoose": "~6.6.1",
     "node-schedule": "~2.1.0",
-    "nodemailer": "~6.7.8"
+    "nodemailer": "~6.7.8",
+    "qrcode": "~1.5.1",
+    "wkhtmltopdf": "~0.4.0"
   },
   "browserslist": "> 0.5%, last 2 versions, Firefox ESR, not dead",
   "engines": {
