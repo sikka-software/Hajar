@@ -1,4 +1,6 @@
 
+import Handlebars from "handlebars";
+
 const emailInvoiceHtml = `
 <!DOCTYPE html>
 <html {{#if invoice_lang == "ar"}}dir="rtl"{{/if}} lang="{{ invoice_lang }}">
@@ -305,68 +307,68 @@ fill: #5F5FFF;
 
     </div>
     <div id="company">
-      <h2 class="name"><%= invoice_company.name %></h2>
-      <div><%= invoice_company.address %></div>
-      <div><%= invoice_company.phone %></div>
-      <div><a href="mailto:<%= invoice_company.email %>"><%= invoice_company.email %></a></div>
+      <h2 class="name">{{ invoice_company.name }}</h2>
+      <div>{{ invoice_company.address }}</div>
+      <div>{{ invoice_company.phone }}</div>
+      <div><a href="mailto:{{ invoice_company.email }}">{{ invoice_company.email }}</a></div>
     </div>
     </div>
   </header>
   <main>
     <div id="details" class="clearfix">
       <div id="client">
-        <div class="to"><%= invoice_translate.invoice_to %></div>
-        <h2 class="name"><%= invoice_customer.full_name %></h2>
-        <div class="address"><%= invoice_customer.address %></div>
-        <div class="email"><a href="mailto:<%= invoice_customer.email %>"><%= invoice_customer.email %></a></div>
+        <div class="to">{{ invoice_translate.invoice_to }}</div>
+        <h2 class="name">{{ invoice_customer.full_name }}</h2>
+        <div class="address">{{ invoice_customer.address }}</div>
+        <div class="email"><a href="mailto:{{ invoice_customer.email }}">{{ invoice_customer.email }}</a></div>
       </div>
       <div id="invoice">
-        <h1><%= invoice_translate.invoice %><%= invoice_data.invoice_id %></h1>
-        <div class="date"><%= invoice_translate.date_invoice %><%= invoice_data.date_invoice %></div>
-        <div class="date"><%= invoice_translate.date_due %><%= invoice_data.date_due %></div>
+        <h1>{{ invoice_translate.invoice }}{{ invoice_data.invoice_id }}</h1>
+        <div class="date">{{ invoice_translate.date_invoice }}{{ invoice_data.date_invoice }}</div>
+        <div class="date">{{ invoice_translate.date_due }}{{ invoice_data.date_due }}</div>
       </div>
     </div>
     <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 50px;">
       <thead>
         <tr>
           <th class="no">#</th>
-          <th class="desc"><%= invoice_translate.table.description %></th>
-          <th class="unit"><%= invoice_translate.table.unit_price %></th>
-          <th class="total"><%= invoice_translate.table.total_product %></th>
+          <th class="desc">{{ invoice_translate.table.description }}</th>
+          <th class="unit">{{ invoice_translate.table.unit_price }}</th>
+          <th class="total">{{ invoice_translate.table.total_product }}</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td class="no" style="text-align:center">01</td>
           <td class="desc">
-            <h3><%= invoice_data.pack_title %></h3><%= invoice_data.pack_subtitle %>
+            <h3>{{ invoice_data.pack_title }}</h3>{{ invoice_data.pack_subtitle }}
           </td>
-          <td class="unit" style="text-align:center"><%= invoice_data.pack_price %></td>
-          <td class="total" style="text-align:center"><%= invoice_data.pack_price %></td>
+          <td class="unit" style="text-align:center">{{ invoice_data.pack_price }}</td>
+          <td class="total" style="text-align:center">{{ invoice_data.pack_price }}</td>
         </tr>
       </tbody>
     </table>
     <table border="0" cellspacing="0" cellpadding="0">
       <tfoot>
         <tr>
-          <td colspan="3"><%= invoice_translate.table.subtotal %></td>
-          <td><%= invoice_data.pack_price %></td>
+          <td colspan="3">{{ invoice_translate.table.subtotal }}</td>
+          <td>{{ invoice_data.pack_price }}</td>
         </tr>
         <tr>
-          <td colspan="3"><%= invoice_translate.table.grandtotal %></td>
-          <td><%= invoice_data.pack_price %></td>
+          <td colspan="3">{{ invoice_translate.table.grandtotal }}</td>
+          <td>{{ invoice_data.pack_price }}</td>
         </tr>
       </tfoot>
     </table>
-    <div id="blockSubfooter"><div id="thanks"><%= invoice_translate.thanks %></div>
-    <div id="qrcode"><img src="<%= invoice_data.qrCodeURL %>" /></div></div>
+    <div id="blockSubfooter"><div id="thanks">{{ invoice_translate.thanks }}</div>
+    <div id="qrcode"><img src="{{ invoice_data.qrCodeURL }}" /></div></div>
     <!-- <div id="notices">
-      <div><%= invoice_translate.notice %></div>
-      <div class="notice"><%= invoice_translate.notice_text %></div>
+      <div>{{ invoice_translate.notice }}</div>
+      <div class="notice">{{ invoice_translate.notice_text }}</div>
     </div> -->
   </main>
   <footer>
-    <%= invoice_translate.footer %>
+    {{ invoice_translate.footer }}
   </footer>
 </body>
 

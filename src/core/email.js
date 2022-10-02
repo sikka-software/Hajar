@@ -1,5 +1,7 @@
 import nodemailer from "nodemailer";
 import getVerifyEmail from "../templates/VerifyEmail";
+import getEmailInvoiceTemplate from "../templates/invoice";
+import getResetEmail from "../templates/ResetPassword";
 
 export function setupEmail(params) {
   const listTransport = {};
@@ -56,6 +58,34 @@ export async function sendEmail(transport, params) {
 export async function sendEmailVerify(transport) {
   return await new Promise((resolve, reject) => {
     transport.sendMail(getVerifyEmail, function (error, info) {
+      if (error === null) {
+        console.log("error=", error);
+        resolve(false);
+      } else {
+        console.log(info);
+        resolve(true);
+      }
+    });
+  });
+}
+
+export async function sendEmailInvoice(transport) {
+  return await new Promise((resolve, reject) => {
+    transport.sendMail(getEmailInvoiceTemplate, function (error, info) {
+      if (error === null) {
+        console.log("error=", error);
+        resolve(false);
+      } else {
+        console.log(info);
+        resolve(true);
+      }
+    });
+  });
+}
+
+export async function sendEmailReset(transport) {
+  return await new Promise((resolve, reject) => {
+    transport.sendMail(getResetEmail, function (error, info) {
       if (error === null) {
         console.log("error=", error);
         resolve(false);

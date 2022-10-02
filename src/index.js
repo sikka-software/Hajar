@@ -4,10 +4,9 @@ import { initializeS3, uploadImage, deleteImage, deleteImages } from "./core/aws
 import { initialize, create, update, deactivate, remove, signIn, signOutUser, signInViaGoogle } from "./core/auth";
 import updateOptions from "./core/options";
 import setupCron from "./core/cron";
+import initializeDB from "./core/database";
+import invoiceCreate from "./core/invoice";
 //import * as models from "./models/qawaim";
-//import invoiceCreate from "./core/invoice";
-//import initializeDB from "./core/database";
-//export { HAJAR_LIST_TRANSPORT_ARRAY } from "./core/email";
 
 global._config;
 global._auth;
@@ -28,11 +27,11 @@ const Hajar = {
     _name: LIB_NAME,
     version: LIB_VERSION,
     Config: updateOptions,
-    /*Database: initializeDB,
-    Models: {
+    Database: initializeDB,
+    /*Models: {
       Qawaim: models
-    },
-    Invoice: invoiceCreate,*/
+    },*/
+    Invoice: invoiceCreate,
     Mail: { SetupEmail: setupEmail, SendEmail: sendEmail },
     // will be added next release
     /* Payment: {
