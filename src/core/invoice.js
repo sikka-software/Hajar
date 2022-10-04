@@ -1,8 +1,8 @@
-import wkhtmltopdf from wkhtmltopdf;
-import moment from moment;
-import Base64Encode from base64-stream;
-import fs from fs;
-import QRCode from qrcode;
+import wkhtmltopdf from "wkhtmltopdf";
+import moment from "moment";
+import Base64Encode from "base64-stream";
+import fs from "fs";
+import QRCode from "qrcode";
 import { formatCurrency, getPrice } from "./helpers";
 
 export async function createInvoice(Transactions, transactionID, URL, res, lang, is_mail, isWallet) {

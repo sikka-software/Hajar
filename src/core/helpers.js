@@ -2,27 +2,27 @@ export function getPrice (cycle, currency, pack){
   let price = 0;
   if (cycle === "annually") {
     if (currency === "usd") {
-      price = pack?.price_annual_usd;
+      price = pack.price_annual_usd;
     } else {
-      price = pack?.price_annual_sar;
+      price = pack.price_annual_sar;
     }
   } else if (cycle === "3-months") {
     if (currency === "usd") {
-      price = pack?.price_3months_usd;
+      price = pack.price_3months_usd;
     } else {
-      price = pack?.price_3months_sar;
+      price = pack.price_3months_sar;
     }
   } else if (cycle === "6-months") {
     if (currency === "usd") {
-      price = pack?.price_6months_usd;
+      price = pack.price_6months_usd;
     } else {
-      price = pack?.price_6months_sar;
+      price = pack.price_6months_sar;
     }
   } else {
     if (currency === "usd") {
-      price = pack?.price_monthly_usd;
+      price = pack.price_monthly_usd;
     } else {
-      price = pack?.price_monthly_sar;
+      price = pack.price_monthly_sar;
     }
   }
 
