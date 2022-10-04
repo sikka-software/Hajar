@@ -5,7 +5,7 @@ import { initialize, create, update, deactivate, remove, signIn, signOutUser, si
 import updateOptions from "./core/options";
 import setupCron from "./core/cron";
 import initializeDB from "./core/database";
-import { invoiceCreate } from "./core/invoice";
+import { createInvoice } from "./core/invoice";
 //import * as models from "./models/qawaim";
 
 global._config;
@@ -31,7 +31,7 @@ const Hajar = {
   /*Models: {
     Qawaim: models
   },*/
-  Invoice: invoiceCreate,
+  Invoice: createInvoice,
   Mail: { SetupEmail: setupEmail, SendEmail: sendEmail },
   // will be added next release
   /* Payment: {
