@@ -7,7 +7,7 @@
 [![NPM](https://img.shields.io/npm/v/@sikka/hajar.svg?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@sikka/hajar)
 [![NPM](https://img.shields.io/npm/dt/@sikka/hajar.svg?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@sikka/hajar)
 
-> Opinionated UI Kit for web apps and websites.
+> Javascript/Typescript toolkit for creating Saas/Paas applications
 
 [documentation](https://zakher.gitbook.io/hajar/)
 
@@ -43,13 +43,6 @@ Common Elements
 The follow web elements and pages exist in most SaaS projects.
 
 *   Pages
-    *   Sign in
-    *   Sign Up
-    *   Reset Password
-    *   New Password
-    *   Billing
-    *   Checkout
-    *   Payment Confirmation
     *   Error Page
 *   Billing Page
     *   Add Payment Method
@@ -73,7 +66,6 @@ The Hierarchy
 =============
 
   
-
 Users saved objects can be top level only or multileveled. For example:
 
 Qawaim Hierarchy
