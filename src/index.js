@@ -6,6 +6,10 @@ import updateOptions from "./core/options";
 import setupCron from "./core/cron";
 import initializeDB from "./core/database";
 import { createInvoice } from "./core/invoice";
+import ReferralShema from "./core/referral/graphql/schema/index";
+import { GenerateUniqueReferalCode } from "./core/referral/referral";
+import { createReferral, updateReferral, deleteReferral, referral, referrals, createReferralAnalytics, updateReferralAnalytics, deleteReferralAnalytics, referralAnalytics, referralsAnalytics } from "./core/referral/graphql/resolvers/index"
+import ReferralModels from "./core/referral/models";
 //import * as models from "./models/qawaim";
 
 global._config;
@@ -56,7 +60,26 @@ const Hajar = {
     DeleteImage: deleteImage,
     DeleteImages: deleteImages
   },
-  Schedule: setupCron
+  Schedule: setupCron,
+  Referral: {
+    Graphql: {
+      Schema: ReferralShema,
+      Resolvers: {
+        CreateReferral: createReferral,
+        UpdateReferral: updateReferral,
+        DeleteReferral: deleteReferral,
+        OneReferral: referral,
+        AllReferrals: referrals,
+        CreateReferralAnalytics: createReferralAnalytics,
+        UpdateReferralAnalytics: updateReferralAnalytics,
+        DeleteReferralAnalytics: deleteReferralAnalytics,
+        ReferralAnalytics: referralAnalytics,
+        ReferralsAnalytics: referralsAnalytics
+      }
+    },
+    GenerateUniqueCode: GenerateUniqueReferalCode,
+    Models: ReferralModels
+  }
 };
 
 export default Hajar;
