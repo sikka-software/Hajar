@@ -4,7 +4,7 @@ import Hajar from '../src';
 describe('Hajar.src.js', () => {
 
   it('should get the library\'s version', () => {
-    expect(Hajar.version).toEqual('1.0.13');
+    expect(Hajar.version).toEqual('1.0.15');
   });
 
   it('should get the library\'s name', () => {
