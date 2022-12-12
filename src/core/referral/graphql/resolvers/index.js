@@ -1,4 +1,4 @@
-const ReferralModels = require("../../models");
+import { ReferralModels } from "../../index";
 
 export async function createReferral(args) {
     const referral = await ReferralModels.Referral.findOne({ code: args.referralInput.code });
