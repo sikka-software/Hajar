@@ -4,13 +4,12 @@ import { initializeS3, uploadImage, deleteImage, deleteImages } from "./core/aws
 import { initialize, create, update, deactivate, remove, signIn, signOutUser, signInViaGoogle } from "./core/auth";
 import updateOptions from "./core/options";
 import setupCron from "./core/cron";
-import initializeDB from "./core/database";
+import initializeDB from "./core/database/index";
 import { createInvoice } from "./core/invoice";
 import ReferralShema from "./core/referral/graphql/schema/index";
-import { GenerateUniqueReferalCode } from "./core/referral/referral";
+import { GenerateUniqueReferalCode, ReferralModels } from "./core/referral/index";
 import { createReferral, updateReferral, deleteReferral, referral, referrals, createReferralAnalytics, updateReferralAnalytics, deleteReferralAnalytics, referralAnalytics, referralsAnalytics } from "./core/referral/graphql/resolvers/index"
-import ReferralModels from "./core/referral/models";
-//import * as models from "./models/qawaim";
+import addModel from "./core/database/models"; 
 
 global._config;
 global._auth;
@@ -31,10 +30,10 @@ const Hajar = {
   _name: LIB_NAME,
   version: LIB_VERSION,
   Config: updateOptions,
-  Database: initializeDB,
-  /*Models: {
-    Qawaim: models
-  },*/
+  Database: {
+    initialize: initializeDB,
+    model: addModel
+  },
   Invoice: createInvoice,
   Mail: { SetupEmail: setupEmail, SendEmail: sendEmail },
   // will be added next release
