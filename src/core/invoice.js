@@ -5,12 +5,22 @@ import fs from "fs";
 import QRCode from "qrcode";
 import { formatCurrency, getPrice } from "./helpers";
 
-export async function createInvoice(Transactions, transactionID, URL, res, lang, is_mail, isWallet) {
-  const dataUrlString = Buffer.from(`${transactionID}_${lang}_${isWallet}`).toString('base64');
+export async function createInvoice(
+  Transactions,
+  transactionID,
+  URL,
+  res,
+  lang,
+  is_mail,
+  isWallet
+) {
+  const dataUrlString = Buffer.from(
+    `${transactionID}_${lang}_${isWallet}`
+  ).toString("base64");
   let urlQrcode = await QRCode.toDataURL(`${URL}/invoice/${dataUrlString}`);
   console.log(urlQrcode);
   const transaction = await Transactions.findOne({
-    _id: transactionID
+    _id: transactionID,
   })
     .populate("card")
     .populate("pack")
@@ -78,7 +88,7 @@ export async function createInvoice(Transactions, transactionID, URL, res, lang,
       name: "Sikka Software Est",
       address: "Ash Shati Ash Sharqi, Dammam. Eastern Region, Saudi Arabia",
       phone: "",
-      email: "contact@qawaim.app"
+      email: "contact@qawaim.app",
     },
     invoice_customer: {
       full_name:
@@ -97,7 +107,7 @@ export async function createInvoice(Transactions, transactionID, URL, res, lang,
         transaction.billing_address.state +
         "," +
         transaction.billing_address.country,
-      email: transaction.billing_address.email
+      email: transaction.billing_address.email,
     },
     invoice_data: {
       qrCodeURL: urlQrcode,
@@ -111,7 +121,7 @@ export async function createInvoice(Transactions, transactionID, URL, res, lang,
       pack_title: pack_title_text,
       pack_subtitle: pack_subtitle_text,
       pack_price: pack_price_value,
-      logo_url: `${process.env.QAWAIM_LANDING_URL}/`
+      logo_url: `${process.env.QAWAIM_LANDING_URL}/`,
     },
     invoice_translate: {
       invoice: lang == "ar" ? "فاتورة " : "INVOICE ",
@@ -124,7 +134,7 @@ export async function createInvoice(Transactions, transactionID, URL, res, lang,
         quantity: lang == "ar" ? "كمية" : "QUANTITY",
         total_product: lang == "ar" ? "المجموع" : "TOTAL",
         subtotal: lang == "ar" ? "المجموع الفرعي" : "SUBTOTAL",
-        grandtotal: lang == "ar" ? "المبلغ الإجمالي" : "GRAND TOTAL"
+        grandtotal: lang == "ar" ? "المبلغ الإجمالي" : "GRAND TOTAL",
       },
       thanks: lang == "ar" ? "شكرا لك!" : "Thank you!",
       footer:
@@ -135,8 +145,8 @@ export async function createInvoice(Transactions, transactionID, URL, res, lang,
       notice_text:
         lang == "ar"
           ? "سيتم فرض رسوم تمويل بنسبة 1.5٪ على الأرصدة غير المدفوعة بعد 30 يومًا."
-          : "A finance charge of 1.5% will be made on unpaid balances after 30 days."
-    }
+          : "A finance charge of 1.5% will be made on unpaid balances after 30 days.",
+    },
   };
   if (is_mail) {
     ejs.renderFile(

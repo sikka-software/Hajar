@@ -1,15 +1,43 @@
-import { LIB_NAME, LIB_VERSION } from './constants';
+import { LIB_NAME, LIB_VERSION } from "./constants";
 import { setupEmail, sendEmail, sendEmailVerify } from "./core/email";
-import { initializeS3, uploadImage, deleteImage, deleteImages } from "./core/aws-s3";
-import { initialize, create, update, deactivate, remove, signIn, signOutUser, signInViaGoogle } from "./core/auth";
+import {
+  initializeS3,
+  uploadImage,
+  deleteImage,
+  deleteImages,
+} from "./core/aws-s3";
+import {
+  initialize,
+  create,
+  update,
+  deactivate,
+  remove,
+  signIn,
+  signOutUser,
+  signInViaGoogle,
+} from "./core/auth";
 import updateOptions from "./core/options";
 import setupCron from "./core/cron";
 import initializeDB from "./core/database/index";
 import { createInvoice } from "./core/invoice";
 import ReferralShema from "./core/referral/graphql/schema/index";
-import { GenerateUniqueReferalCode, ReferralModels } from "./core/referral/index";
-import { createReferral, updateReferral, deleteReferral, referral, referrals, createReferralAnalytics, updateReferralAnalytics, deleteReferralAnalytics, referralAnalytics, referralsAnalytics } from "./core/referral/graphql/resolvers/index"
-import addModel from "./core/database/models"; 
+import {
+  GenerateUniqueReferalCode,
+  ReferralModels,
+} from "./core/referral/index";
+import {
+  createReferral,
+  updateReferral,
+  deleteReferral,
+  referral,
+  referrals,
+  createReferralAnalytics,
+  updateReferralAnalytics,
+  deleteReferralAnalytics,
+  referralAnalytics,
+  referralsAnalytics,
+} from "./core/referral/graphql/resolvers/index";
+import addModel from "./core/database/models";
 
 global._config;
 global._auth;
@@ -32,7 +60,7 @@ const Hajar = {
   Config: updateOptions,
   Database: {
     initialize: initializeDB,
-    model: addModel
+    model: addModel,
   },
   Invoice: createInvoice,
   Mail: { SetupEmail: setupEmail, SendEmail: sendEmail },
@@ -51,13 +79,13 @@ const Hajar = {
     DeleteUser: remove,
     SignIn: signIn,
     SignInViaGoogle: signInViaGoogle,
-    SignOut: signOutUser
+    SignOut: signOutUser,
   },
   S3: {
     InitializeS3: initializeS3,
     UploadImage: uploadImage,
     DeleteImage: deleteImage,
-    DeleteImages: deleteImages
+    DeleteImages: deleteImages,
   },
   Schedule: setupCron,
   Referral: {
@@ -73,13 +101,12 @@ const Hajar = {
         UpdateReferralAnalytics: updateReferralAnalytics,
         DeleteReferralAnalytics: deleteReferralAnalytics,
         ReferralAnalytics: referralAnalytics,
-        ReferralsAnalytics: referralsAnalytics
-      }
+        ReferralsAnalytics: referralsAnalytics,
+      },
     },
     GenerateUniqueCode: GenerateUniqueReferalCode,
-    Models: ReferralModels
-  }
+    Models: ReferralModels,
+  },
 };
 
 export default Hajar;
-

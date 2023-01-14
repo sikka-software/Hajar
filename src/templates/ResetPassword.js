@@ -308,8 +308,7 @@ fill: #5F5FFF;
 	</body>
 </html>`;
 
-
 export default function getResetEmail(data) {
-    const template = Handlebars.compile(emailResetPassword);
-    return template(data);
-  }
+  const template = Handlebars.compile(emailResetPassword);
+  return template(data);
+}

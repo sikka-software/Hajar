@@ -1,4 +1,3 @@
-
 import Handlebars from "handlebars";
 
 const emailInvoiceHtml = `
@@ -374,6 +373,6 @@ fill: #5F5FFF;
 
 </html>`;
 export default function getEmailInvoiceTemplate(data) {
-    const template = Handlebars.compile(emailInvoiceHtml);
-    return template(data);
+  const template = Handlebars.compile(emailInvoiceHtml);
+  return template(data);
 }

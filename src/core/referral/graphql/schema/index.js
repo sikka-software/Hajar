@@ -62,12 +62,12 @@ const referralAnalyticsQueries = `
 `;
 
 const ReferralShema = {
-    ReferralType: referralType,
-    ReferralMutations: referralMutations,
-    ReferralQueries: referralQueries,
-    ReferralAnalyticsType: referralAnalyticsType,
-    ReferralAnalyticsMutations: referralAnalyticsMutations,
-    ReferralAnalyticsQueries: referralAnalyticsQueries
+  ReferralType: referralType,
+  ReferralMutations: referralMutations,
+  ReferralQueries: referralQueries,
+  ReferralAnalyticsType: referralAnalyticsType,
+  ReferralAnalyticsMutations: referralAnalyticsMutations,
+  ReferralAnalyticsQueries: referralAnalyticsQueries,
 };
 
 export default ReferralShema;

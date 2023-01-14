@@ -4,7 +4,7 @@ export function initializeS3() {
   const config = {
     accessKeyId: global._config.accessKeyId,
     secretAccessKey: global._config.secretAccessKey,
-    Bucket: global._config.Bucket
+    Bucket: global._config.Bucket,
   };
   return new AWS.S3(config);
 }
@@ -15,9 +15,13 @@ export async function listImages(params, callback) {
   });
 }
 
-
-export async function uploadImage(params, CallbackhttpUploadProgress, CallbackSend) {
-  initializeS3().putObject(params)
+export async function uploadImage(
+  params,
+  CallbackhttpUploadProgress,
+  CallbackSend
+) {
+  initializeS3()
+    .putObject(params)
     .on("httpUploadProgress", (evt) => {
       CallbackhttpUploadProgress(evt);
     })
@@ -27,7 +31,7 @@ export async function uploadImage(params, CallbackhttpUploadProgress, CallbackSe
 }
 
 export async function deleteImage(params, callback) {
-  initializeS3().deleteObject(params, function(err, data) {
+  initializeS3().deleteObject(params, function (err, data) {
     callback(err, data);
   });
 }
