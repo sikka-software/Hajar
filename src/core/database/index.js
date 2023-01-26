@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export default function initializeDB(callback) {
+export default function initializeMongoDB(callback) {
   mongoose.connect(
     `mongodb+srv://${String(global._config.mongodb_name)}:${String(
       global._config.mongodb_password
