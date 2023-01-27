@@ -39,6 +39,7 @@ import {
 } from "./core/referral/graphql/resolvers/index";
 import addModel from "./core/database/models";
 
+import { CreateSchema } from "./core/schema";
 global._config;
 global._auth;
 global._provider;
@@ -107,6 +108,7 @@ const Hajar = {
     GenerateUniqueCode: GenerateUniqueReferalCode,
     Models: ReferralModels,
   },
+  Schema: CreateSchema,
 };
 
 export default Hajar;
