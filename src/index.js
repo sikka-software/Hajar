@@ -1,3 +1,7 @@
+/*
+  @Mansour imports
+*/
+import { createResolvers } from "./core/resolver";
 import { LIB_NAME, LIB_VERSION } from "./constants";
 import { setupEmail, sendEmail, sendEmailVerify } from "./core/email";
 import {
@@ -47,6 +51,8 @@ global.SIKKA_SOFTWARE_APPLEPAY_PAYFOR_SHA_REQUEST_PHRASE;
 global.SIKKA_SOFTWARE_APPLEPAY_PAYFOR_SHA_RESPONSE_PHRASE;
 global.SIKKA_SOFTWARE_PAYFOR_SHA_REQUEST_PHRASE;
 global.SIKKA_SOFTWARE_PAYFOR_SHA_RESPONSE_PHRASE;
+
+import * as path from "path";
 
 /*
 example use
@@ -109,6 +115,7 @@ const Hajar = {
     Models: ReferralModels,
   },
   Schema: CreateSchema,
+  Resolver: createResolvers,
 };
 
 export default Hajar;
