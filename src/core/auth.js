@@ -18,21 +18,16 @@ import {
   signInWithPopup,
 } from "@firebase/auth";
 import CryptoJS from "crypto-js";
-globalThis._Hajar_config = HAJAR_FIREBASE;
 export async function initialize() {
-  globalThis.firebase = firebase.initializeApp(globalThis._Hajar_config);
+  globalThis.firebase = firebase.initializeApp(HAJAR_FIREBASE);
   globalThis._auth = getAuth();
   globalThis._provider = new GoogleAuthProvider();
 }
 
-export async function signIn(fieldValues) {
+export async function signIn(auth, fieldValues) {
   const { email, password } = fieldValues;
 
-  const result = await signInWithEmailAndPassword(
-    globalThis._auth,
-    email,
-    password
-  );
+  const result = await signInWithEmailAndPassword(auth, email, password);
   return result;
 }
 
