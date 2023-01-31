@@ -41,12 +41,12 @@
         }
     ],
     "HAJAR_FIREBASE": {
-        "apiKey": "",
-        "authDomain": "",
-        "projectId": "",
-        "storageBucket": "",
-        "messagingSenderId": "",
-        "appId": "",
-        "measurementId": ""
+    "apiKey": "AIzaSyCO8UGBzSVaxpDLuSCcC0PZcm3QfTBcv0w",
+  "authDomain": "qawaim-85008.firebaseapp.com",
+  "projectId": "qawaim-85008",
+  "storageBucket": "qawaim-85008.appspot.com",
+  "messagingSenderId": "732930107023",
+  "appId": "1:732930107023:web:688fbc5c837fbb6779f2fa",
+  "measurementId": "G-6BWPEY8R1M"
     }
 }

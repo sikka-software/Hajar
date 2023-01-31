@@ -3,6 +3,7 @@ import { CreateSchema } from "../src/core/schema";
 import { createResolvers } from "../src/core/resolver";
 import * as path from "path";
 import mongoose from "mongoose";
+import * as firebase from "@firebase/app";
 
 // Replace with actual tests
 describe("Hajar.src.js", () => {
@@ -37,18 +38,65 @@ describe("CreateSchema", () => {
   });
 });
 
-// Test Send Email function
-/* describe("Send Email", () => {
-  it("should send an email", () => {
-    const transport = {};
-    const params = {
-      from: 'test@example.com',
-      to: 'test2@example.com',
-      subject: 'Test email',
-      html: '<p>This is a test email</p>'
-    };
-    const result = sendEmail(transport, params);
-    expect(result).toEqual(true);
+// Test database part
+// Test database connection
+describe("Database", () => {
+  it("should connect to the database", async () => {
+    Hajar.Database.initialize();
+    console.log(mongoose.connection.readyState);
+    expect(mongoose.connection.readyState).toEqual(1);
   });
 });
- */
+
+// Add a new model to the database
+describe("addModel", () => {
+  it("adds a new model to the database", async () => {
+    const modelName = "TestModel";
+    const schema = new mongoose.Schema({
+      name: String,
+      age: Number,
+    });
+
+    const testModel = Hajar.Database.model(modelName, schema);
+
+    expect(testModel.modelName).toBe(modelName);
+  });
+});
+
+// Delete the firebase connection
+afterEach(() => {
+  firebase.getApp.delete;
+});
+// Test Firebase connection
+describe("initializeFirebase", () => {
+  it("initializes Firebase", () => {
+    Hajar.Auth.SetupFirebase();
+    expect(firebase.getApp.length).toBe(1);
+  });
+});
+// sign in to firebase
+describe("signIn", () => {
+  it("signs in to Firebase", async () => {
+    const fieldValues = {
+      email: "CreatedByMansour1@example.com",
+      password: "password",
+    };
+    const email = "CreatedByMansour@example.com";
+    const password = "password";
+    Hajar.Auth.SignIn(fieldValues);
+  });
+});
+
+// Test create user function
+describe("createUser", () => {
+  it("creates a new user", async () => {
+    const fieldValues = {
+      email: "Createdexamplesss@example.com",
+      password: "password99",
+    };
+    Hajar.Auth.CreateUser(globalThis._auth, fieldValues);
+    // expect(fieldValues.email).toEqual(Hajar.Auth.CreateUser.dataUser.email);
+  });
+});
+
+// Test update user function

@@ -1,0 +1,33 @@
+{
+  "HAJAR_MONGODB_NAME": "Qawaim",
+  "HAJAR_MONGODB_USER": "dbQawaim",
+  "HAJAR_MONGODB_PASSWORD": "QYKZnv9zdbf577n8",
+  "HAJAR_MAIL_PARAMETERS": [
+    {
+      "name": "myBillingName",
+      "host": "box.qawaim.app",
+      "port": "465",
+      "secure": true,
+      "username": "billing@qawaim.app",
+      "password": "3=3ZzEZtum"
+    },
+    {
+      "name": "myNewsletterName",
+      "host": "box.qawaim.app",
+      "port": "465",
+      "secure": true,
+      "username": "newsletter@qawaim.app",
+      "password": "3X3UpJV]n5"
+    }
+  ],
+
+  "HAJAR_FIREBASE": {
+    "apiKey": "AIzaSyCO8UGBzSVaxpDLuSCcC0PZcm3QfTBcv0w",
+    "authDomain": "qawaim-85008.firebaseapp.com",
+    "projectId": "qawaim-85008",
+    "storageBucket": "qawaim-85008.appspot.com",
+    "messagingSenderId": "732930107023",
+    "appId": "1:732930107023:web:688fbc5c837fbb6779f2fa",
+    "measurementId": "G-6BWPEY8R1M"
+  }
+}

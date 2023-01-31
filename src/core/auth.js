@@ -1,6 +1,7 @@
 /* tslint:disable:no-string-literal */
 import { add } from "date-fns";
 import * as firebase from "@firebase/app";
+import { HAJAR_FIREBASE } from "../../Hajar.config.json";
 import {
   Auth,
   User,
@@ -17,65 +18,29 @@ import {
   signInWithPopup,
 } from "@firebase/auth";
 import CryptoJS from "crypto-js";
-
-/*
-let firebaseConfig = {
-  apiKey:
-  authDomain:
-  projectId:
-  storageBucket:
-  messagingSenderId:
-  appId:
-  measurementId:
-};
-*/
-
-export async function initialize(params) {
-  if (
-    params.apiKey !== "" &&
-    params.authDomain !== "" &&
-    params.projectId !== "" &&
-    params.storageBucket !== "" &&
-    params.messagingSenderId !== "" &&
-    params.appId !== "" &&
-    params.measurementId !== ""
-  ) {
-    const app =
-      firebase.getApps().length > 0
-        ? firebase.initializeApp(params)
-        : firebase.getApp();
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
-    globalThis._auth = auth;
-    globalThis._provider = provider;
-  } else {
-    Error("Missing Required Parameters.");
-  }
+globalThis._Hajar_config = HAJAR_FIREBASE;
+export async function initialize() {
+  globalThis.firebase = firebase.initializeApp(globalThis._Hajar_config);
+  globalThis._auth = getAuth();
+  globalThis._provider = new GoogleAuthProvider();
 }
 
-export async function signIn(fieldValues, e, callback) {
-  try {
-    const userCredential = await signInWithEmailAndPassword(
-      globalThis._auth,
-      fieldValues.email,
-      fieldValues.password
-    );
-    callback(userCredential, fieldValues, e);
-  } catch (error) {
-    callback(error.code, fieldValues, e);
-  }
+export async function signIn(fieldValues) {
+  const { email, password } = fieldValues;
+
+  const result = await signInWithEmailAndPassword(
+    globalThis._auth,
+    email,
+    password
+  );
+  return result;
 }
 
-export async function signInViaGoogle(e, callback) {
-  try {
-    const userCredential = await signInWithPopup(
-      globalThis._auth,
-      globalThis._provider
-    );
-    callback(userCredential, e);
-  } catch (error) {
-    callback(error.code, e);
-  }
+export async function signInViaGoogle() {
+  const provider = new GoogleAuthProvider();
+  const result = await signInWithPopup(globalThis._auth, provider);
+  const user = result.user;
+  return user;
 }
 
 export async function create(auth, dataUser) {
@@ -85,7 +50,7 @@ export async function create(auth, dataUser) {
       dataUser.email,
       dataUser.password
     );
-    dataUser.callback(userCredential);
+    return userCredential;
   } else {
     Error("Missing Required Parameters.");
   }

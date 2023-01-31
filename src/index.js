@@ -1,7 +1,9 @@
 /*
-  @Mansour imports
+  /*-----@Mansour imports /*-----
 */
 import { createResolvers } from "./core/resolver";
+import { CreateSchema } from "./core/schema";
+/*------*/
 import { LIB_NAME, LIB_VERSION } from "./constants";
 import { setupEmail, sendEmail, sendEmailVerify } from "./core/email";
 import {
@@ -43,7 +45,6 @@ import {
 } from "./core/referral/graphql/resolvers/index";
 import addModel from "./core/database/models";
 
-import { CreateSchema } from "./core/schema";
 global._config;
 global._auth;
 global._provider;
