@@ -67,9 +67,10 @@ export async function update(auth, type, dataUserUpdate) {
         await updatePassword(user, dataUserUpdate.newPassword);
         break;
     }
-    dataUserUpdate.callback(user, type, dataUserUpdate);
+    return true;
   } else {
     Error("Missing Required Parameters.");
+    return false;
   }
 }
 export async function deactivate() {

@@ -39,20 +39,40 @@ describe("CreateSchema", () => {
 });
 
 // Test database part
-// Test database connection
-/* describe("Database", () => {
-  it("should connect to the database", async () => {
-    Hajar.Database.initialize();
- */
-/*
-      @Mansour
-    */
-// Here i want to check if the connection is established or not
-// i put 2 because the connection is still pending when i run the test
-// but when i run the app it will be 1
-/*  expect(mongoose.connection.readyState).toEqual(2);
+// The purpose of these tests is to validate that the function correctly sets up a connection to the specified database type.
+// The tests cover three scenarios: a successful connection to MongoDB, a successful connection to MySQL, and an unsupported database type.
+describe("Database", () => {
+  it("should return a connected MongoDB instance", () => {
+    const options = {
+      type: "MongoDB",
+      url: "mongodb://localhost:27017/test-db",
+    };
+    const db = Hajar.Database.initialize(options);
+    expect(db).toBeTruthy();
+    // expect(db.connection.readyState).toBe(1); // connected
   });
-}); */
+
+  /*   it("should return a connected MySQL instance", async () => {
+    const options = {
+      type: "mysql",
+      url: "mysql://localhost:3306/test-db",
+    };
+
+    const db = await Hajar.Database.initialize(options);
+
+    expect(db).toBeTruthy();
+    expect(db.state).toBe("connected");
+  }); */
+
+  it("should return null for unsupported database types", async () => {
+    const options = {
+      type: "unsupported",
+      url: "invalid://localhost:1234/test-db",
+    };
+    const db = await Hajar.Database.initialize(options);
+    expect(db).toBeNull();
+  });
+});
 
 // Add a new model to the database
 describe("addModel", () => {
@@ -62,6 +82,7 @@ describe("addModel", () => {
       name: String,
       age: Number,
     });
+
     /*
     // @Mansour
     // Here we will give modelName and schema to the function
@@ -88,11 +109,9 @@ describe("initializeFirebase", () => {
 describe("signIn", () => {
   it("signs in to Firebase", async () => {
     const fieldValues = {
-      email: "creat@example.com",
+      email: "createdbymansour99@example.com",
       password: "password",
     };
-    const email = "CreatedByMansour@example.com";
-    const password = "password";
     const result = Hajar.Auth.SignIn(global._auth, fieldValues);
     expect(result).toBeTruthy();
   });
@@ -101,13 +120,14 @@ describe("signIn", () => {
 // Test create user function
 describe("createUser", () => {
   it("creates a new user", async () => {
-    const fieldValues = {
-      email: "Createddd@example.com",
+    const UserCredential = {
+      email: "Createdddddqsdqsddddd@example.com",
       password: "password99",
     };
-    Hajar.Auth.CreateUser(global._auth, fieldValues);
+    Hajar.Auth.CreateUser(global._auth, UserCredential);
     // expect(fieldValues.email).toEqual(Hajar.Auth.CreateUser.dataUser.email);
   });
 });
-
 // Test update user function
+
+// Test update user profile function

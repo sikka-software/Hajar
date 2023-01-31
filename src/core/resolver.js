@@ -32,5 +32,8 @@ export async function createResolvers(model) {
   `;
   resolverFile.trim();
 
-  fs.writeFileSync(`./test/${model.modelName}.resolver.js`, resolverFile);
+  fs.writeFileSync(
+    `./test/resolver/${model.modelName}.resolver.js`,
+    resolverFile
+  );
 }

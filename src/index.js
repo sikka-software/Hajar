@@ -24,7 +24,7 @@ import {
 } from "./core/auth";
 import updateOptions from "./core/options";
 import setupCron from "./core/cron";
-import initializeMongoDB from "./core/database/index";
+import { setupDatabase } from "./core/database/index";
 import { createInvoice } from "./core/invoice";
 import ReferralShema from "./core/referral/graphql/schema/index";
 import {
@@ -67,7 +67,7 @@ const Hajar = {
   version: LIB_VERSION,
   Config: updateOptions,
   Database: {
-    initialize: initializeMongoDB,
+    initialize: setupDatabase,
     model: addModel,
   },
   Invoice: createInvoice,
