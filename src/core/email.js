@@ -1,46 +1,36 @@
 import nodemailer from "nodemailer";
-import getVerifyEmail from "../templates/VerifyEmail";
-import getEmailInvoiceTemplate from "../templates/invoice";
-import getResetEmail from "../templates/ResetPassword";
 
-export function setupEmail(params) {
-  const listTransport = {};
-  if (params.length > 0) {
-    for (let i = 0; i < params.length; i++) {
-      const config = params[i];
-      const nameTransporter = config.name;
-      let mailConfig = {
-        host: config.host,
-        port: config.port,
-        auth: {
-          user: config.user,
-          pass: config.pass,
-        },
-      };
-      if (config.port === 587) {
-        mailConfig["tls"] = {
-          // do not fail on invalid certs
-          rejectUnauthorized: false,
-        };
-        mailConfig["secure"] = false;
-      }
-      if (config.port === 465) {
-        mailConfig["secure"] = true;
-      }
-      let transporter = nodemailer.createTransport(mailConfig);
-      listTransport[nameTransporter] = transporter;
-      listTransport[nameTransporter].verify(function (error, success) {
-        if (error != null) {
-          console.log(error);
-        } else {
-          console.log(`Server ${nameTransporter} is ready to send mail`);
-        }
-      });
-    }
-  }
-  return listTransport;
+export async function setupEmail(emailConfig) {
+  // Create a transporter object using the emailConfig provided
+  let transporter = nodemailer.createTransport({
+    host: emailConfig.host,
+    port: emailConfig.port,
+    secure: emailConfig.secure,
+    auth: {
+      user: emailConfig.auth.user,
+      pass: emailConfig.auth.pass,
+    },
+  });
+
+  // Verify the transporter object is valid and can send emails
+  await transporter.verify();
+
+  return transporter;
+}
+export async function sendEmail({ emailConfig, template, ...data }) {
+  // Use the emailConfig to setup the transporter
+  let transporter = nodemailer.createTransport(emailConfig);
+
+  // Use the emailConfig and html to send the email
+  await transporter.sendMail({
+    from: emailConfig.auth.user,
+    to: data.to,
+    subject: data.subject,
+    html: template(data),
+  });
 }
 
+/* 
 export async function sendEmail(transport, params) {
   return await new Promise((resolve, reject) => {
     transport.sendMail(params, function (error, info) {
@@ -53,8 +43,8 @@ export async function sendEmail(transport, params) {
       }
     });
   });
-}
-
+} */
+/* 
 export async function sendEmailVerify(transport) {
   return await new Promise((resolve, reject) => {
     transport.sendMail(getVerifyEmail, function (error, info) {
@@ -95,4 +85,4 @@ export async function sendEmailReset(transport) {
       }
     });
   });
-}
+} */

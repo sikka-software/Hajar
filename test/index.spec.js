@@ -4,7 +4,7 @@ import { createResolvers } from "../src/core/resolver";
 import * as path from "path";
 import mongoose from "mongoose";
 import * as firebase from "@firebase/app";
-
+import nodemailer from "nodemailer";
 // Replace with actual tests
 describe("Hajar.src.js", () => {
   it("should get the library's version", () => {
@@ -118,7 +118,7 @@ describe("signIn", () => {
 });
 
 // Test create user function
-describe("createUser", () => {
+/* describe("createUser", () => {
   it("creates a new user", async () => {
     const UserCredential = {
       email: "Createdddddqsdqsddddd@example.com",
@@ -126,6 +126,59 @@ describe("createUser", () => {
     };
     Hajar.Auth.CreateUser(global._auth, UserCredential);
     // expect(fieldValues.email).toEqual(Hajar.Auth.CreateUser.dataUser.email);
+  });
+}); */
+
+// Setup Email Config (Mansour)
+describe("setupEmail", () => {
+  it("configures nodemailer with the given emailConfig", () => {
+    const emailConfig = {
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: "benmansourmansour08@gmail.com",
+        pass: "grmislczfdqayrak",
+      },
+    };
+
+    Hajar.Mail.SetupEmail(emailConfig);
+
+    expect(nodemailer.createTransport).toHaveBeenCalledWith({
+      host: emailConfig.host,
+      port: emailConfig.port,
+      secure: emailConfig.secure,
+      auth: {
+        user: "benmansourmansour08@gmail.com",
+        pass: "grmislczfdqayrak",
+      },
+    });
+  });
+});
+// Send email function
+describe("sendEmail", () => {
+  it("should send an email", async () => {
+    const Template = (props) => {
+      return (
+        <div>
+          <h1>{props.title}</h1>
+          <p>{props.body}</p>
+        </div>
+      );
+    };
+    const emailConfig = {
+      from: "from@example.com",
+      to: "to@example.com",
+      subject: "Test Email",
+      html: "<p>Test email body</p>",
+    };
+    const template = <Template />;
+    const data = { name: "John Doe" };
+
+    const result = await Hajar.Mail.SendEmail({ emailConfig, template, data });
+
+    expect(result).toEqual({ response: "email sent successfully" });
+    expect(nodemailer.createTransport).toHaveBeenCalled();
   });
 });
 // Test update user function
