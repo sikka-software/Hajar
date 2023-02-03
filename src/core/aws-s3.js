@@ -1,5 +1,10 @@
 import AWS from "aws-sdk";
-
+const _config = {
+  accessKeyId: "<ACCESS_KEY_ID>",
+  secretAccessKey: "<SECRET_ACCESS_KEY>",
+  Bucket: "<BUCKET_NAME>",
+};
+global._config = _config;
 export function initializeS3() {
   const config = {
     accessKeyId: global._config.accessKeyId,
@@ -8,10 +13,18 @@ export function initializeS3() {
   };
   return new AWS.S3(config);
 }
-
 export async function listImages(params, callback) {
   initializeS3().listObjects(params, function (err, data) {
-    callback(err, data);
+    if (err) {
+      callback(err, null);
+    }
+    const images = data.Contents.filter(
+      (item) =>
+        item.Key.endsWith(".jpg") ||
+        item.Key.endsWith(".jpeg") ||
+        item.Key.endsWith(".png")
+    );
+    return callback(null, images);
   });
 }
 
