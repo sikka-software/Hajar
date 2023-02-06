@@ -13,7 +13,6 @@ describe("Database", () => {
     expect(db).toBeTruthy();
     // expect(db.connection.readyState).toBe(1); // connected
   });
-
   /*   it("should return a connected MySQL instance", async () => {
       const options = {
         type: "mysql",

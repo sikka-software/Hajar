@@ -1,6 +1,6 @@
 {
   "name": "@sikka/hajar",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "Toolkit to create SaaS applications",
   "main": "dist/Hajar.cjs.min.js",
   "module": "dist/Hajar.esm.min.js",
@@ -53,6 +53,7 @@
     "@firebase/app": "~0.7.33",
     "@firebase/auth": "~0.20.7",
     "@graphql-tools/schema": "~9.0.14",
+    "@rollup/plugin-json": "~6.0.0",
     "aws-sdk": "~2.1224.0",
     "base64-stream": "~1.0.0",
     "crypto": "~1.0.1",
@@ -68,6 +69,7 @@
     "node-schedule": "~2.1.0",
     "nodemailer": "~6.7.8",
     "qrcode": "~1.5.1",
+    "stripe": "~11.9.1",
     "wkhtmltopdf": "~0.4.0"
   },
   "browserslist": "> 0.5%, last 2 versions, Firefox ESR, not dead",

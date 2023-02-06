@@ -44,7 +44,7 @@ import {
   referralsAnalytics,
 } from "./core/referral/graphql/resolvers/index";
 import addModel from "./core/database/models";
-
+import { initializeStripe, processPayment } from "./core/stripe";
 global._config;
 global._auth;
 global._provider;
@@ -117,6 +117,11 @@ const Hajar = {
   },
   Schema: CreateSchema,
   Resolver: createResolvers,
+
+  Stripe: {
+    initializeStripe: initializeStripe,
+    ProcessPayment: processPayment,
+  },
 };
 
 export default Hajar;

@@ -3,6 +3,7 @@
 import babel from "@rollup/plugin-babel";
 import { terser } from "rollup-plugin-terser";
 import pkg from "./package.json";
+import json from "@rollup/plugin-json";
 
 const LIBRARY_NAME = "Hajar"; // Change with your library's name
 const EXTERNAL = []; // Indicate which modules should be treated as external
@@ -56,6 +57,7 @@ const makeConfig = (env = "development") => {
       },
     ],
     plugins: [
+      json(),
       // Uncomment the following 2 lines if your library has external dependencies
       // resolve(), // teach Rollup how to find external modules
       // commonjs(), // so Rollup can convert external modules to an ES module
