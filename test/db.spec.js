@@ -1,5 +1,6 @@
 import Hajar from "../src";
 import mongoose from "mongoose";
+// TODO : add test for the database
 // Test database part
 // The purpose of these tests is to validate that the function correctly sets up a connection to the specified database type.
 // The tests cover three scenarios: a successful connection to MongoDB, a successful connection to MySQL, and an unsupported database type.

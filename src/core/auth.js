@@ -1,7 +1,7 @@
 /* tslint:disable:no-string-literal */
 import { add } from "date-fns";
 import * as firebase from "@firebase/app";
-import HAJAR_FIREBASE from "../../Hajar.config.json";
+import { HAJAR_FIREBASE } from "../../Hajar.config.json";
 import {
   Auth,
   User,

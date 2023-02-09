@@ -13,7 +13,7 @@ describe("initializeFirebase", () => {
   });
 });
 // sign in to firebase
-/* describe("signIn", () => {
+describe("signIn", () => {
   it("signs in to Firebase", async () => {
     const fieldValues = {
       email: "createdbymansour99@example.com",
@@ -22,17 +22,17 @@ describe("initializeFirebase", () => {
     const result = Hajar.Auth.SignIn(global._auth, fieldValues);
     expect(result).toBeTruthy();
   });
-}); */
-/*
+});
+
 // Test create user function
 describe("createUser", () => {
   it("creates a new user", async () => {
     const UserCredential = {
-      email: "Createdddddqsfdqsssddddd@example.com",
+      email: "zakher1@example.com",
       password: "password99",
     };
     Hajar.Auth.CreateUser(global._auth, UserCredential);
-    // expect(fieldValues.email).toEqual(Hajar.Auth.CreateUser.dataUser.email);
+    //  expect(UserCredential.email).toEqual(Hajar.Auth.CreateUser.dataUser.email);
   });
 });
 
@@ -43,4 +43,3 @@ describe("signOut", () => {
     expect(result).toBeTruthy();
   });
 });
- */

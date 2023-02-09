@@ -9,6 +9,7 @@ describe("CreateSchema", () => {
     const User = mongoose.model("User", {
       name: String,
       email: String,
+      password: String,
     });
 
     // This Part will create a schema for the User model
