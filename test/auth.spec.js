@@ -28,7 +28,7 @@ describe("signIn", () => {
 describe("createUser", () => {
   it("creates a new user", async () => {
     const UserCredential = {
-      email: "zakher1@example.com",
+      email: "zakher12@example.com",
       password: "password99",
     };
     Hajar.Auth.CreateUser(global._auth, UserCredential);

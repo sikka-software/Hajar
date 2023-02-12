@@ -1,6 +1,6 @@
 {
   "name": "@sikka/hajar",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "Toolkit to create SaaS applications",
   "main": "dist/Hajar.cjs.min.js",
   "module": "dist/Hajar.esm.min.js",
@@ -52,7 +52,7 @@
   "dependencies": {
     "@firebase/app": "~0.7.33",
     "@firebase/auth": "~0.20.7",
-    "@graphql-tools/schema": "~9.0.14",
+    "@graphql-tools/schema": "~9.0.12",
     "@rollup/plugin-json": "~6.0.0",
     "aws-sdk": "~2.1224.0",
     "base64-stream": "~1.0.0",
