@@ -1,5 +1,5 @@
 {
-  "name": "@sikka/hajar",
+  "name": "@sikka/hajar0",
   "version": "1.0.21",
   "description": "Toolkit to create SaaS applications",
   "main": "dist/Hajar.cjs.min.js",

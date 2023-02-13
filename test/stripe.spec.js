@@ -3,8 +3,7 @@ import * as Stripe from "stripe";
 
 describe("initializeStripe", () => {
   it("initializes a Stripe instance with the provided secret key", () => {
-    const secretKey =
-      "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";
+    const secretKey = "";
     const stripe = Hajar.Stripe.initializeStripe(secretKey);
 
     expect(stripe).not.toBeNull();
@@ -17,7 +16,7 @@ describe("initializeStripe", () => {
       amount: 1000,
       currency: "usd",
       token:
-        "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",
+        "",
     };
 
     const charge = await Hajar.Stripe.ProcessPayment(paymentData);
