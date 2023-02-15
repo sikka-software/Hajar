@@ -1,6 +1,6 @@
 {
-  "name": "@sikka/hajar0",
-  "version": "1.0.21",
+  "name": "@sikka/hajar",
+  "version": "1.0.22",
   "description": "Toolkit to create SaaS applications",
   "main": "dist/Hajar.cjs.min.js",
   "module": "dist/Hajar.esm.min.js",

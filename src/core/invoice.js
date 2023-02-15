@@ -155,7 +155,6 @@ export async function createInvoice(
       {},
       function (err, str) {
         console.log(err);
-        console.log(str);
         wkhtmltopdf(str).pipe(
           fs.createWriteStream(
             `invoices/invoice-${transaction.invoice_id}.pdf`,
@@ -171,7 +170,6 @@ export async function createInvoice(
       {},
       function (err, str) {
         console.log(err);
-        //console.log(str);
         //let stream = wkhtmltopdf(str);
         //let blob = stream.toBlob('application/pdf');
         wkhtmltopdf(str).pipe(new Base64Encode()).pipe(res);

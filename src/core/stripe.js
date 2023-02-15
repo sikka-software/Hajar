@@ -35,7 +35,6 @@ export async function subscribeUser(customerData) {
       ],
       expand: ["latest_invoice.payment_intent"],
     });
-
     console.log("Subscription successful:", subscription.id);
   } catch (error) {
     console.error("Error subscribing user:", error);
