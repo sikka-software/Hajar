@@ -1,23 +1,42 @@
 import Stripe from "stripe";
 
 export async function initializeStripe(secretKey) {
-  global.Stripe = Stripe(secretKey);
+  if (!secretKey) {
+    throw new Error("Stripe secret key is required");
+  }
+  global._stripe = Stripe(secretKey);
   return new Stripe(secretKey);
 }
-
-export async function processPayment(paymentData) {
+export async function generatetoken(card) {
   try {
-    const paymentIntent = await global.Stripe.charges.create({
-      amount: paymentData.amount,
-      currency: paymentData.currency,
-      source: paymentData.token,
+    const token = await globalThis._stripe.tokens.create({
+      card: {
+        number: card.number,
+        exp_month: card.exp_month,
+        exp_year: card.exp_year,
+        cvc: card.cvc,
+      },
     });
-    return paymentIntent;
+    return token;
   } catch (error) {
     throw error;
   }
 }
-export async function subscribeUser(customerData) {
+
+export async function processPayment(amount, currency, source, description) {
+  try {
+    const charge = await globalThis._stripe.charges.create({
+      amount: amount,
+      currency: currency,
+      source: source,
+      description: description,
+    });
+    return charge;
+  } catch (error) {
+    throw error;
+  }
+}
+/*export async function subscribeUser(customerData) {
   const { email, token } = customerData;
 
   try {
@@ -40,4 +59,4 @@ export async function subscribeUser(customerData) {
   } catch (error) {
     console.error("Error subscribing user:", error);
   }
-}
+}*/
