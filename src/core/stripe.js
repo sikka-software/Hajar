@@ -9,7 +9,7 @@ export async function initializeStripe(secretKey) {
 }
 export async function generatetoken(card) {
   try {
-    const token = await globalThis._stripe.tokens.create({
+    const token = await global._stripe.tokens.create({
       card: {
         number: card.number,
         exp_month: card.exp_month,
@@ -25,7 +25,7 @@ export async function generatetoken(card) {
 
 export async function processPayment(amount, currency, source, description) {
   try {
-    const charge = await globalThis._stripe.charges.create({
+    const charge = await global._stripe.charges.create({
       amount: amount,
       currency: currency,
       source: source,
