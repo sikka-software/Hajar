@@ -54,7 +54,6 @@ export async function processPayment(amount, currency, source, description) {
       ],
       expand: ["latest_invoice.payment_intent"],
     });
-
     console.log("Subscription successful:", subscription.id);
   } catch (error) {
     console.error("Error subscribing user:", error);

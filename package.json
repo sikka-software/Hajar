@@ -2,6 +2,23 @@
   "name": "@sikka/hajar",
   "version": "1.0.23",
   "description": "Toolkit to create SaaS applications",
+  "author": "Sikka Software <contact@sikka.io> (http://sikka.io)",
+  "license": "MIT",
+  "keywords": [
+    "engine",
+    "kit",
+    "saas",
+    "hajar"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sikka-software/hajar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sikka-software/hajar/issues",
+    "email": "hajar@sikka.io"
+  },
+  "homepage": "https://sikka.io/hajar",
   "main": "dist/Hajar.cjs.min.js",
   "module": "dist/Hajar.esm.min.js",
   "unpkg": "dist/Hajar.umd.min.js",
@@ -19,20 +36,6 @@
     "clean": "rimraf dist coverage",
     "prepare": "npm-run-all clean lint test build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sikka-software/Hajar.git"
-  },
-  "keywords": [
-    "SaaS",
-    "Toolkit"
-  ],
-  "license": "MIT",
-  "author": "SIKKA SOFTWARE",
-  "bugs": {
-    "url": "https://github.com/sikka-software/Hajar/issues"
-  },
-  "homepage": "https://github.com/georapbox/rollup-library-starter-kit#readme",
   "devDependencies": {
     "@babel/core": "~7.17.9",
     "@babel/plugin-proposal-object-rest-spread": "~7.17.3",
