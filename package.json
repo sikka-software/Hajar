@@ -1,6 +1,6 @@
 {
   "name": "@sikka/hajar",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "Toolkit to create SaaS applications",
   "author": "Sikka Software <contact@sikka.io> (http://sikka.io)",
   "license": "MIT",
@@ -64,7 +64,6 @@
     "date-fns": "~2.29.3",
     "dotenv": "~16.0.3",
     "file-system": "~2.2.2",
-    "fs": "~0.0.1-security",
     "graphql": "~16.6.0",
     "graphql-tag": "~2.12.6",
     "handlebars": "~4.7.7",

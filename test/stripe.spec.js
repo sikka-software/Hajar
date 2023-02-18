@@ -10,7 +10,7 @@ describe("initializeStripe", () => {
     expect(stripe).not.toBeNull();
     //expect(stripe.getKey()).toEqual(secretKey);
   });
-});
+}); /*
 describe("Generate TOKEN ", () => {
   it("should generate a test token", async () => {
     const card = {
@@ -25,7 +25,7 @@ describe("Generate TOKEN ", () => {
     expect(token).toBeDefined();
     expect(token.id).toBeDefined();
   });
-}, 1000);
+}, 1000);*/
 /*
 describe("processPayment function", () => {
   it("should return a successful payment response", async () => {

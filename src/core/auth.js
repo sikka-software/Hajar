@@ -1,7 +1,6 @@
 /* tslint:disable:no-string-literal */
 import { add } from "date-fns";
 import * as firebase from "@firebase/app";
-import { HAJAR_FIREBASE } from "../../Hajar.config.json";
 import {
   Auth,
   User,
@@ -18,8 +17,11 @@ import {
   signInWithPopup,
 } from "@firebase/auth";
 import CryptoJS from "crypto-js";
+
 export async function initialize() {
-  globalThis.firebase = firebase.initializeApp(HAJAR_FIREBASE);
+  const firebaseConfig = JSON.parse(process.env.HAJAR_FIREBASE);
+
+  globalThis.firebase = firebase.initializeApp(firebaseConfig);
   globalThis._auth = getAuth();
   globalThis._provider = new GoogleAuthProvider();
 }
