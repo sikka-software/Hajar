@@ -1,6 +1,8 @@
 /*
   /*-----@Mansour imports /*-----
 */
+import dotenv from "dotenv";
+dotenv.config();
 import { createResolvers } from "./core/resolver";
 import { CreateSchema } from "./core/schema";
 /*------*/
