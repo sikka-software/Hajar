@@ -1,9 +1,5 @@
-import Hajar from "../src";
-import { CreateSchema } from "../src/core/schema";
-import { createResolvers } from "../src/core/resolver";
-import mongoose from "mongoose";
-import * as firebase from "@firebase/app";
-import nodemailer from "nodemailer";
+const Hajar = require("../src/index").default;
+
 // Replace with actual tests
 describe("Hajar.src.js", () => {
   it("should get the library's version", () => {

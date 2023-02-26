@@ -1,5 +1,4 @@
-import Stripe from "stripe";
-
+const Stripe = require("stripe");
 export async function initializeStripe(secretKey) {
   if (!secretKey) {
     throw new Error("Stripe secret key is required");

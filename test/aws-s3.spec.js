@@ -1,6 +1,5 @@
-import AWS from "aws-sdk";
-import Hajar from "../src/index";
-
+const AWS = require("aws-sdk");
+const Hajar = require("../src/index").default;
 describe("initializeS3", () => {
   it("creates an instance of the S3 client", () => {
     const s3 = Hajar.S3.InitializeS3();

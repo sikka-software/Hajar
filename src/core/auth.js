@@ -1,7 +1,5 @@
-/* tslint:disable:no-string-literal */
-import { add } from "date-fns";
-import * as firebase from "@firebase/app";
-import {
+const firebase = require("@firebase/app");
+const {
   Auth,
   User,
   getAuth,
@@ -15,9 +13,10 @@ import {
   signOut,
   deleteUser,
   signInWithPopup,
-} from "@firebase/auth";
-import CryptoJS from "crypto-js";
+} = require("@firebase/auth");
 
+const CryptoJS = require("crypto-js");
+const { add } = require("date-fns");
 export async function initialize() {
   const firebaseConfig = JSON.parse(process.env.HAJAR_FIREBASE);
 

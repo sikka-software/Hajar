@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-
+const mongoose = require("mongoose");
 export async function setupDatabase(type, options) {
   switch (type) {
     case "MongoDB":

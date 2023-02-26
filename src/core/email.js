@@ -1,5 +1,4 @@
-import nodemailer from "nodemailer";
-
+const nodemailer = require("nodemailer");
 export async function setupEmail(emailConfig) {
   // Create a transporter object using the emailConfig provided
   let transporter = nodemailer.createTransport({

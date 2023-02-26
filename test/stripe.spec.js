@@ -1,5 +1,5 @@
-import Hajar from "../src/index";
-import * as Stripe from "stripe";
+const Stripe = require("stripe");
+const Hajar = require("../src/index").default;
 jest.setTimeout(10000);
 
 describe("initializeStripe", () => {

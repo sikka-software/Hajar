@@ -1,9 +1,9 @@
-import AWS from "aws-sdk";
 const _config = {
   accessKeyId: "<ACCESS_KEY_ID>",
   secretAccessKey: "<SECRET_ACCESS_KEY>",
   Bucket: "<BUCKET_NAME>",
 };
+const AWS = require("aws-sdk");
 global._config = _config;
 export function initializeS3() {
   const config = {

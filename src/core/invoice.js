@@ -1,9 +1,9 @@
-import wkhtmltopdf from "wkhtmltopdf";
-import moment from "moment";
-import Base64Encode from "base64-stream";
-import fs from "fs";
-import QRCode from "qrcode";
-import { formatCurrency, getPrice } from "./helpers";
+const wkhtmltopdf = require("wkhtmltopdf");
+const moment = require("moment");
+const Base64Encode = require("base64-stream");
+const fs = require("fs");
+const QRCode = require("qrcode");
+const { formatCurrency, getPrice } = require("./helpers");
 
 export async function createInvoice(
   Transactions,

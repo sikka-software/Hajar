@@ -1,20 +1,20 @@
 /*
   /*-----@Mansour imports /*-----
 */
-import dotenv from "dotenv";
+const dotenv = require("dotenv");
 dotenv.config();
-import { createResolvers } from "./core/resolver";
-import { CreateSchema } from "./core/schema";
+const { createResolvers } = require("./core/resolver");
+const { CreateSchema } = require("./core/schema");
 /*------*/
-import { LIB_NAME, LIB_VERSION } from "./constants";
-import { setupEmail, sendEmail, sendEmailVerify } from "./core/email";
-import {
+const { LIB_NAME, LIB_VERSION } = require("./constants");
+const { setupEmail, sendEmail, sendEmailVerify } = require("./core/email");
+const {
   initializeS3,
   uploadImage,
   deleteImage,
   deleteImages,
-} from "./core/aws-s3";
-import {
+} = require("./core/aws-s3");
+const {
   initialize,
   create,
   update,
@@ -23,17 +23,17 @@ import {
   signIn,
   signOutUser,
   signInViaGoogle,
-} from "./core/auth";
-import updateOptions from "./core/options";
-import setupCron from "./core/cron";
-import { setupDatabase } from "./core/database/index";
-import { createInvoice } from "./core/invoice";
-import ReferralShema from "./core/referral/graphql/schema/index";
-import {
+} = require("./core/auth");
+const updateOptions = require("./core/options");
+const setupCron = require("./core/cron");
+const { setupDatabase } = require("./core/database/index");
+const { createInvoice } = require("./core/invoice");
+const ReferralShema = require("./core/referral/graphql/schema/index");
+const {
   GenerateUniqueReferalCode,
   ReferralModels,
-} from "./core/referral/index";
-import {
+} = require("./core/referral/index");
+const {
   createReferral,
   updateReferral,
   deleteReferral,
@@ -44,9 +44,15 @@ import {
   deleteReferralAnalytics,
   referralAnalytics,
   referralsAnalytics,
-} from "./core/referral/graphql/resolvers/index";
-import addModel from "./core/database/models";
-import { initializeStripe, processPayment, generatetoken } from "./core/stripe";
+} = require("./core/referral/graphql/resolvers/index");
+
+const addModel = require("./core/database/models");
+const {
+  initializeStripe,
+  processPayment,
+  generatetoken,
+} = require("./core/stripe");
+
 global._config;
 global._auth;
 global._provider;
@@ -54,8 +60,6 @@ global.SIKKA_SOFTWARE_APPLEPAY_PAYFOR_SHA_REQUEST_PHRASE;
 global.SIKKA_SOFTWARE_APPLEPAY_PAYFOR_SHA_RESPONSE_PHRASE;
 global.SIKKA_SOFTWARE_PAYFOR_SHA_REQUEST_PHRASE;
 global.SIKKA_SOFTWARE_PAYFOR_SHA_RESPONSE_PHRASE;
-
-import * as path from "path";
 
 /*
 example use

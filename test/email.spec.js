@@ -1,6 +1,5 @@
-import Hajar from "../src/index";
-import nodemailer from "nodemailer";
-
+const Hajar = require("../src/index").default;
+const nodemailer = require("nodemailer");
 // Setup Email Config (Mansour)
 describe("setupEmail", () => {
   it("configures nodemailer with the given emailConfig", () => {

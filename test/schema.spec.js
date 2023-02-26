@@ -1,5 +1,5 @@
-import Hajar from "../src";
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
+const Hajar = require("../src/index").default;
 /*
  @Mansour Test Part 
 */

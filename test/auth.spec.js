@@ -1,6 +1,5 @@
-import Hajar from "../src";
-import * as firebase from "@firebase/app";
-
+const Hajar = require("../src/index").default;
+const firebase = require("@firebase/app");
 // Delete the firebase connection
 afterEach(() => {
   firebase.getApp.delete;

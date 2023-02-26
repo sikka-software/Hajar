@@ -1,6 +1,5 @@
-import crypto from "crypto";
-import mongoose from "mongoose";
-
+const crypto = require("crypto");
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 export async function GenerateUniqueReferalCode() {

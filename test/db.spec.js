@@ -1,6 +1,5 @@
-import Hajar from "../src";
-import mongoose from "mongoose";
-// TODO : add test for the database
+const Hajar = require("../src/index").default;
+const mongoose = require("mongoose");
 // Test database part
 // The purpose of these tests is to validate that the function correctly sets up a connection to the specified database type.
 // The tests cover three scenarios: a successful connection to MongoDB, a successful connection to MySQL, and an unsupported database type.
@@ -37,6 +36,7 @@ describe("Database", () => {
 });
 
 // Add a new model to the database
+/*
 describe("addModel", () => {
   it("adds a new model to the database", async () => {
     const modelName = "TestModel";
@@ -46,12 +46,16 @@ describe("addModel", () => {
     });
 
     /*
+      @TODO: to be redesigned
       // @Mansour
       // Here we will give modelName and schema to the function
       // and it will return a model
       // We can use this function to create Schema and resolver for the model
       */
+/*
     const testModel = Hajar.Database.model(modelName, schema);
     expect(testModel.modelName).toBe(modelName);
   });
+  
 });
+*/

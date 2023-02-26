@@ -1,5 +1,4 @@
-import schedule from "node-schedule";
-
+const schedule = require("node-schedule");
 export default function setupCron(callback, app) {
   // Schedule tasks to be run on the server.
   const job = schedule.scheduleJob("*/1 * * * *", async function () {
