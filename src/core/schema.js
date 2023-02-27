@@ -35,7 +35,7 @@ const buildSchema = require("graphql").buildSchema;
 }
  */
 
-export async function CreateSchema(model) {
+async function CreateSchema(model) {
   let fields = Object.keys(model.schema.paths)
     .filter((key) => ["_id", "__v"].indexOf(key) === -1)
     .map((key) => `${key}: ${model.schema.paths[key].instance}`)
@@ -66,3 +66,4 @@ export async function CreateSchema(model) {
   fs.writeFileSync(`./test/schema/${model.modelName}.type.graphql`, schema);
   return buildSchema(schema);
 }
+module.exports = CreateSchema;

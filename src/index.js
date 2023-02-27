@@ -3,8 +3,8 @@
 */
 const dotenv = require("dotenv");
 dotenv.config();
-const { createResolvers } = require("./core/resolver");
-const { CreateSchema } = require("./core/schema");
+const  createResolvers  = require("./core/resolver");
+const CreateSchema  = require("./core/schema");
 /*------*/
 const { LIB_NAME, LIB_VERSION } = require("./constants");
 const { setupEmail, sendEmail, sendEmailVerify } = require("./core/email");

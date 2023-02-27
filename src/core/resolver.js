@@ -3,7 +3,7 @@
     This function will take a mongoose model and return a resolver object
 */
 const fs = require("fs");
-export async function createResolvers(model) {
+async function createResolvers(model) {
   const resolverFile = `
   const ${model.modelName} = require('./models/${model.modelName}');
   module.exports = {
@@ -36,3 +36,4 @@ export async function createResolvers(model) {
     resolverFile
   );
 }
+module.exports = createResolvers;

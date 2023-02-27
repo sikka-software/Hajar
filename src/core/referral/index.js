@@ -2,7 +2,7 @@ const crypto = require("crypto");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-export async function GenerateUniqueReferalCode() {
+async function GenerateUniqueReferalCode() {
   let isOk = false;
   let codeReferal = "";
   do {
@@ -38,10 +38,15 @@ const ReferralAnalyticsSchema = new Schema(
   { timestamps: true }
 );
 
-export const ReferralModels = {
+const ReferralModels = {
   Referral: mongoose.model("Referral", ReferralSchema),
   ReferralAnalytics: mongoose.model(
     "ReferralAnalytics",
     ReferralAnalyticsSchema
   ),
+};
+
+module.exports = {
+  ReferralModels,
+  GenerateUniqueReferalCode,
 };

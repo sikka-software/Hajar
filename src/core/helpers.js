@@ -1,4 +1,4 @@
-export function getPrice(cycle, currency, pack) {
+function getPrice(cycle, currency, pack) {
   let price = 0;
   if (cycle === "annually") {
     if (currency === "usd") {
@@ -29,9 +29,13 @@ export function getPrice(cycle, currency, pack) {
   return price;
 }
 
-export function formatCurrency(cents, currency) {
+function formatCurrency(cents, currency) {
   if (currency === "SAR") {
     return String(cents) + " " + String(currency);
   }
   return String(currency) + " " + String(cents);
 }
+module.exports = {
+  getPrice,
+  formatCurrency,
+};

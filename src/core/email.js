@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-export async function setupEmail(emailConfig) {
+async function setupEmail(emailConfig) {
   // Create a transporter object using the emailConfig provided
   let transporter = nodemailer.createTransport({
     host: emailConfig.host,
@@ -16,7 +16,7 @@ export async function setupEmail(emailConfig) {
 
   return transporter;
 }
-export async function sendEmail({ emailConfig, template, ...data }) {
+async function sendEmail({ emailConfig, template, ...data }) {
   // Use the emailConfig to setup the transporter
   let transporter = nodemailer.createTransport(emailConfig);
 
@@ -85,3 +85,8 @@ export async function sendEmailReset(transport) {
     });
   });
 } */
+
+module.exports = {
+  setupEmail,
+  sendEmail,
+};

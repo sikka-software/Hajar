@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-export async function setupDatabase(type, options) {
+async function setupDatabase(type, options) {
   switch (type) {
     case "MongoDB":
       return await setupMongoDB(options);
@@ -43,3 +43,5 @@ async function setupFirebaseDatabase(options) {
   // Connect to Firebase Database using the options provided
   // ...
 }
+
+module.exports = { setupDatabase };

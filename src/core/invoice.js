@@ -5,7 +5,7 @@ const fs = require("fs");
 const QRCode = require("qrcode");
 const { formatCurrency, getPrice } = require("./helpers");
 
-export async function createInvoice(
+async function createInvoice(
   Transactions,
   transactionID,
   URL,
@@ -178,10 +178,15 @@ export async function createInvoice(
   }
 }
 
-export function formatDate(date) {
+function formatDate(date) {
   const day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
 
   return year + "/" + month + "/" + day;
 }
+
+module.exports = {
+  createInvoice,
+  formatDate,
+};
