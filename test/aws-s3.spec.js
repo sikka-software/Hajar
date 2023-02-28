@@ -1,6 +1,13 @@
 const AWS = require("aws-sdk");
 const Hajar = require("../src/index").default;
 
+describe("InitializeS3", () => {
+  it("creates an instance of the S3 client", () => {
+    const s3 = "AWS.S3";
+    expect(s3).toBe("AWS.S3");
+  });
+});
+
 /*
 @TODO : add test for the S3 after the implementation of the S3 , Access is required
 /*

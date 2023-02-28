@@ -17,7 +17,7 @@ async function setupDatabase(type, options) {
 }
 
 async function setupMongoDB(options) {
-  const connection = mongoose.connect(options.url, {
+  const connection = await mongoose.connect(options.url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });

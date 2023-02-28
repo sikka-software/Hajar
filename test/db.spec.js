@@ -4,13 +4,17 @@ const mongoose = require("mongoose");
 // The purpose of these tests is to validate that the function correctly sets up a connection to the specified database type.
 // The tests cover three scenarios: a successful connection to MongoDB, a successful connection to MySQL, and an unsupported database type.
 describe("Database", () => {
-  it("should return a connected MongoDB instance", () => {
+  it("should return a connected MongoDB instance", async () => {
+    const type = "MongoDB";
     const options = {
-      type: "MongoDB",
-      url: "mongodb://localhost:27017/test-db",
+      url: `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_DB_HOST}/${process.env.MONGO_DB}?retryWrites=true&w=majority`,
     };
-    const db = Hajar.Database.initialize(options);
-    expect(db).toBeTruthy();
+    const db = await Hajar.Database.initialize(type, options);
+
+    expect(db.connection.readyState).toBe(1); // connected
+
+    // Check if the connection is successful
+    //expect(db).toBeTruthy();
     // expect(db.connection.readyState).toBe(1); // connected
   });
   /*   it("should return a connected MySQL instance", async () => {
