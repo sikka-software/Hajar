@@ -1,45 +1,45 @@
 const mongoose = require("mongoose");
-async function setupDatabase(type, options) {
+function setupDatabase(type, options) {
   switch (type) {
     case "MongoDB":
-      return await setupMongoDB(options);
+      return setupMongoDB(options);
     case "SQL":
-      return await setupSQL(options);
+      return setupSQL(options);
     case "MySQL":
-      return await setupMySQL(options);
+      return setupMySQL(options);
     case "Supabase":
-      return await setupSupabase(options);
+      return setupSupabase(options);
     case "Firebase Database":
-      return await setupFirebaseDatabase(options);
+      return setupFirebaseDatabase(options);
     default:
       return null;
   }
 }
 
-async function setupMongoDB(options) {
-  const connection = await mongoose.connect(options.url, {
+function setupMongoDB(options) {
+  const connection = mongoose.connect(options.url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
   return connection;
 }
 
-async function setupSQL(options) {
+function setupSQL(options) {
   // Connect to SQL using the options provided
   // ...
 }
 
-async function setupMySQL(options) {
+function setupMySQL(options) {
   // Connect to MySQL using the options provided
   // ...
 }
 
-async function setupSupabase(options) {
+function setupSupabase(options) {
   // Connect to Supabase using the options provided
   // ...
 }
 
-async function setupFirebaseDatabase(options) {
+function setupFirebaseDatabase(options) {
   // Connect to Firebase Database using the options provided
   // ...
 }

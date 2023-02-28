@@ -17,7 +17,7 @@ const {
 
 const CryptoJS = require("crypto-js");
 const { add } = require("date-fns");
-export async function initialize() {
+async function initialize() {
   const firebaseConfig = JSON.parse(process.env.HAJAR_FIREBASE);
 
   globalThis.firebase = firebase.initializeApp(firebaseConfig);
