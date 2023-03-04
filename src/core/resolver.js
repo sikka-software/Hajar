@@ -31,9 +31,6 @@ async function createResolvers(model) {
   `;
   resolverFile.trim();
 
-  fs.writeFileSync(
-    `./test/resolver/${model.modelName}.resolver.js`,
-    resolverFile
-  );
+  fs.writeFileSync(`./${model.modelName}.resolver.js`, resolverFile);
 }
 module.exports = createResolvers;

@@ -63,7 +63,7 @@ async function CreateSchema(model) {
 
   schema.trim();
   // Write the schema file to the specified directory
-  fs.writeFileSync(`./test/schema/${model.modelName}.type.graphql`, schema);
+  fs.writeFileSync(`./${model.modelName}.type.graphql`, schema);
   return buildSchema(schema);
 }
 module.exports = CreateSchema;
