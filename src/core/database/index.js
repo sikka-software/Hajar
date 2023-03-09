@@ -1,8 +1,7 @@
-const mongoose = require("mongoose");
-function setupDatabase(type, options) {
+function setupDatabase(type, options, middleware) {
   switch (type) {
     case "MongoDB":
-      return setupMongoDB(options);
+      return setupMongoDB(options, middleware);
     case "SQL":
       return setupSQL(options);
     case "MySQL":
@@ -16,8 +15,8 @@ function setupDatabase(type, options) {
   }
 }
 
-function setupMongoDB(options) {
-  const connection = mongoose.connect(options.url, {
+function setupMongoDB(options, middleware) {
+  const connection = middleware.connect(options.url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });

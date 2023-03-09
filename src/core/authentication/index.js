@@ -42,7 +42,6 @@ class HajarAuth {
     }
 
     const token = this.jwt.sign({ userId: user._id }, this.secret);
-    res.cookie("token", token, this.cookieOptions);
 
     return { token };
   }

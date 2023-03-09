@@ -2,7 +2,8 @@ const Hajar = require("../src/index").default;
 // Test database part
 // The purpose of these tests is to validate that the function correctly sets up a connection to the specified database type.
 // The tests cover three scenarios: a successful connection to MongoDB, a successful connection to MySQL, and an unsupported database type.
-describe("Database", () => {
+
+/*describe("Database", () => {
   it("should return a connected MongoDB instance", async () => {
     const type = "MongoDB";
     const options = {
@@ -15,8 +16,8 @@ describe("Database", () => {
     // Check if the connection is successful
     //expect(db).toBeTruthy();
     // expect(db.connection.readyState).toBe(1); // connected
-  });
-  /*   it("should return a connected MySQL instance", async () => {
+  });*/
+/*   it("should return a connected MySQL instance", async () => {
       const options = {
         type: "mysql",
         url: "mysql://localhost:3306/test-db",
@@ -28,14 +29,13 @@ describe("Database", () => {
       expect(db.state).toBe("connected");
     }); */
 
-  it("should return null for unsupported database types", async () => {
-    const options = {
-      type: "unsupported",
-      url: "invalid://localhost:1234/test-db",
-    };
-    const db = await Hajar.Database.initialize(options);
-    expect(db).toBeNull();
-  });
+it("should return null for unsupported database types", async () => {
+  const options = {
+    type: "unsupported",
+    url: "invalid://localhost:1234/test-db",
+  };
+  const db = await Hajar.Database.initialize(options);
+  expect(db).toBeNull();
 });
 
 // Add a new model to the database

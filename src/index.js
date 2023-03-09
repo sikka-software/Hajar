@@ -53,6 +53,7 @@ const {
   generatetoken,
 } = require("./core/stripe");
 
+const HajarAuth = require("./core/authentication/index");
 global._config;
 global._auth;
 global._provider;
@@ -128,6 +129,12 @@ const Hajar = {
     initializeStripe: initializeStripe,
     ProcessPayment: processPayment,
     generatetoken: generatetoken,
+  },
+
+  // This will be the authentication part
+
+  HajarAuth: {
+    Singin: HajarAuth.Singin,
   },
 };
 
