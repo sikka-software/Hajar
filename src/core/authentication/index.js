@@ -48,7 +48,7 @@ class HajarAuth {
 
     const token = this.jwt.sign({ userId: user._id }, this.secret);
 
-    const role = user.role || "admin"; // default role is "user"
+    const role = user.role || "user"; // default role is "user"
 
     return { token, role }; // modified
   }
@@ -71,20 +71,34 @@ class HajarAuth {
       return null;
     }
   }
-  async createRole(roleName, permissions) {
-    const existingRole = await this.Role.findOne({ name: roleName });
-    if (existingRole) {
-      throw new Error(`Role ${roleName} already exists`);
+  async getUserByEmail(email) {
+    const user = await this.User.findOne({ email }).populate({
+      path: "roles",
+      populate: {
+        path: "permissions",
+        model: "permissions",
+      },
+    });
+    if (!user) {
+      throw new Error(`User with email ${email} not found`);
     }
 
-    const role = new this.Role({
-      name: roleName,
-      permissions,
+    return user;
+  }
+
+  async getUserById(userId) {
+    const user = await this.User.findById(userId).populate({
+      path: "roles",
+      populate: {
+        path: "permissions",
+        model: "permissions",
+      },
     });
+    if (!user) {
+      throw new Error(`User with ID ${userId} not found`);
+    }
 
-    await role.save();
-
-    return role;
+    return user;
   }
 }
 
