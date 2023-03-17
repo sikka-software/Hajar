@@ -3,11 +3,13 @@ class HajarAuth {
     this.jwt = options.jwt;
     this.bcrypt = options.bcrypt;
     this.User = options.User;
+    this.Role = options.Role; // new
     this.secret = options.secret;
     this.cookieOptions = options.cookieOptions;
   }
 
-  async signup(name, email, password, confirmPassword) {
+  async signup(name, email, password, confirmPassword, role) {
+    // modified
     const userExists = await this.User.findOne({ email });
     if (userExists) {
       throw new Error("User with this email already exists");
@@ -20,13 +22,14 @@ class HajarAuth {
       email,
       password: hashedPassword,
       confirmPassword: hashedconfirmPassword,
+      role, // new
     });
 
     await user.save();
 
     const token = this.jwt.sign({ userId: user._id }, this.secret);
 
-    return { token };
+    return { token, role }; // modified
   }
 
   async signin(email, password, res) {
@@ -45,7 +48,9 @@ class HajarAuth {
 
     const token = this.jwt.sign({ userId: user._id }, this.secret);
 
-    return { token };
+    const role = user.role || "admin"; // default role is "user"
+
+    return { token, role }; // modified
   }
 
   signout(res) {
@@ -65,6 +70,21 @@ class HajarAuth {
     } catch (err) {
       return null;
     }
+  }
+  async createRole(roleName, permissions) {
+    const existingRole = await this.Role.findOne({ name: roleName });
+    if (existingRole) {
+      throw new Error(`Role ${roleName} already exists`);
+    }
+
+    const role = new this.Role({
+      name: roleName,
+      permissions,
+    });
+
+    await role.save();
+
+    return role;
   }
 }
 

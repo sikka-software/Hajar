@@ -3,17 +3,17 @@
 */
 const dotenv = require("dotenv");
 dotenv.config();
-const createResolvers = require("./core/resolver");
-const CreateSchema = require("./core/schema");
+const createResolvers = require("../src/core/resolver");
+const CreateSchema = require("../src/core/schema");
 /*------*/
-const { LIB_NAME, LIB_VERSION } = require("./constants");
-const { setupEmail, sendEmail, sendEmailVerify } = require("./core/email");
+const { LIB_NAME, LIB_VERSION } = require("../src/constants");
+const { setupEmail, sendEmail, sendEmailVerify } = require("../src/core/email");
 const {
   initializeS3,
   uploadImage,
   deleteImage,
   deleteImages,
-} = require("./core/aws-s3");
+} = require("../src/core/aws-s3");
 const {
   initialize,
   create,
@@ -23,16 +23,16 @@ const {
   signIn,
   signOutUser,
   signInViaGoogle,
-} = require("./core/auth");
-const updateOptions = require("./core/options");
-const setupCron = require("./core/cron");
-const { setupDatabase } = require("./core/database/index");
-const { createInvoice } = require("./core/invoice");
-const ReferralShema = require("./core/referral/graphql/schema/index");
+} = require("../src/core/auth");
+const { updateOptions } = require("../src/core/options");
+const { setupCron } = require("../src/core/cron");
+const { setupDatabase } = require("../src/core/database/index");
+const { createInvoice } = require("../src/core/invoice");
+const ReferralShema = require("../src/core/referral/graphql/schema/index");
 const {
   GenerateUniqueReferalCode,
   ReferralModels,
-} = require("./core/referral/index");
+} = require("../src/core/referral/index");
 const {
   createReferral,
   updateReferral,
@@ -44,16 +44,16 @@ const {
   deleteReferralAnalytics,
   referralAnalytics,
   referralsAnalytics,
-} = require("./core/referral/graphql/resolvers/index");
+} = require("../src/core/referral/graphql/resolvers/index");
 
-const addModel = require("./core/database/models");
+const { addModel } = require("../src/core/database/models");
 const {
   initializeStripe,
   processPayment,
   generatetoken,
-} = require("./core/stripe");
+} = require("../src/core/stripe");
 
-const HajarAuth = require("./core/authentication/index");
+const HajarAuth = require("../src/core/authentication/index");
 global._config;
 global._auth;
 global._provider;
@@ -134,7 +134,10 @@ const Hajar = {
   // This will be the authentication part
 
   HajarAuth: {
+    HajarAuth: HajarAuth,
     Singin: HajarAuth.Singin,
+    Singup: HajarAuth.Singup,
+    getUserByToken: HajarAuth.getUserByToken,
   },
 };
 
