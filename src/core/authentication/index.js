@@ -4,6 +4,7 @@ class HajarAuth {
     this.bcrypt = options.bcrypt;
     this.User = options.User;
     this.Role = options.Role; // new
+    this.Permission = options.Permission; // new
     this.secret = options.secret;
     this.cookieOptions = options.cookieOptions;
   }
@@ -30,6 +31,28 @@ class HajarAuth {
     const token = this.jwt.sign({ userId: user._id }, this.secret);
 
     return { token, role }; // modified
+  }
+  async createRole(roleName, permissionIds) {
+    const existingRole = await this.Role.findOne({ name: roleName });
+    if (existingRole) {
+      throw new Error(`Role ${roleName} already exists`);
+    }
+
+    const permissions = await this.Permission.find({
+      _id: { $in: permissionIds },
+    });
+    if (permissionIds.length !== permissions.length) {
+      throw new Error("Invalid permission IDs provided");
+    }
+
+    const role = new this.Role({
+      name: roleName,
+      permissions: permissions.map((permission) => permission._id),
+    });
+
+    await role.save();
+
+    return role;
   }
 
   async signin(email, password, res) {
@@ -65,7 +88,16 @@ class HajarAuth {
 
     try {
       const decodedToken = this.jwt.verify(token, this.secret);
-      const user = await this.User.findById(decodedToken.userId);
+      const user = await this.User.findById(decodedToken.userId).populate({
+        path: "roles",
+        populate: {
+          path: "permissions",
+          model: "permissions",
+        },
+      });
+      if (!user) {
+        return null;
+      }
       return user;
     } catch (err) {
       return null;
@@ -85,7 +117,6 @@ class HajarAuth {
 
     return user;
   }
-
   async getUserById(userId) {
     const user = await this.User.findById(userId).populate({
       path: "roles",
@@ -99,6 +130,40 @@ class HajarAuth {
     }
 
     return user;
+  }
+
+  async getRoleById(roleId) {
+    const role = await this.Role.findById(roleId).populate("permissions");
+    if (!role) {
+      throw new Error("Role not found");
+    }
+    return role;
+  }
+
+  async getRoles() {
+    const roles = await this.Role.find().populate("permissions");
+    return roles;
+  }
+
+  async updateRole(roleId, name, permissionIds) {
+    const role = await this.Role.findById(roleId);
+    if (!role) {
+      throw new Error("Role not found");
+    }
+    role.name = name;
+    role.permissions = await this.Permission.find({
+      _id: { $in: permissionIds },
+    });
+    await role.save();
+    return role;
+  }
+
+  async deleteRole(roleId) {
+    const role = await this.Role.findById(roleId);
+    if (!role) {
+      throw new Error("Role not found");
+    }
+    await role.delete();
   }
 }
 
