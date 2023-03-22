@@ -54,8 +54,8 @@ const {
 } = require("../src/core/stripe");
 
 const HajarAuth = require("../src/core/authentication/index");
-const HajarRoles = require("../src/core/authentication/roles/index");
-const HajarPermissions = require("../src/core/authentication/permissions/index");
+/* const HajarRoles = require("../src/core/authentication/roles/index");
+const HajarPermissions = require("../src/core/authentication/permissions/index"); */
 global._config;
 global._auth;
 global._provider;
@@ -141,7 +141,7 @@ const Hajar = {
     Singup: HajarAuth.Singup,
     getUserByToken: HajarAuth.getUserByToken,
   },
-  HajarRoles: {
+  /*  HajarRoles: {
     HajarRoles: HajarRoles,
     createRole: HajarRoles.createRole,
     roleToUser: HajarRoles.roleToUser,
@@ -158,7 +158,7 @@ const Hajar = {
     deletePermission: HajarPermissions.deletePermission,
     getPermission: HajarPermissions.getPermission,
     getPermissions: HajarPermissions.getPermissions,
-  },
+  }, */
 };
 
 export default Hajar;

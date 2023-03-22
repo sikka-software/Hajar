@@ -133,7 +133,7 @@ class HajarAuth {
   }
 
   async getRoleById(roleId) {
-    const role = await this.Role.findById(roleId).populate("permissions");
+    const role = await this.Role.findById(roleId);
     if (!role) {
       throw new Error("Role not found");
     }
@@ -141,7 +141,8 @@ class HajarAuth {
   }
 
   async getRoles() {
-    const roles = await this.Role.find().populate("permissions");
+    const roles = await this.Role.find();
+
     return roles;
   }
 
