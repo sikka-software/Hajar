@@ -176,6 +176,15 @@ class HajarAuth {
     await role.save();
     return role;
   }
+  async getAllGrantedPermissions() {
+    try {
+      const permissions = await this.Permission.find();
+      const grants = permissions.map((permission) => permission.grant);
+      return grants;
+    } catch (error) {
+      throw new Error(`Unable to fetch permissions: ${error.message}`);
+    }
+  }
 }
 
 module.exports = HajarAuth;
