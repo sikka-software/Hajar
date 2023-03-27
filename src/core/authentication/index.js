@@ -16,9 +16,7 @@ class HajarAuth {
       throw new Error("User with this email already exists");
     }
     const role = await this.Role.find({ name: "Admin" });
-    console.log(role);
     const RoleId = role._id;
-
     const hashedPassword = await this.bcrypt.hash(password, 10);
     const hashedconfirmPassword = await this.bcrypt.hash(confirmPassword, 10);
     const user = new this.User({
@@ -33,29 +31,35 @@ class HajarAuth {
 
     const token = this.jwt.sign({ userId: user._id }, this.secret);
 
-    return { token, role }; // modified
+    return { user, token, role }; // modified
   }
   async createRole(roleName, permissionIds) {
     const existingRole = await this.Role.findOne({ name: roleName });
     if (existingRole) {
       throw new Error(`Role ${roleName} already exists`);
     }
-
-    const permissions = await this.Permission.find({
-      _id: { $in: permissionIds },
-    });
-    if (permissionIds.length !== permissions.length) {
-      throw new Error("Invalid permission IDs provided");
+    let idPermissions = [];
+    for (let i = 0; i < permissionIds.length; i++) {
+      const permission = permissionIds[i];
+      const idPermission = await this.Permission.findOne(
+        {
+          grant: permission.grant,
+          read: permission.read,
+          write: permission.write,
+          update: permission.update,
+          delete: permission.delete,
+        },
+        "_id"
+      );
+      idPermissions.push(idPermission);
     }
 
-    const role = new this.Role({
+    const newRole = await this.Role.create({
       name: roleName,
-      permissions: permissions.map((permission) => permission._id),
+      permissions: [...idPermissions],
     });
 
-    await role.save();
-
-    return role;
+    return newRole;
   }
 
   async signin(email, password, res) {
@@ -76,7 +80,7 @@ class HajarAuth {
 
     const role = user.role || "user"; // default role is "user"
 
-    return { token, role }; // modified
+    return { user, token, role }; // modified
   }
 
   signout(res) {
@@ -178,9 +182,8 @@ class HajarAuth {
   }
   async getAllGrantedPermissions() {
     try {
-      const permissions = await this.Permission.find();
-      const grants = permissions.map((permission) => permission.grant);
-      return grants;
+      const grants = await this.Permission.find().distinct("grant");
+      return [...grants];
     } catch (error) {
       throw new Error(`Unable to fetch permissions: ${error.message}`);
     }
