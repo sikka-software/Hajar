@@ -9,12 +9,15 @@ class HajarAuth {
     this.cookieOptions = options.cookieOptions;
   }
 
-  async signup(name, email, password, confirmPassword, role) {
+  async signup(name, email, password, confirmPassword) {
     // modified
     const userExists = await this.User.findOne({ email });
     if (userExists) {
       throw new Error("User with this email already exists");
     }
+    const role = await this.Role.find({ name: "Admin" });
+    console.log(role);
+    const RoleId = role._id;
 
     const hashedPassword = await this.bcrypt.hash(password, 10);
     const hashedconfirmPassword = await this.bcrypt.hash(confirmPassword, 10);
@@ -23,7 +26,7 @@ class HajarAuth {
       email,
       password: hashedPassword,
       confirmPassword: hashedconfirmPassword,
-      role, // new
+      role: RoleId, // new
     });
 
     await user.save();
@@ -139,11 +142,26 @@ class HajarAuth {
     }
     return role;
   }
-
+  // Fetch all roles from the database
   async getRoles() {
-    const roles = await this.Role.find();
+    try {
+      const roles = await this.Role.find();
+      return roles;
+    } catch (error) {
+      throw new Error(`Unable to fetch roles: ${error.message}`);
+    }
+  }
 
-    return roles;
+  // Delete a role from the database
+  async deleteRole(roleId) {
+    try {
+      const role = await this.Role.findByIdAndRemove(roleId);
+      if (!role) {
+        throw new Error("Role not found");
+      }
+    } catch (error) {
+      throw new Error(`Unable to delete role: ${error.message}`);
+    }
   }
 
   async updateRole(roleId, name, permissionIds) {
@@ -157,14 +175,6 @@ class HajarAuth {
     });
     await role.save();
     return role;
-  }
-
-  async deleteRole(roleId) {
-    const role = await this.Role.findById(roleId);
-    if (!role) {
-      throw new Error("Role not found");
-    }
-    await role.delete();
   }
 }
 
