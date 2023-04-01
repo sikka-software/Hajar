@@ -95,21 +95,18 @@ class HajarAuth {
 
     try {
       const decodedToken = this.jwt.verify(token, this.secret);
-      const user = await this.User.findById(decodedToken.userId).populate({
-        path: "roles",
-        populate: {
-          path: "permissions",
-          model: "permissions",
-        },
-      });
+      const user = await this.User.findById(decodedToken.userId);
       if (!user) {
-        return null;
+        console.error(`User not found for ID ${decodedToken.userId}`);
+        return { error: "User not found" };
       }
       return user;
     } catch (err) {
-      return null;
+      console.error("JWT verification error:", err);
+      return { error: "Invalid token" };
     }
   }
+
   async getUserByEmail(email) {
     const user = await this.User.findOne({ email }).populate({
       path: "roles",
@@ -139,12 +136,19 @@ class HajarAuth {
     return user;
   }
 
-  async getRoleById(roleId) {
-    const role = await this.Role.findById(roleId);
-    if (!role) {
-      throw new Error("Role not found");
+  async getRoleById(middelware, roleId) {
+    if (!middelware.Types.ObjectId.isValid(roleId)) {
+      throw new Error("Invalid roleId");
     }
-    return role;
+    try {
+      const role = await this.Role.findOne({ _id: roleId });
+      if (!role) {
+        throw new Error("Role not found");
+      }
+      return role;
+    } catch (error) {
+      throw new Error(`Unable to fetch role: ${error.message}`);
+    }
   }
   // Fetch all roles from the database
   async getRoles() {
@@ -174,11 +178,25 @@ class HajarAuth {
       throw new Error("Role not found");
     }
     role.name = name;
-    role.permissions = await this.Permission.find({
-      _id: { $in: permissionIds },
-    });
-    await role.save();
-    return role;
+    let idPermissions = [];
+
+    for (let i = 0; i < permissionIds.length; i++) {
+      const permission = permissionIds[i];
+      const idPermission = await this.Permission.findOne(
+        {
+          grant: permission.grant,
+          read: permission.read,
+          write: permission.write,
+          update: permission.update,
+          delete: permission.delete,
+        },
+        "_id"
+      );
+      idPermissions.push(idPermission);
+    }
+    role.permissions = [...idPermissions];
+    const newRole = await role.save();
+    return newRole;
   }
   async getAllGrantedPermissions() {
     try {
