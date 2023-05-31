@@ -8,6 +8,7 @@ const CreateSchema = require("../src/core/schema");
 /*------*/
 const { LIB_NAME, LIB_VERSION } = require("../src/constants");
 const { setupEmail, sendEmail, sendEmailVerify } = require("../src/core/email");
+const generateModelsFromJSON = require("../src/core/models");
 const {
   initializeS3,
   uploadImage,
@@ -140,6 +141,9 @@ const Hajar = {
     Singin: HajarAuth.Singin,
     Singup: HajarAuth.Singup,
     getUserByToken: HajarAuth.getUserByToken,
+  },
+  Models: {
+    generateModelsFromJSON: generateModelsFromJSON,
   },
   /*  HajarRoles: {
     HajarRoles: HajarRoles,
