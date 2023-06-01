@@ -1,6 +1,5 @@
 const fs = require("fs");
 const { exec } = require("child_process");
-const readline = require("readline");
 
 function generateModelsFromJSON(jsonFilePath) {
   // Read the JSON file
@@ -19,12 +18,19 @@ function generateModelsFromJSON(jsonFilePath) {
     let modelContent = "";
 
     // Generate model content
-    modelContent += `class ${modelName} {\n`;
+    modelContent += `const mongoose = require("mongoose");\n`;
+    modelContent += `const { Schema } = mongoose;\n\n`;
+    modelContent += `const ${modelName}Schema = new Schema({\n`;
     for (const propertyName in modelProperties) {
       const propertyType = modelProperties[propertyName];
-      modelContent += `  ${propertyName} = ${propertyType};\n`;
+      modelContent += `  ${propertyName}: {\n`;
+      modelContent += `    type: ${propertyType},\n`;
+      modelContent += `    required: true,\n`;
+      modelContent += `  },\n`;
     }
-    modelContent += `}\n`;
+    modelContent += `});\n\n`;
+    modelContent += `const ${modelName} = mongoose.model("${modelName.toLowerCase()}", ${modelName}Schema);\n\n`;
+    modelContent += `module.exports = ${modelName};\n`;
 
     // Write model content to a file
     fs.writeFileSync(`./models/${modelName}.js`, modelContent);
@@ -40,8 +46,6 @@ function generateModelsFromJSON(jsonFilePath) {
       console.log(`Migration for ${modelName} completed successfully!`);
     });
   }
-
-  rl.close();
 }
 
 module.exports = generateModelsFromJSON;
