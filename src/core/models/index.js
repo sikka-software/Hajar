@@ -75,72 +75,6 @@ function generateModelsFromJSON(jsonFilePath) {
         );
       }
     }
-    function generateSchemaContent(modelName, modelProperties) {
-      let schemaContent = `type ${modelName} {\n`;
-      for (const propertyName in modelProperties) {
-        const propertyType = modelProperties[propertyName];
-        schemaContent += `  ${propertyName}: ${propertyType}\n`;
-      }
-      schemaContent += `}\n\n`;
-
-      schemaContent += `type Query {\n`;
-      schemaContent += `  get${modelName}(id: ID!): ${modelName}\n`;
-      schemaContent += `  getAll${modelName}s: [${modelName}]\n`;
-      schemaContent += `}\n\n`;
-
-      return schemaContent;
-    }
-
-    function generateResolverContent(modelName) {
-      let resolverContent = `const ${modelName} = require("../../models/${modelName}.js");
-  
-  const resolvers = {
-    Query: {
-      get${modelName}: async (parent, { id }) => {
-        try {
-          const result = await ${modelName}.findById(id);
-          if (!result) {
-            throw new Error("${modelName} not found.");
-          }
-          return result;
-        } catch (error) {
-          console.error(error);
-          throw new Error("Failed to get ${modelName}. Please try again later.");
-        }
-      },
-      getAll${modelName}s: async () => {
-        try {
-          return await ${modelName}.find();
-        } catch (error) {
-          console.error(error);
-          throw new Error("Failed to get ${modelName}s. Please try again later.");
-        }
-      },
-    },
-  };
-  
-  module.exports = resolvers;
-  `;
-
-      return resolverContent;
-    }
-
-    function createDirectory(directoryPath) {
-      if (!fs.existsSync(directoryPath)) {
-        fs.mkdirSync(directoryPath, { recursive: true });
-      }
-    }
-
-    function writeFile(filePath, content) {
-      fs.writeFileSync(filePath, content, (error) => {
-        if (error) {
-          console.error(`Error writing file: ${filePath}`, error);
-          return;
-        }
-      });
-    }
-
-    module.exports = generateModelsFromJSON;
 
     const jsonData = fs.readFileSync(jsonFilePath, "utf8");
     models = JSON.parse(jsonData);
@@ -209,26 +143,103 @@ function generateSchemaContent(modelName, modelProperties) {
   schemaContent += `}\n\n`;
 
   schemaContent += `type Query {\n`;
-  schemaContent += `  get${modelName}(id: ID!): ${modelName}\n`;
-  schemaContent += `  getAll${modelName}s: [${modelName}]\n`;
+  schemaContent += `  get${modelName}(id: ID! , roleID : ID!): ${modelName}\n`;
+  schemaContent += `  getAll${modelName}s(roleID: ID!): [${modelName}]\n`;
+  schemaContent += `  count${modelName}s(roleID: ID!): Int\n`;
   schemaContent += `}\n\n`;
 
   return schemaContent;
 }
 
 function generateResolverContent(modelName) {
-  let resolverContent = `const ${modelName} = require("../models/${modelName}.js");\n\n`;
-  resolverContent += `const resolvers = {\n`;
-  resolverContent += `  Query: {\n`;
-  resolverContent += `    get${modelName}: async (parent, { id }) => {\n`;
-  resolverContent += `      return ${modelName}.findById(id);\n`;
-  resolverContent += `    },\n`;
-  resolverContent += `    getAll${modelName}s: async () => {\n`;
-  resolverContent += `      return ${modelName}.find();\n`;
-  resolverContent += `    },\n`;
-  resolverContent += `  },\n`;
-  resolverContent += `};\n\n`;
-  resolverContent += `module.exports = resolvers;\n`;
+  let resolverContent = `const ${modelName} = require("../../models/${modelName}.js");
+const RoleModel = require("../../models/Role.js");
+const { GraphQLError } = require("graphql");
+const grants = require("../../grants.json");
+  
+const resolvers = {
+Query: {
+  get${modelName}: async (parent, args, context, info) => {
+    try {
+      console.log("Resolving get${modelName} query...")
+      const { id , roleID } = args;
+      const role = await RoleModel.findById(roleID).populate("permissions");
+      console.log("role", role);
+      if (!role) {
+        return new GraphQLError("This role does not exist", {
+          extensions: { code: "invalid-input" },
+        });
+      }
+      if (
+        !role.permissions.find(
+          (permission) =>
+            permission.grant === grants.customer && permission.read === true
+        )
+      ) {
+        return new GraphQLError("You are not allowed to read ${modelName}", {
+          extensions: { code: "not-authorized" },
+        });
+      }
+      const result = await ${modelName}.findById(id);
+      if (!result) {
+        throw new Error("${modelName} not found.");
+      }
+      return {...result._doc, _id: result.id};
+    } catch (error) {
+      console.error(error);
+      throw new Error("Failed to get ${modelName}. Please try again later.");
+    }
+  },
+  getAll${modelName}s: async () => {
+    try {
+      console.log("Resolving get${modelName} query...")
+      const { roleID } = args;
+      console.log("actorRole", roleID);
+      const role = await RoleModel.findById(roleID).populate("permissions");
+      console.log("role", role);
+      console.log("role", role);
+      if (!role) {
+        return new GraphQLError("This role does not exist", {
+          extensions: { code: "invalid-input" },
+        });
+      }
+      if (
+        !role.permissions.find(
+          (permission) =>
+            permission.grant === grants.${modelName.toLowerCase()} && permission.read === true
+        )
+      ) {
+        return new GraphQLError("You are not allowed to read ${modelName.toLowerCase()}s", {
+          extensions: { code: "not-authorized" },
+        });
+      }
+      const ${modelName}s = await ${modelName}.find();
+      if(!${modelName}s || ${modelName}s.length === 0) {
+        throw new Error("${modelName} not found.");
+      }
+      return ${modelName}s.map(${modelName} => {
+        ...${modelName}._doc,
+      }
+      ));
+      catch (errorAuthorizationge${modelName}s) {
+        console.log(
+          "Something went wrong during checking authorization getting ${modelName}.",
+          errorAuthorizationget${modelName}s
+        );
+        return new GraphQLError(
+          "Something went wrong during checking authorization getting ${modelName}.",
+          {
+            extensions: {
+              code: "server-error",
+            },
+          }
+        );
+      }
+    },
+};
+
+module.exports = resolvers;
+`;
 
   return resolverContent;
 }
