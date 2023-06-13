@@ -7,9 +7,6 @@ function generateModelsFromJSON(jsonFilePath) {
   // Read the JSON file
   let models = null;
   try {
-    const fs = require("fs");
-    const { exec } = require("child_process");
-    const path = require("path");
     const jsonData = fs.readFileSync(jsonFilePath, "utf8");
     models = JSON.parse(jsonData);
   } catch (error) {
@@ -56,7 +53,7 @@ function generateModelsFromJSON(jsonFilePath) {
     // Generate schema and resolvers
     const schemaContent = generateSchemaContent(modelName, modelProperties);
     const resolverContent = generateResolverContent(modelName);
-
+    generateRandomDocuments(modelName, modelProperties, 10);
     // Write schema and resolver content to files
     const projectPath = path.join(process.cwd(), "graphQl");
     const resolversPath = path.join(projectPath, "resolvers");
@@ -96,9 +93,9 @@ function generateSchemaContent(modelName, modelProperties) {
   schemaContent += `}\n\n`;
 
   schemaContent += `type Query {\n`;
-  schemaContent += `  get${modelName}(id: ID! , roleID : ID!): ${modelName}\n`;
+  schemaContent += `   get${modelName}ById(id: ID! , roleID : ID!): ${modelName}\n`;
   schemaContent += `  getAll${modelName}s(roleID: ID!): [${modelName}]\n`;
-  schemaContent += `  count${modelName}s(roleID: ID!): Int\n`;
+  schemaContent += `  count${modelName}s(): Int\n`;
   schemaContent += `}\n\n`;
 
   return schemaContent;
@@ -193,7 +190,7 @@ const resolvers = {
         });
       }
     },
-    count${modelName}: async () => {
+    count${modelName}s: async () => {
       const count = await ${modelName}.countDocuments();
       return count;
     },
