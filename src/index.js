@@ -1,20 +1,21 @@
 /*
   /*-----@Mansour imports /*-----
 */
-import dotenv from "dotenv";
+const dotenv = require("dotenv");
 dotenv.config();
-import { createResolvers } from "./core/resolver";
-import { CreateSchema } from "./core/schema";
+const createResolvers = require("../src/core/resolver");
+const CreateSchema = require("../src/core/schema");
 /*------*/
-import { LIB_NAME, LIB_VERSION } from "./constants";
-import { setupEmail, sendEmail, sendEmailVerify } from "./core/email";
-import {
+const { LIB_NAME, LIB_VERSION } = require("../src/constants");
+const { setupEmail, sendEmail, sendEmailVerify } = require("../src/core/email");
+const generateModelsFromJSON = require("../src/core/models");
+const {
   initializeS3,
   uploadImage,
   deleteImage,
   deleteImages,
-} from "./core/aws-s3";
-import {
+} = require("../src/core/aws-s3");
+const {
   initialize,
   create,
   update,
@@ -23,17 +24,17 @@ import {
   signIn,
   signOutUser,
   signInViaGoogle,
-} from "./core/auth";
-import updateOptions from "./core/options";
-import setupCron from "./core/cron";
-import { setupDatabase } from "./core/database/index";
-import { createInvoice } from "./core/invoice";
-import ReferralShema from "./core/referral/graphql/schema/index";
-import {
+} = require("../src/core/auth");
+const { updateOptions } = require("../src/core/options");
+const { setupCron } = require("../src/core/cron");
+const { setupDatabase } = require("../src/core/database/index");
+const { createInvoice } = require("../src/core/invoice");
+const ReferralShema = require("../src/core/referral/graphql/schema/index");
+const {
   GenerateUniqueReferalCode,
   ReferralModels,
-} from "./core/referral/index";
-import {
+} = require("../src/core/referral/index");
+const {
   createReferral,
   updateReferral,
   deleteReferral,
@@ -44,9 +45,18 @@ import {
   deleteReferralAnalytics,
   referralAnalytics,
   referralsAnalytics,
-} from "./core/referral/graphql/resolvers/index";
-import addModel from "./core/database/models";
-import { initializeStripe, processPayment, generatetoken } from "./core/stripe";
+} = require("../src/core/referral/graphql/resolvers/index");
+
+const { addModel } = require("../src/core/database/models");
+const {
+  initializeStripe,
+  processPayment,
+  generatetoken,
+} = require("../src/core/stripe");
+
+const HajarAuth = require("../src/core/authentication/index");
+/* const HajarRoles = require("../src/core/authentication/roles/index");
+const HajarPermissions = require("../src/core/authentication/permissions/index"); */
 global._config;
 global._auth;
 global._provider;
@@ -54,8 +64,6 @@ global.SIKKA_SOFTWARE_APPLEPAY_PAYFOR_SHA_REQUEST_PHRASE;
 global.SIKKA_SOFTWARE_APPLEPAY_PAYFOR_SHA_RESPONSE_PHRASE;
 global.SIKKA_SOFTWARE_PAYFOR_SHA_REQUEST_PHRASE;
 global.SIKKA_SOFTWARE_PAYFOR_SHA_RESPONSE_PHRASE;
-
-import * as path from "path";
 
 /*
 example use
@@ -125,6 +133,36 @@ const Hajar = {
     ProcessPayment: processPayment,
     generatetoken: generatetoken,
   },
+
+  // This will be the authentication part
+
+  HajarAuth: {
+    HajarAuth: HajarAuth,
+    Singin: HajarAuth.Singin,
+    Singup: HajarAuth.Singup,
+    getUserByToken: HajarAuth.getUserByToken,
+  },
+  Models: {
+    generateModelsFromJSON: generateModelsFromJSON,
+  },
+  /*  HajarRoles: {
+    HajarRoles: HajarRoles,
+    createRole: HajarRoles.createRole,
+    roleToUser: HajarRoles.roleToUser,
+    updateRole: HajarRoles.updateRole,
+    deleteRole: HajarRoles.deleteRole,
+    addPermissionToRole: HajarRoles.addPermissionToRole,
+    removePermissionFromRole: HajarRoles.removePermissionFromRole,
+    updatePermission: HajarRoles.updatePermission,
+  },
+  HajarPermissions: {
+    HajarPermissions: HajarPermissions,
+    createPermission: HajarPermissions.createPermission,
+    updatePermission: HajarPermissions.updatePermission,
+    deletePermission: HajarPermissions.deletePermission,
+    getPermission: HajarPermissions.getPermission,
+    getPermissions: HajarPermissions.getPermissions,
+  }, */
 };
 
 export default Hajar;

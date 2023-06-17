@@ -70,4 +70,4 @@ const ReferralShema = {
   ReferralAnalyticsQueries: referralAnalyticsQueries,
 };
 
-export default ReferralShema;
+module.exports = ReferralShema;

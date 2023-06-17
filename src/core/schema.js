@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import { buildSchema } from "graphql";
+const fs = require("fs");
+const buildSchema = require("graphql").buildSchema;
 /* export async function CreateSchema(modelName, fields, directory) {
   let query = `type Query {
     all${modelName}: [${modelName}]
@@ -35,7 +35,7 @@ import { buildSchema } from "graphql";
 }
  */
 
-export async function CreateSchema(model) {
+async function CreateSchema(model) {
   let fields = Object.keys(model.schema.paths)
     .filter((key) => ["_id", "__v"].indexOf(key) === -1)
     .map((key) => `${key}: ${model.schema.paths[key].instance}`)
@@ -63,6 +63,7 @@ export async function CreateSchema(model) {
 
   schema.trim();
   // Write the schema file to the specified directory
-  fs.writeFileSync(`./test/schema/${model.modelName}.type.graphql`, schema);
+  fs.writeFileSync(`./${model.modelName}.type.graphql`, schema);
   return buildSchema(schema);
 }
+module.exports = CreateSchema;

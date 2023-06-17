@@ -1,13 +1,12 @@
-import Stripe from "stripe";
-
-export async function initializeStripe(secretKey) {
+const Stripe = require("stripe");
+async function initializeStripe(secretKey) {
   if (!secretKey) {
     throw new Error("Stripe secret key is required");
   }
   global._stripe = Stripe(secretKey);
   return new Stripe(secretKey);
 }
-export async function generatetoken(card) {
+async function generatetoken(card) {
   try {
     const token = await global._stripe.tokens.create({
       card: {
@@ -23,7 +22,7 @@ export async function generatetoken(card) {
   }
 }
 
-export async function processPayment(amount, currency, source, description) {
+async function processPayment(amount, currency, source, description) {
   try {
     const charge = await global._stripe.charges.create({
       amount: amount,
@@ -59,3 +58,8 @@ export async function processPayment(amount, currency, source, description) {
     console.error("Error subscribing user:", error);
   }
 }*/
+module.exports = {
+  initializeStripe,
+  processPayment,
+  generatetoken,
+};

@@ -1,7 +1,5 @@
-/* tslint:disable:no-string-literal */
-import { add } from "date-fns";
-import * as firebase from "@firebase/app";
-import {
+const firebase = require("@firebase/app");
+const {
   Auth,
   User,
   getAuth,
@@ -15,10 +13,11 @@ import {
   signOut,
   deleteUser,
   signInWithPopup,
-} from "@firebase/auth";
-import CryptoJS from "crypto-js";
+} = require("@firebase/auth");
 
-export async function initialize() {
+const CryptoJS = require("crypto-js");
+const { add } = require("date-fns");
+async function initialize() {
   const firebaseConfig = JSON.parse(process.env.HAJAR_FIREBASE);
 
   globalThis.firebase = firebase.initializeApp(firebaseConfig);
@@ -26,21 +25,21 @@ export async function initialize() {
   globalThis._provider = new GoogleAuthProvider();
 }
 
-export async function signIn(auth, fieldValues) {
+async function signIn(auth, fieldValues) {
   const { email, password } = fieldValues;
 
   const result = await signInWithEmailAndPassword(auth, email, password);
   return result;
 }
 
-export async function signInViaGoogle() {
+async function signInViaGoogle() {
   const provider = new GoogleAuthProvider();
   const result = await signInWithPopup(globalThis._auth, provider);
   const user = result.user;
   return user;
 }
 
-export async function create(auth, dataUser) {
+async function create(auth, dataUser) {
   if (dataUser.email !== "" && dataUser.password !== "") {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -52,7 +51,7 @@ export async function create(auth, dataUser) {
     Error("Missing Required Parameters.");
   }
 }
-export async function update(auth, type, dataUserUpdate) {
+async function update(auth, type, dataUserUpdate) {
   const user = auth.currentUser;
   if (user != null) {
     switch (type) {
@@ -75,10 +74,10 @@ export async function update(auth, type, dataUserUpdate) {
     return false;
   }
 }
-export async function deactivate() {
+async function deactivate() {
   console.log("deactivating user");
 }
-export async function remove(auth, callback) {
+async function remove(auth, callback) {
   const user = auth.currentUser;
   if (user != null) {
     await deleteUser(user);
@@ -88,11 +87,11 @@ export async function remove(auth, callback) {
   }
 }
 
-export async function signOutUser(auth) {
+async function signOutUser(auth) {
   return await signOut(auth);
 }
 
-export async function sendPasswordResetEmail(email, callback) {
+async function sendPasswordResetEmail(email, callback) {
   if (globalThis._config.OOBCODE === "" || globalThis._config.URL_ACTION === "")
     Error("Missing Required Parameters.");
   const currentDate = new Date();
@@ -111,8 +110,21 @@ export async function sendPasswordResetEmail(email, callback) {
   // here goes sending email
 }
 
-export async function resetPasswordViaEmail(oobCode, email, newPassword) {
+async function resetPasswordViaEmail(oobCode, email, newPassword) {
   if (oobCode === "" || email === "" || newPassword === "")
     Error("Missing Required Parameters");
   // configure admin firebase to change user"s password
 }
+
+module.exports = {
+  initialize,
+  signIn,
+  signInViaGoogle,
+  create,
+  update,
+  deactivate,
+  remove,
+  signOutUser,
+  resetPasswordViaEmail,
+  sendPasswordResetEmail,
+};

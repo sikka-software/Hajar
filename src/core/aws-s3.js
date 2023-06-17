@@ -1,11 +1,11 @@
-import AWS from "aws-sdk";
 const _config = {
   accessKeyId: "<ACCESS_KEY_ID>",
   secretAccessKey: "<SECRET_ACCESS_KEY>",
   Bucket: "<BUCKET_NAME>",
 };
+const AWS = require("aws-sdk");
 global._config = _config;
-export function initializeS3() {
+async function initializeS3() {
   const config = {
     accessKeyId: global._config.accessKeyId,
     secretAccessKey: global._config.secretAccessKey,
@@ -13,7 +13,7 @@ export function initializeS3() {
   };
   return new AWS.S3(config);
 }
-export async function listImages(params, callback) {
+async function listImages(params, callback) {
   initializeS3().listObjects(params, function (err, data) {
     if (err) {
       callback(err, null);
@@ -28,11 +28,7 @@ export async function listImages(params, callback) {
   });
 }
 
-export async function uploadImage(
-  params,
-  CallbackhttpUploadProgress,
-  CallbackSend
-) {
+async function uploadImage(params, CallbackhttpUploadProgress, CallbackSend) {
   initializeS3()
     .putObject(params)
     .on("httpUploadProgress", (evt) => {
@@ -43,13 +39,13 @@ export async function uploadImage(
     });
 }
 
-export async function deleteImage(params, callback) {
+async function deleteImage(params, callback) {
   initializeS3().deleteObject(params, function (err, data) {
     callback(err, data);
   });
 }
 
-export async function deleteImages(params, callback, e) {
+async function deleteImages(params, callback, e) {
   try {
     const deleted = await initializeS3().deleteObjects(params).promise();
     callback(deleted, e);
@@ -57,3 +53,10 @@ export async function deleteImages(params, callback, e) {
     callback(error, e);
   }
 }
+module.exports = {
+  initializeS3,
+  listImages,
+  uploadImage,
+  deleteImage,
+  deleteImages,
+};

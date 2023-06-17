@@ -1,6 +1,5 @@
-import { ReferralModels } from "../../index";
-
-export async function createReferral(args) {
+const { ReferralModels } = require("../../index");
+async function createReferral(args) {
   const referral = await ReferralModels.Referral.findOne({
     code: args.referralInput.code,
   });
@@ -15,7 +14,7 @@ export async function createReferral(args) {
   return { ...newReferral._doc };
 }
 
-export async function updateReferral(args) {
+async function updateReferral(args) {
   const referral = await ReferralModels.Referral.findById(args.referralId);
   if (referral) throw new Error("Referral exist");
   const newReferralData = {
@@ -34,7 +33,7 @@ export async function updateReferral(args) {
   return { ...newReferral._doc };
 }
 
-export async function deleteReferral(args) {
+async function deleteReferral(args) {
   const referral = await ReferralModels.Referral.findById(args.referralId);
   if (!referral) throw new Error("Referral does not exist");
   const deleteReferral = await ReferralModels.Referral.deleteOne({
@@ -42,14 +41,14 @@ export async function deleteReferral(args) {
   });
 }
 
-export async function referral(args) {
+async function referral(args) {
   let referral = await ReferralModels.Referral.findById(args.referralId);
   if (!referral) throw new Error("Could not find any referral");
   const newReferral = referral.populate("user").execPopulate();
   return newReferral;
 }
 
-export async function referrals(args) {
+async function referrals(args) {
   let allReferral = await ReferralModels.Referral.find();
   if (!allReferral) throw new Error("Could not find any referral");
   return allReferral.map(async (singleReferral) => {
@@ -58,7 +57,7 @@ export async function referrals(args) {
   });
 }
 
-export async function createReferralAnalytics(args) {
+async function createReferralAnalytics(args) {
   const referral = await ReferralModels.Referral.findOne({
     code: args.referralAnalyticsInput.referral,
   });
@@ -72,7 +71,7 @@ export async function createReferralAnalytics(args) {
   return { ...newReferralAnalytics._doc };
 }
 
-export async function updateReferralAnalytics(args) {
+async function updateReferralAnalytics(args) {
   const referralAnalytics = await ReferralModels.ReferralAnalytics.findById(
     args.referralAnalyticsId
   );
@@ -93,7 +92,7 @@ export async function updateReferralAnalytics(args) {
   return { ...newReferralAnalytics._doc };
 }
 
-export async function deleteReferralAnalytics(args) {
+async function deleteReferralAnalytics(args) {
   const referralAnalytics = await ReferralModels.ReferralAnalytics.findById(
     args.referralAnalyticsId
   );
@@ -104,7 +103,7 @@ export async function deleteReferralAnalytics(args) {
     });
 }
 
-export async function referralAnalytics(args) {
+async function referralAnalytics(args) {
   let referralAnalytics = await ReferralModels.ReferralAnalytics.findById(
     args.referralAnalyticsId
   );
@@ -117,7 +116,7 @@ export async function referralAnalytics(args) {
   return newReferralAnalytics;
 }
 
-export async function referralsAnalytics(args) {
+async function referralsAnalytics(args) {
   let allReferralAnalytics =
     await ReferralModels.ReferralAnalytics.Referral.find();
   if (!allReferralAnalytics) throw new Error("Could not find any referral");
@@ -129,3 +128,15 @@ export async function referralsAnalytics(args) {
     return { ...refAnalytics._doc };
   });
 }
+module.exports = {
+  createReferral,
+  updateReferral,
+  deleteReferral,
+  referral,
+  referrals,
+  createReferralAnalytics,
+  updateReferralAnalytics,
+  deleteReferralAnalytics,
+  referralAnalytics,
+  referralsAnalytics,
+};

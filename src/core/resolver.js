@@ -2,9 +2,8 @@
     @Mansour
     This function will take a mongoose model and return a resolver object
 */
-import * as fs from "fs";
-import * as path from "path";
-export async function createResolvers(model) {
+const fs = require("fs");
+async function createResolvers(model) {
   const resolverFile = `
   const ${model.modelName} = require('./models/${model.modelName}');
   module.exports = {
@@ -32,8 +31,6 @@ export async function createResolvers(model) {
   `;
   resolverFile.trim();
 
-  fs.writeFileSync(
-    `./test/resolver/${model.modelName}.resolver.js`,
-    resolverFile
-  );
+  fs.writeFileSync(`./${model.modelName}.resolver.js`, resolverFile);
 }
+module.exports = createResolvers;
