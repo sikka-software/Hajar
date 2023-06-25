@@ -53,7 +53,6 @@ function generateModelsFromJSON(jsonFilePath) {
     // Generate schema and resolvers
     const schemaContent = generateSchemaContent(modelName, modelProperties);
     const resolverContent = generateResolverContent(modelName);
-    generateRandomDocuments(modelName, modelProperties, 10);
     // Write schema and resolver content to files
     const projectPath = path.join(process.cwd(), "graphQl");
     const resolversPath = path.join(projectPath, "resolvers");
@@ -146,7 +145,7 @@ function generateSchemaContent(modelName, modelProperties) {
   schemaContent += `type Query {\n`;
   schemaContent += `  get${modelName}ById(id: ID!, roleID: ID!): ${modelName}\n`;
   schemaContent += `  getAll${modelName}s(roleID: ID!): [${modelName}]\n`;
-  schemaContent += `  count${modelName}s(): Int\n`;
+  schemaContent += `  count${modelName}s: Int\n`;
   schemaContent += `}\n\n`;
 
   schemaContent += `type Mutation {\n`;
@@ -326,7 +325,7 @@ const resolvers = {
         const ${modelName.toLowerCase()} = await ${modelName}.create({input});
         return { ...${modelName.toLowerCase()}._doc };
 
-        }catc (errorcatchCreate${modelName}) {
+        }catch(errorcatchCreate${modelName}) {
         console.log("Something went wrong during creating ${modelName}.", errorcatchCreate${modelName});
         return new GraphQLError("Something went wrong during creating ${modelName}.", {
           extensions: { code: "server-error" },
