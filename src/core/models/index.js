@@ -448,4 +448,7 @@ function writeFile(filePath, content) {
   });
 }
 
-module.exports = generateModelsFromJSON;
+module.exports = {
+  generateModelsFromJSON,
+  generateModelFiles,
+};
