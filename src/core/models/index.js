@@ -3,6 +3,7 @@ const { exec } = require("child_process");
 const readline = require("readline");
 const path = require("path");
 
+// this one is for json file
 function generateModelsFromJSON(jsonFilePath) {
   // Read the JSON file
   let models = null;
@@ -76,6 +77,59 @@ function generateModelsFromJSON(jsonFilePath) {
     );
   }
 }
+
+// this is for one giving model
+function generateModelFiles(modelName, modelProperties) {
+  const modelContent = `const mongoose = require("mongoose");
+const { Schema } = mongoose;
+
+const ${modelName}Schema = new Schema({
+${Object.entries(modelProperties)
+  .map(
+    ([propertyName, propertyType]) => `  ${propertyName}: {
+    type: ${propertyType},
+    required: true,
+  },`
+  )
+  .join("\n")}
+});
+
+const ${modelName} = mongoose.model("${modelName.toLowerCase()}", ${modelName}Schema);
+
+module.exports = ${modelName};
+`;
+
+  // Write model content to a file
+  const modelsPath = path.join(process.cwd(), "models");
+  createDirectory(modelsPath);
+
+  const modelFilePath = path.join(modelsPath, `${modelName}.js`);
+  writeFile(modelFilePath, modelContent);
+
+  // Generate schema content
+  const schemaContent = generateSchemaContent(modelName, modelProperties);
+
+  // Generate resolver content
+  const resolverContent = generateResolverContent(modelName);
+
+  // Write schema and resolver content to files
+  const projectPath = path.join(process.cwd(), "graphQl");
+  const resolversPath = path.join(projectPath, "resolvers");
+  const typesPath = path.join(projectPath, "types");
+
+  createDirectory(projectPath);
+  createDirectory(resolversPath);
+  createDirectory(typesPath);
+
+  const schemaFilePath = path.join(typesPath, `${modelName}.type.graphql`);
+  const resolverFilePath = path.join(resolversPath, `${modelName}.resolver.js`);
+
+  writeFile(schemaFilePath, schemaContent);
+  writeFile(resolverFilePath, resolverContent);
+
+  console.log(`Schema and resolvers for ${modelName} generated successfully!`);
+}
+
 // this is to generate the Schema
 function generateSchemaContent(modelName, modelProperties) {
   let schemaContent = `type ${modelName} {\n`;
