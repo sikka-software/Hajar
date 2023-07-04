@@ -133,6 +133,7 @@ module.exports = ${modelName};
 // this is to generate the Schema
 function generateSchemaContent(modelName, modelProperties) {
   let schemaContent = `type ${modelName} {\n`;
+  schemaContent += `  _id: ID\n`; // Add _id field of type ID
   for (const propertyName in modelProperties) {
     const propertyType = modelProperties[propertyName];
     if (propertyType === "ObjectId") {
