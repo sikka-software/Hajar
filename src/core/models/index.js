@@ -281,8 +281,8 @@ function generateResolverContent(modelName) {
   let resolverContent = `const ${modelName} = require("../../models/${modelName}.js");
 const RoleModel = require("../../models/Role.js");
 const { GraphQLError } = require("graphql");
-const grants = require("../../utils/grants.js");
-  
+const PermissionModel = require("../../../models/Permission");
+
 const resolvers = {
   Query: {
     get${modelName}ById: async (parent, args, context, info) => {
@@ -296,13 +296,19 @@ const resolvers = {
             extensions: { code: "invalid-input" },
           });
         }
+        const grants = await PermissionModel.distinct("grant");
+
         if (
           !role.permissions.find(
             (permission) =>
-              permission.grant === grants.${modelName.toLowerCase()} && permission.read === true
+              permission.grant === grants.${
+                modelName.toLowerCase
+              }s && permission.read === true
           )
         ) {
-          return new GraphQLError("You are not allowed to read ${modelName}", {
+          return new GraphQLError("You are not allowed to read ${
+            modelName.toLowerCase
+          }", {
             extensions: { code: "not-authorized" },
           });
         }
@@ -333,19 +339,23 @@ const resolvers = {
         console.log("actorRole", roleID);
         const role = await RoleModel.findById(roleID).populate("permissions");
         console.log("role", role);
-        console.log("role", role);
         if (!role) {
           return new GraphQLError("This role does not exist", {
             extensions: { code: "invalid-input" },
           });
         }
+
+        const grants = await PermissionModel.distinct("grant");
+
         if (
           !role.permissions.find(
             (permission) =>
-              permission.grant === grants.${modelName.toLowerCase()} && permission.read === true
+              permission.grant === grants.${
+                modelName.toLowerCase
+              }s && permission.read === true
           )
         ) {
-          return new GraphQLError("You are not allowed to read ${modelName.toLowerCase()}s", {
+          return new GraphQLError("You are not allowed to read ${modelName.toLowerCase()}", {
             extensions: { code: "not-authorized" },
           });
         }
