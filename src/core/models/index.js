@@ -287,7 +287,7 @@ const resolvers = {
   Query: {
     get${modelName}ById: async (parent, args, context, info) => {
       try {
-        console.log("Resolving get${modelName} query...")
+        console.log("Resolving get${modelName} query...");
         const { id , roleID } = args;
         const role = await RoleModel.findById(roleID).populate("permissions");
         console.log("role", role);
@@ -301,14 +301,10 @@ const resolvers = {
         if (
           !role.permissions.find(
             (permission) =>
-              permission.grant === grants.${
-                modelName.toLowerCase
-              }s && permission.read === true
+              permission.grant === grants.${modelName.toLowerCase()}s && permission.read === true
           )
         ) {
-          return new GraphQLError("You are not allowed to read ${
-            modelName.toLowerCase
-          }", {
+          return new GraphQLError("You are not allowed to read ${modelName.toLowerCase()}", {
             extensions: { code: "not-authorized" },
           });
         }
@@ -334,7 +330,7 @@ const resolvers = {
     },
     getAll${modelName}s: async (parent, args, context, info) => {
       try {
-        console.log("Resolving get${modelName} query...")
+        console.log("Resolving get${modelName} query...");
         const { roleID } = args;
         console.log("actorRole", roleID);
         const role = await RoleModel.findById(roleID).populate("permissions");
@@ -350,20 +346,18 @@ const resolvers = {
         if (
           !role.permissions.find(
             (permission) =>
-              permission.grant === grants.${
-                modelName.toLowerCase
-              }s && permission.read === true
+              permission.grant === grants.${modelName.toLowerCase()}s && permission.read === true
           )
         ) {
           return new GraphQLError("You are not allowed to read ${modelName.toLowerCase()}", {
             extensions: { code: "not-authorized" },
           });
         }
-        const ${modelName}s = await ${modelName}.find();
-        if (!${modelName}s || ${modelName}s.length === 0) {
+        const ${modelName.toLowerCase()}s = await ${modelName}.find();
+        if (!${modelName.toLowerCase()}s || ${modelName.toLowerCase()}s.length === 0) {
           throw new Error("${modelName} not found.");
         }
-        return ${modelName}s.map((${modelName}) => ({ ...${modelName}._doc }));
+        return ${modelName.toLowerCase()}s.map((${modelName}) => ({ ...${modelName}._doc }));
       } catch (errorAuthorizationget${modelName}s) {
         console.log(
           "Something went wrong during checking authorization getting ${modelName}.",
@@ -383,33 +377,33 @@ const resolvers = {
   },
 
   Mutation: {
-    create${modelName}: async (parent,{input}) => {
+    create${modelName}: async (parent, { input }) => {
       try {
         console.log("Resolving create${modelName} mutation...");
 
-        const ${modelName.toLowerCase()} = await ${modelName}.create({input});
+        const ${modelName.toLowerCase()} = await ${modelName}.create({ input });
         return { ...${modelName.toLowerCase()}._doc };
 
-        }catch(errorcatchCreate${modelName}) {
+      } catch (errorcatchCreate${modelName}) {
         console.log("Something went wrong during creating ${modelName}.", errorcatchCreate${modelName});
         return new GraphQLError("Something went wrong during creating ${modelName}.", {
           extensions: { code: "server-error" },
         });
       }
     },
-    update${modelName}: async (parent, {id , input}) => {
+    update${modelName}: async (parent, { id, input }) => {
       try {
         console.log("Resolving update${modelName} mutation...");
         const ${modelName.toLowerCase()} = await ${modelName}.findByIdAndUpdate(
           id,
           input,
           { new: true }
-        )
+        );
 
         if (!${modelName.toLowerCase()}) {
           throw new Error("${modelName} not found.");
         }
-        return { ...${modelName.toLowerCase()}._doc};
+        return { ...${modelName.toLowerCase()}._doc };
       } catch (errorcatchUpdate${modelName}) {
         console.log("Something went wrong during updating ${modelName}.", errorcatchUpdate${modelName});
         return new GraphQLError("Something went wrong during updating ${modelName}.", {
@@ -417,7 +411,7 @@ const resolvers = {
         });
       }
     },
-    delete${modelName}: async (parent, {id}) => {
+    delete${modelName}: async (parent, { id }) => {
       try {
         console.log("Resolving delete${modelName} mutation...");
         const ${modelName.toLowerCase()} = await ${modelName}.findByIdAndDelete(id);
@@ -425,7 +419,7 @@ const resolvers = {
         if (!${modelName.toLowerCase()}) {
           throw new Error("${modelName} not found.");
         }
-        return ${modelName.toLowerCase()}
+        return ${modelName.toLowerCase()};
       } catch (errorcatchDelete${modelName}) {
         console.log("Something went wrong during deleting ${modelName}.", errorcatchDelete${modelName});
         return new GraphQLError("Something went wrong during deleting ${modelName}.", {
@@ -435,8 +429,6 @@ const resolvers = {
     },
   },
 };
-
-
 
 module.exports = resolvers;
 `;
