@@ -288,7 +288,7 @@ const resolvers = {
     get${modelName}ById: async (parent, args, context, info) => {
       try {
         console.log("Resolving get${modelName} query...");
-        const { id , roleID } = args;
+        const { id, roleID } = args;
         const role = await RoleModel.findById(roleID).populate("permissions");
         console.log("role", role);
         if (!role) {
@@ -301,7 +301,7 @@ const resolvers = {
         if (
           !role.permissions.find(
             (permission) =>
-              permission.grant === grants.${modelName.toLowerCase()}s && permission.read === true
+              grants.includes(permission.grant) && permission.read === true
           )
         ) {
           return new GraphQLError("You are not allowed to read ${modelName.toLowerCase()}", {
@@ -340,13 +340,11 @@ const resolvers = {
             extensions: { code: "invalid-input" },
           });
         }
-
         const grants = await PermissionModel.distinct("grant");
-
         if (
           !role.permissions.find(
             (permission) =>
-              permission.grant === grants.${modelName.toLowerCase()}s && permission.read === true
+              grants.includes(permission.grant) && permission.read === true
           )
         ) {
           return new GraphQLError("You are not allowed to read ${modelName.toLowerCase()}", {
@@ -381,7 +379,7 @@ const resolvers = {
       try {
         console.log("Resolving create${modelName} mutation...");
 
-        const ${modelName.toLowerCase()} = await ${modelName}.create({ input });
+        const ${modelName.toLowerCase()} = await ${modelName}.create({ ...input });
         return { ...${modelName.toLowerCase()}._doc };
 
       } catch (errorcatchCreate${modelName}) {
