@@ -3,6 +3,23 @@ const { exec } = require("child_process");
 const readline = require("readline");
 const path = require("path");
 
+function serializeProperty (propertyName, propertyType) {
+  let result = ""
+  if (propertyType === "ObjectId") {
+    result += `    type: Schema.Types.ObjectId,\n`;
+    result += `    required: true,\n`;
+    result += `    ref: "${propertyName}",\n`; // Set reference to the related model
+  } else if (propertyType === "[ObjectId]") {
+    result += `    type: [Schema.Types.ObjectId],\n`;
+    result += `    required: true,\n`;
+    result += `    ref: "${propertyName}",\n`; // Set reference to the related model
+  } else {
+    result += `    type: ${propertyType},\n`;
+    result += `    required: true,\n`;
+  }
+  return result;
+}
+
 function generateModelsFromJSON(jsonFilePath) {
   // Read the JSON file
   let models = null;
@@ -25,18 +42,19 @@ function generateModelsFromJSON(jsonFilePath) {
       const propertyType = modelProperties[propertyName];
       let propertyOptions = "";
 
-      if (propertyType === "ObjectId") {
-        propertyOptions += `    type: Schema.Types.ObjectId,\n`;
-        propertyOptions += `    required: true,\n`;
-        propertyOptions += `    ref: "${propertyName}",\n`; // Set reference to the related model
-      } else if (propertyType === "[ObjectId]") {
-        propertyOptions += `    type: [Schema.Types.ObjectId],\n`;
-        propertyOptions += `    required: true,\n`;
-        propertyOptions += `    ref: "${propertyName}",\n`; // Set reference to the related model
-      } else {
-        propertyOptions += `    type: ${propertyType},\n`;
-        propertyOptions += `    required: true,\n`;
-      }
+      if(propertyType.startsWith('models.')) {
+        let reference = propertyType.split('models.')[1]
+        let referenceModel = models[reference]
+  
+        Object.entries(referenceModel).map(([key, value]) => {
+          propertyOptions += `    ${key}: {\n`
+          propertyOptions += serializeProperty(key, value)
+          propertyOptions += `    },\n`
+        })
+       } else {
+        propertyOptions += serializeProperty(propertyName, propertyType)
+       }
+
       modelContent += `  ${propertyName}: {\n`;
       modelContent += propertyOptions;
       modelContent += `  },\n`;
