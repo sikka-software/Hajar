@@ -326,7 +326,7 @@ const resolvers = {
         const ${modelName.toLowerCase()} = await ${modelName}.create({input});
         return { ...${modelName.toLowerCase()}._doc };
 
-        }catc (errorcatchCreate${modelName}) {
+        } catch (errorcatchCreate${modelName}) {
         console.log("Something went wrong during creating ${modelName}.", errorcatchCreate${modelName});
         return new GraphQLError("Something went wrong during creating ${modelName}.", {
           extensions: { code: "server-error" },
