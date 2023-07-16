@@ -53,7 +53,7 @@ function generateModelsFromJSON(jsonFilePath) {
     // Generate schema and resolvers
     const schemaContent = generateSchemaContent(modelName, modelProperties);
     const resolverContent = generateResolverContent(modelName);
-    generateRandomDocuments(modelName, modelProperties, 10);
+    // generateRandomDocuments(modelName, modelProperties, 10);
     // Write schema and resolver content to files
     const projectPath = path.join(process.cwd(), "graphQl");
     const resolversPath = path.join(projectPath, "resolvers");
