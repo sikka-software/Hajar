@@ -146,7 +146,7 @@ function generateSchemaContent(modelName, modelProperties) {
   schemaContent += `type Query {\n`;
   schemaContent += `  get${modelName}ById(id: ID!, roleID: ID!): ${modelName}\n`;
   schemaContent += `  getAll${modelName}s(roleID: ID!): [${modelName}]\n`;
-  schemaContent += `  count${modelName}s(): Int\n`;
+  schemaContent += `  count${modelName}s: Int\n`;
   schemaContent += `}\n\n`;
 
   schemaContent += `type Mutation {\n`;
