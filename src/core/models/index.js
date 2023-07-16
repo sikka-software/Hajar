@@ -281,7 +281,7 @@ function generateResolverContent(modelName) {
   let resolverContent = `const ${modelName} = require("../../models/${modelName}.js");
 const RoleModel = require("../../models/Role.js");
 const { GraphQLError } = require("graphql");
-const PermissionModel = require("../../../models/Permission");
+const PermissionModel = require("../../models/Permission");
 
 const resolvers = {
   Query: {
