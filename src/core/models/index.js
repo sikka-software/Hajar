@@ -166,35 +166,6 @@ function generateSchemaContent(modelName, modelProperties) {
   schemaContent += `}\n\n`;
 
   schemaContent += `input ${modelName}Input {\n`;
-  for (const propertyName in modelProperties) {
-    const propertyType = modelProperties[propertyName];
-    if (propertyType === "ObjectId") {
-      schemaContent += `  ${propertyName}: ID\n`; // Use ID type for ObjectId
-    } else if (propertyType === "[ObjectId]") {
-      schemaContent += `  ${propertyName}: [ID]\n`; // Use ID type for ObjectId
-    } else if (propertyType === "String") {
-      schemaContent += `  ${propertyName}: String\n`; // Use String type
-    } else if (propertyType === "Int" || propertyType === "Number") {
-      schemaContent += `  ${propertyName}: Int\n`; // Use Int type
-    } else if (propertyType === "Float") {
-      schemaContent += `  ${propertyName}: Float\n`; // Use Float type
-    } else if (propertyType === "Boolean") {
-      schemaContent += `  ${propertyName}: Boolean\n`; // Use Boolean type
-    } else if (propertyType === "[String]") {
-      schemaContent += `  ${propertyName}: [String]\n`; // Use array of String type
-    } else if (propertyType === "[Float]") {
-      schemaContent += `  ${propertyName}: [Float]\n`; // Use array of Float type
-    } else if (propertyType === "[Boolean]") {
-      schemaContent += `  ${propertyName}: [Boolean]\n`; // Use array of Boolean type
-    } else if (typeof propertyType === "object") {
-      // Handle nested fields
-      schemaContent += `  ${propertyName}: ${generateNestedInput(
-        propertyType
-      )}\n`;
-    } else {
-      schemaContent += `  ${propertyName}: ${propertyType}\n`; // Use the provided type
-    }
-  }
   schemaContent += `}\n\n`;
 
   schemaContent += `type Query {\n`;
@@ -242,38 +213,6 @@ function generateNestedType(nestedFields) {
   }
   nestedTypeContent += "  }";
   return nestedTypeContent;
-}
-
-function generateNestedInput(nestedFields) {
-  let nestedInputContent = "{\n";
-  for (const propertyName in nestedFields) {
-    const propertyType = nestedFields[propertyName];
-    if (propertyType === "ObjectId") {
-      nestedInputContent += `    ${propertyName}: ID\n`; // Use ID type for ObjectId
-    } else if (propertyType === "[ObjectId]") {
-      nestedInputContent += `    ${propertyName}: [ID]\n`; // Use ID type for ObjectId
-    } else if (propertyType === "String") {
-      nestedInputContent += `    ${propertyName}: String\n`; // Use String type
-    } else if (propertyType === "Int") {
-      nestedInputContent += `    ${propertyName}: Int\n`; // Use Int type
-    } else if (propertyType === "Float") {
-      nestedInputContent += `    ${propertyName}: Float\n`; // Use Float type
-    } else if (propertyType === "Boolean") {
-      nestedInputContent += `    ${propertyName}: Boolean\n`; // Use Boolean type
-    } else if (propertyType === "[String]") {
-      nestedInputContent += `    ${propertyName}: [String]\n`; // Use array of String type
-    } else if (propertyType === "[Int]") {
-      nestedInputContent += `    ${propertyName}: [Int]\n`; // Use array of Int type
-    } else if (propertyType === "[Float]") {
-      nestedInputContent += `    ${propertyName}: [Float]\n`; // Use array of Float type
-    } else if (propertyType === "[Boolean]") {
-      nestedInputContent += `    ${propertyName}: [Boolean]\n`; // Use array of Boolean type
-    } else {
-      nestedInputContent += `    ${propertyName}: ${propertyType}\n`; // Use the provided type
-    }
-  }
-  nestedInputContent += "  }";
-  return nestedInputContent;
 }
 
 // Here we generate the resolver content
