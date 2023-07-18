@@ -80,6 +80,8 @@ function generateModelsFromJSON(jsonFilePath) {
 // this is to generate the Schema
 function generateSchemaContent(modelName, modelProperties) {
   let schemaContent = `type ${modelName} {\n`;
+
+  schemaContent += `  _id: ID!\n`; // Add ID field
   for (const propertyName in modelProperties) {
     const propertyType = modelProperties[propertyName];
     if (propertyType === "ObjectId") {
