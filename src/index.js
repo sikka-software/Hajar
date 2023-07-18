@@ -8,10 +8,7 @@ const CreateSchema = require("../src/core/schema");
 /*------*/
 const { LIB_NAME, LIB_VERSION } = require("../src/constants");
 const { setupEmail, sendEmail, sendEmailVerify } = require("../src/core/email");
-const {
-  generateModelsFromJSON,
-  generateModelFiles,
-} = require("../src/core/models");
+const generateModelsFromJSON = require("../src/core/models/index");
 
 const {
   initializeS3,
@@ -148,7 +145,6 @@ const Hajar = {
   },
   Models: {
     generateModelsFromJSON: generateModelsFromJSON,
-    generateModelFiles: generateModelFiles,
   },
   /*  HajarRoles: {
     HajarRoles: HajarRoles,
