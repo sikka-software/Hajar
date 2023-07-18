@@ -229,8 +229,8 @@ function generateResolverContent(modelName) {
   let resolverContent = `const ${modelName} = require("../../models/${modelName}.js");
 const RoleModel = require("../../models/Role.js");
 const { GraphQLError } = require("graphql");
-const grants = require("../../utils/grants.js");
-  
+const grants = require("../../../utils/grants.js");
+const PermissionModel = require("../../../models/Permission.js");
 const resolvers = {
   Query: {
     get${modelName}ById: async (parent, args, context, info) => {
@@ -239,15 +239,18 @@ const resolvers = {
         const { id , roleID } = args;
         const role = await RoleModel.findById(roleID).populate("permissions");
         console.log("role", role);
+        
         if (!role) {
           return new GraphQLError("This role does not exist", {
             extensions: { code: "invalid-input" },
           });
         }
+        const grants = await PermissionModel.distinct("grant");
+        console.log("grants", grants);  
         if (
           !role.permissions.find(
             (permission) =>
-              permission.grant === grants.${modelName.toLowerCase()} && permission.read === true
+              grants.includes(permission.grant) && permission.read === true
           )
         ) {
           return new GraphQLError("You are not allowed to read ${modelName}", {
