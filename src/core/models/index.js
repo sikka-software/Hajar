@@ -3,7 +3,6 @@ const { exec } = require("child_process");
 const readline = require("readline");
 const path = require("path");
 
-// this one is for json file
 function generateModelsFromJSON(jsonFilePath) {
   // Read the JSON file
   let models = null;
@@ -54,6 +53,7 @@ function generateModelsFromJSON(jsonFilePath) {
     // Generate schema and resolvers
     const schemaContent = generateSchemaContent(modelName, modelProperties);
     const resolverContent = generateResolverContent(modelName);
+    // generateRandomDocuments(modelName, modelProperties, 10);
     // Write schema and resolver content to files
     const projectPath = path.join(process.cwd(), "graphQl");
     const resolversPath = path.join(projectPath, "resolvers");
@@ -77,63 +77,9 @@ function generateModelsFromJSON(jsonFilePath) {
     );
   }
 }
-
-// this is for one giving model
-function generateModelFiles(modelName, modelProperties) {
-  const modelContent = `const mongoose = require("mongoose");
-const { Schema } = mongoose;
-
-const ${modelName}Schema = new Schema({
-${Object.entries(modelProperties)
-  .map(
-    ([propertyName, propertyType]) => `  ${propertyName}: {
-    type: ${propertyType},
-    required: true,
-  },`
-  )
-  .join("\n")}
-});
-
-const ${modelName} = mongoose.model("${modelName.toLowerCase()}", ${modelName}Schema);
-
-module.exports = ${modelName};
-`;
-
-  // Write model content to a file
-  const modelsPath = path.join(process.cwd(), "models");
-  createDirectory(modelsPath);
-
-  const modelFilePath = path.join(modelsPath, `${modelName}.js`);
-  writeFile(modelFilePath, modelContent);
-
-  // Generate schema content
-  const schemaContent = generateSchemaContent(modelName, modelProperties);
-
-  // Generate resolver content
-  const resolverContent = generateResolverContent(modelName);
-
-  // Write schema and resolver content to files
-  const projectPath = path.join(process.cwd(), "graphQl");
-  const resolversPath = path.join(projectPath, "resolvers");
-  const typesPath = path.join(projectPath, "types");
-
-  createDirectory(projectPath);
-  createDirectory(resolversPath);
-  createDirectory(typesPath);
-
-  const schemaFilePath = path.join(typesPath, `${modelName}.type.graphql`);
-  const resolverFilePath = path.join(resolversPath, `${modelName}.resolver.js`);
-
-  writeFile(schemaFilePath, schemaContent);
-  writeFile(resolverFilePath, resolverContent);
-
-  console.log(`Schema and resolvers for ${modelName} generated successfully!`);
-}
-
 // this is to generate the Schema
 function generateSchemaContent(modelName, modelProperties) {
   let schemaContent = `type ${modelName} {\n`;
-  schemaContent += `  _id: ID\n`; // Add _id field of type ID
   for (const propertyName in modelProperties) {
     const propertyType = modelProperties[propertyName];
     if (propertyType === "ObjectId") {
@@ -166,7 +112,6 @@ function generateSchemaContent(modelName, modelProperties) {
   schemaContent += `}\n\n`;
 
   schemaContent += `input ${modelName}Input {\n`;
-  schemaContent += `}\n\n`;
   for (const propertyName in modelProperties) {
     const propertyType = modelProperties[propertyName];
     if (propertyType === "ObjectId") {
@@ -197,6 +142,7 @@ function generateSchemaContent(modelName, modelProperties) {
     }
   }
   schemaContent += `}\n\n`;
+
   schemaContent += `type Query {\n`;
   schemaContent += `  get${modelName}ById(id: ID!, roleID: ID!): ${modelName}\n`;
   schemaContent += `  getAll${modelName}s(roleID: ID!): [${modelName}]\n`;
@@ -244,19 +190,51 @@ function generateNestedType(nestedFields) {
   return nestedTypeContent;
 }
 
+function generateNestedInput(nestedFields) {
+  let nestedInputContent = "{\n";
+  for (const propertyName in nestedFields) {
+    const propertyType = nestedFields[propertyName];
+    if (propertyType === "ObjectId") {
+      nestedInputContent += `    ${propertyName}: ID\n`; // Use ID type for ObjectId
+    } else if (propertyType === "[ObjectId]") {
+      nestedInputContent += `    ${propertyName}: [ID]\n`; // Use ID type for ObjectId
+    } else if (propertyType === "String") {
+      nestedInputContent += `    ${propertyName}: String\n`; // Use String type
+    } else if (propertyType === "Int") {
+      nestedInputContent += `    ${propertyName}: Int\n`; // Use Int type
+    } else if (propertyType === "Float") {
+      nestedInputContent += `    ${propertyName}: Float\n`; // Use Float type
+    } else if (propertyType === "Boolean") {
+      nestedInputContent += `    ${propertyName}: Boolean\n`; // Use Boolean type
+    } else if (propertyType === "[String]") {
+      nestedInputContent += `    ${propertyName}: [String]\n`; // Use array of String type
+    } else if (propertyType === "[Int]") {
+      nestedInputContent += `    ${propertyName}: [Int]\n`; // Use array of Int type
+    } else if (propertyType === "[Float]") {
+      nestedInputContent += `    ${propertyName}: [Float]\n`; // Use array of Float type
+    } else if (propertyType === "[Boolean]") {
+      nestedInputContent += `    ${propertyName}: [Boolean]\n`; // Use array of Boolean type
+    } else {
+      nestedInputContent += `    ${propertyName}: ${propertyType}\n`; // Use the provided type
+    }
+  }
+  nestedInputContent += "  }";
+  return nestedInputContent;
+}
+
 // Here we generate the resolver content
 function generateResolverContent(modelName) {
   let resolverContent = `const ${modelName} = require("../../models/${modelName}.js");
 const RoleModel = require("../../models/Role.js");
 const { GraphQLError } = require("graphql");
-const PermissionModel = require("../../models/Permission");
-
+const grants = require("../../utils/grants.js");
+  
 const resolvers = {
   Query: {
     get${modelName}ById: async (parent, args, context, info) => {
       try {
-        console.log("Resolving get${modelName} query...");
-        const { id, roleID } = args;
+        console.log("Resolving get${modelName} query...")
+        const { id , roleID } = args;
         const role = await RoleModel.findById(roleID).populate("permissions");
         console.log("role", role);
         if (!role) {
@@ -264,15 +242,13 @@ const resolvers = {
             extensions: { code: "invalid-input" },
           });
         }
-        const grants = await PermissionModel.distinct("grant");
-
         if (
           !role.permissions.find(
             (permission) =>
-              grants.includes(permission.grant) && permission.read === true
+              permission.grant === grants.${modelName.toLowerCase()} && permission.read === true
           )
         ) {
-          return new GraphQLError("You are not allowed to read ${modelName.toLowerCase()}", {
+          return new GraphQLError("You are not allowed to read ${modelName}", {
             extensions: { code: "not-authorized" },
           });
         }
@@ -298,32 +274,32 @@ const resolvers = {
     },
     getAll${modelName}s: async (parent, args, context, info) => {
       try {
-        console.log("Resolving get${modelName} query...");
+        console.log("Resolving get${modelName} query...")
         const { roleID } = args;
         console.log("actorRole", roleID);
         const role = await RoleModel.findById(roleID).populate("permissions");
+        console.log("role", role);
         console.log("role", role);
         if (!role) {
           return new GraphQLError("This role does not exist", {
             extensions: { code: "invalid-input" },
           });
         }
-        const grants = await PermissionModel.distinct("grant");
         if (
           !role.permissions.find(
             (permission) =>
-              grants.includes(permission.grant) && permission.read === true
+              permission.grant === grants.${modelName.toLowerCase()} && permission.read === true
           )
         ) {
-          return new GraphQLError("You are not allowed to read ${modelName.toLowerCase()}", {
+          return new GraphQLError("You are not allowed to read ${modelName.toLowerCase()}s", {
             extensions: { code: "not-authorized" },
           });
         }
-        const ${modelName.toLowerCase()}s = await ${modelName}.find();
-        if (!${modelName.toLowerCase()}s || ${modelName.toLowerCase()}s.length === 0) {
+        const ${modelName}s = await ${modelName}.find();
+        if (!${modelName}s || ${modelName}s.length === 0) {
           throw new Error("${modelName} not found.");
         }
-        return ${modelName.toLowerCase()}s.map((${modelName}) => ({ ...${modelName}._doc }));
+        return ${modelName}s.map((${modelName}) => ({ ...${modelName}._doc }));
       } catch (errorAuthorizationget${modelName}s) {
         console.log(
           "Something went wrong during checking authorization getting ${modelName}.",
@@ -343,33 +319,33 @@ const resolvers = {
   },
 
   Mutation: {
-    create${modelName}: async (parent, { input }) => {
+    create${modelName}: async (parent,{input}) => {
       try {
         console.log("Resolving create${modelName} mutation...");
 
-        const ${modelName.toLowerCase()} = await ${modelName}.create({ ...input });
+        const ${modelName.toLowerCase()} = await ${modelName}.create({input});
         return { ...${modelName.toLowerCase()}._doc };
 
-      } catch (errorcatchCreate${modelName}) {
+        } catch (errorcatchCreate${modelName}) {
         console.log("Something went wrong during creating ${modelName}.", errorcatchCreate${modelName});
         return new GraphQLError("Something went wrong during creating ${modelName}.", {
           extensions: { code: "server-error" },
         });
       }
     },
-    update${modelName}: async (parent, { id, input }) => {
+    update${modelName}: async (parent, {id , input}) => {
       try {
         console.log("Resolving update${modelName} mutation...");
         const ${modelName.toLowerCase()} = await ${modelName}.findByIdAndUpdate(
           id,
           input,
           { new: true }
-        );
+        )
 
         if (!${modelName.toLowerCase()}) {
           throw new Error("${modelName} not found.");
         }
-        return { ...${modelName.toLowerCase()}._doc };
+        return { ...${modelName.toLowerCase()}._doc};
       } catch (errorcatchUpdate${modelName}) {
         console.log("Something went wrong during updating ${modelName}.", errorcatchUpdate${modelName});
         return new GraphQLError("Something went wrong during updating ${modelName}.", {
@@ -377,7 +353,7 @@ const resolvers = {
         });
       }
     },
-    delete${modelName}: async (parent, { id }) => {
+    delete${modelName}: async (parent, {id}) => {
       try {
         console.log("Resolving delete${modelName} mutation...");
         const ${modelName.toLowerCase()} = await ${modelName}.findByIdAndDelete(id);
@@ -385,7 +361,7 @@ const resolvers = {
         if (!${modelName.toLowerCase()}) {
           throw new Error("${modelName} not found.");
         }
-        return ${modelName.toLowerCase()};
+        return ${modelName.toLowerCase()}
       } catch (errorcatchDelete${modelName}) {
         console.log("Something went wrong during deleting ${modelName}.", errorcatchDelete${modelName});
         return new GraphQLError("Something went wrong during deleting ${modelName}.", {
@@ -395,6 +371,8 @@ const resolvers = {
     },
   },
 };
+
+
 
 module.exports = resolvers;
 `;
@@ -417,7 +395,4 @@ function writeFile(filePath, content) {
   });
 }
 
-module.exports = {
-  generateModelsFromJSON,
-  generateModelFiles,
-};
+module.exports = generateModelsFromJSON;
