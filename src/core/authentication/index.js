@@ -11,7 +11,7 @@ class HajarAuth {
     this.cookieOptions = options.cookieOptions;
   }
 
-  async signup(name, email, password, confirmPassword) {
+  async signup(username, email, password, confirmPassword) {
     // modified
     const userExists = await this.User.findOne({ email });
     if (userExists) {
@@ -26,7 +26,7 @@ class HajarAuth {
     const hashedPassword = await this.bcrypt.hash(password, 10);
     const hashedconfirmPassword = await this.bcrypt.hash(confirmPassword, 10);
     const user = new this.User({
-      name,
+      username,
       email,
       password: hashedPassword,
       confirmPassword: hashedconfirmPassword,
