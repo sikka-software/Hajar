@@ -7,105 +7,84 @@
 [![NPM](https://img.shields.io/npm/v/@sikka/hajar.svg?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@sikka/hajar)
 [![NPM](https://img.shields.io/npm/dt/@sikka/hajar.svg?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@sikka/hajar)
 
-> Javascript/Typescript toolkit for creating Saas/Paas applications
+> Javascript/Typescript engine Saas/Paas applications
 
 [documentation](https://zakher.gitbook.io/hajar/)
 
-The Thesis of the structure is that each code architecture is that the user is creating items and save them as private or public. The items are editable and they can be categorized in different ways.
+# Benefits
 
-Concept
-=======
+Many SaaS projects have the same foundation and architecture. Using a dynamic external library like Hajar will make it easier and faster to complete the internal functions of your SaaS project.
 
-Users collect stones. A single stone is a JSON object that has an \_id and other properties with flexible data. Examples of a stones:
 
-*   Menu from Qawaim
-*   Card from OneCard
-*   Worda from Worda
-*   Tweet from Twitter
-*   Image from Instagram
-*   GIF from Giphy
-*   Pin from Pinterest
-*   Post from Facebook
-*   etc
 
-  
+# Table of content
 
-We will abstract Qawaim and make it connected to a boilerplate that we will use to generate other Apps that have the similar structure as Qawaim but with different items.
+<!-- TABLE OF CONTENTS -->
 
-Benefits
-========
+<ol>
+<li><a  href="#overview">Overview</a></li>
+<li><a  href="#getting-started">Getting Started</a>
+<ul>
+<li><a  href="#prerequisite">Prerequisite</a></li>
+<li><a  href="#install">Installation</a></li>
+</ul>
+</li>
+<li>
+<a  href="#usage">Usage</a>
+<ul>
+<li><a  href="#directory-structure">Directory Structure</a></li>
+<li><a  href="#theme-preview">Theme Preview</a></li>
+</ul>
+</li>
+<li>
+<a  href="#main-features">Main Features</a>
+<ul>
+<li><a  href="#theme-features">Database Connections</a></li>
+<li><a  href="#theme-components">Authentication</a></li>
+<li><a  href="#theme-components">Emails</a></li>
+<li><a  href="#theme-components">Storage</a></li>
+<li><a  href="#theme-components">Invoices</a></li>
+</ul>
+</li>
+<li><a  href="#support">Support</a></li>
+<li><a  href="#contributing">Contributing</a></li>
+<li><a  href="#credits">Credits</a></li>
+<li><a  href="#license">License</a></li>
+</ol>
 
-Many SaaS projects have the same foundation and architecture. Putting them in the same boilerplate will eliminate the time it takes to setup the project .They all need the same:
+<br>
 
-Common Elements
-===============
 
-The follow web elements and pages exist in most SaaS projects.
 
-*   Pages
-    *   Error Page
-*   Billing Page
-    *   Add Payment Method
-    *   Add Wallet Balance
-    *   See Transaction History
-*   Account Page
-    *   Change Language
-    *   Change Currency
-    *   Change Profile Info
-    *   Change Password
-    *   Deactivate Account
-*   Wallet Balance System
-*   Home Page
-    *   List of Stones
-    *   Create Stone
-    *   Delete Stone
-    *   Update Stone
-*   Single Stone Page (\[id\].js)
+## Install
 
-The Hierarchy
-=============
+```bash
 
-  
-Users saved objects can be top level only or multileveled. For example:
+npm install --save @sikka/hajar
 
-Qawaim Hierarchy
-
-```plain
-Users
-- Menus (location, currency, language)
--- Items (info & images)
 ```
 
-Garagi Hierarchy
+## Usage
 
-```plain
-Users
-- Garages (location, capacity)
--- Cars (info & images)
---- Documents (ownership, insurance, etc)
+```jsx
+//example coming soon inshallah
 ```
 
-OneCard Hierarchy
+# Main Features
 
-```plain
-Users
-- OneCards
--- Actions (Download vCard, Profile Page, Central Link, Redirect to Link) 
---- Buttons (To create central links)
---- Inputs (To create surveys)
-```
+### Invoices
 
-  
+ | <div style="width:220px">Function</div> | Discription |
+|---|---|
+| [CreateInvoice]() | This component is responsible for displaying Youtube videos that the developer preselects. |
+| [placeholder]() | Fixed banner is the area in charge of displaying a banner that is fixated on the home page. |
 
-Functions & Methods
-===================
-
-### CreateInvoice()
-
+<!-- 
 This will be used to create an invoice with ready a ready template.
 
 Arguments:
 
+```
 backend_url: ""
 invoice_id: ""
 invoice_lang: ""
@@ -122,15 +101,16 @@ invoice_customer:{
   email: ""
 }
 products: [
-  { 
+  {
     product_name: "PRODUCT NAME",
-    product_price: 00.00 
+    product_price: 00.00
   }
 ]
 invoice_date: "01/11/2020"
 invoice_currency: "SAR"
 return: "base64" // default: create file in the root app in folder invoice and return boolean true or false
-
+``` -->
+<!-- 
 ### SendEmail()
 
 Send an email to the user for billing, verification, password reset, or other reasons
@@ -192,30 +172,14 @@ Quickly setup Firebase project
 
 arguments
 
-### SetupPayment()
-
-UI Design
-=========
-
-All UI elements in this boilerplate will be components that we can rearrange differently to create different layouts. This way we can design and add new components with the same [Hawa | هواء](https://app.clickup.com/613523/v/dc/jq4k-1524/jq4k-22685) UI kit.
+### SetupPayment() -->
 
 
+## Support
 
+The team is always here to help you. Happen to face an issue? Want to report a bug? You can submit one here on Github using the [Issue Tracker](https://github.com/sikka-software/hajar/issues/new).
 
-
-## Install
-
-```bash
-
-npm install --save @sikka/hawa
-
-```
-
-## Usage
-
-```jsx
-//example coming soon inshallah
-```
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Contributing
 
@@ -224,8 +188,8 @@ To contribute, clone this github repository and run the development server
 - clone repository
 
 ```bash
-git clone git@github.com:sikka-software/hawa.git
-cd hawa
+git clone git@github.com:sikka-software/hajar.git
+cd hajar
 npm install
 ```
 
@@ -234,34 +198,7 @@ npm install
 - Run development server
 
 ```bash
-git clone git@github.com:sikka-software/hawa.git
-cd hawa
-npm install
-npm run storybook
-```
-
-- Edit **Hawa/src/stories/Hawa.stories.js\_** file
-
-- Add your custom testing component in **Hawa.stories.js** file
-
-- Or you can preview without running development server. [See Preview](https://sikka-software.github.io/Hawa/storybook-static/)
-
-```jsx
-//example coming soon inshallah
-```
-
-## Deployment
-
-```bash
-npm run build-storybook
-```
-
-## Publishing (Admin)
-
-```bash
-npm version [major | minor | patch]
-npm run build-lib
-npm publish --access public
+# Coming soon inshallah
 ```
 
 ## License
