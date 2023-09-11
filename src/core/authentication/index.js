@@ -62,18 +62,18 @@ class HajarAuth {
     const user = new this.User({
       username,
       email,
+      ref: "admins",
       password: hashedPassword,
-      role: adminRole._id, // Assign the Admin role to the user
+      role: adminRole._id,
     });
 
-    await user.save();
-
-    // Create a new admin with a reference to the user
+    const newuser = await user.save();
+    console.log("newuser", newuser);
     const admin = new this.Admin({
-      profile: user._id, // Reference to the user
-      role: adminRole._id, // Assign the Admin role to the admin
-      uid: user._id, // Use user's _id as uid for admin
-      name: username, // Use user's username as the admin's name
+      profile: newuser._id,
+      role: adminRole._id,
+      uid: newuser._id,
+      name: username,
     });
 
     await admin.save();
