@@ -157,12 +157,29 @@ class HajarAuth {
     try {
       const decodedToken = this.jwt.verify(token, this.secret);
       const user = await this.User.findById(decodedToken.userId);
+
       if (!user) {
         console.error(`User not found for ID ${decodedToken.userId}`);
         // return { error: "User not found" };
         return new CustomError("User not found", "user-not-found");
       }
-      return user;
+
+      // Find the admin associated with the user
+      const admin = await this.Admin.findOne({ profile: user._id });
+
+      if (!admin) {
+        console.error(`Admin not found for user ID ${user._id}`);
+        // return { error: "Admin not found" };
+        return new CustomError("Admin not found", "admin-not-found");
+      }
+
+      // Create a merged object with fields from both user and admin
+      const mergedObject = {
+        ...user.toObject(),
+        ...admin.toObject(),
+      };
+
+      return mergedObject;
     } catch (err) {
       console.error("JWT verification error:", err);
       // return { error: "Invalid token" };
