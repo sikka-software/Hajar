@@ -117,8 +117,8 @@ class HajarAuth {
 
   async signin(email, password, res) {
     const user = await this.User.findOne({ email });
+
     if (!user) {
-      // throw new Error("Invalid email or password");
       throw new CustomError(
         "Invalid email or password",
         "invalid-email-password"
@@ -129,23 +129,28 @@ class HajarAuth {
       password,
       user.password
     );
+
     if (!isPasswordCorrect) {
-      // throw new Error("Invalid email or password");
       throw new CustomError(
         "Invalid email or password",
         "invalid-email-password"
       );
     }
+    if (user.ref === "admins") {
+      const token = this.jwt.sign({ userId: user._id }, this.secret);
 
-    const token = this.jwt.sign({ userId: user._id }, this.secret);
-
-    const role = user.role || "user"; // default role is "user"
-
-    return { user, token, role }; // modified
+      return { user, token, role: "admin" };
+    } else {
+      // If the user's "ref" field is not equal to "admins", return an error
+      throw new CustomError(
+        "Access denied. Only admins can log in.",
+        "access-denied"
+      );
+    }
   }
 
   signout(res) {
-    res.clearCookie("token");
+    res.clearCookie("@admin-tayar-token");
     return true;
   }
 
