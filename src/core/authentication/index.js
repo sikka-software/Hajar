@@ -11,43 +11,35 @@ class HajarAuth {
     this.secret = options.secret;
     this.cookieOptions = options.cookieOptions;
   }
-
-  async signup(username, email, password) {
-    // Check if a user with the same email already exists
-    const userExists = await this.User.findOne({ email });
-
-    if (userExists) {
+  async signin(email, password, res) {
+    const user = await this.User.findOne({ email });
+    if (!user) {
+      // throw new Error("Invalid email or password");
       throw new CustomError(
-        "User with this email already exists",
-        "user-already-exist",
-        { email: email }
+        "Invalid email or password",
+        "invalid-email-password"
       );
     }
 
-    // Find the role associated with "Admin"
-    const adminRole = await this.Role.findOne({ name: "Admin" });
-
-    if (!adminRole) {
-      throw new CustomError("Admin role not found", "admin-role-not-found");
+    const isPasswordCorrect = await this.bcrypt.compare(
+      password,
+      user.password
+    );
+    if (!isPasswordCorrect) {
+      // throw new Error("Invalid email or password");
+      throw new CustomError(
+        "Invalid email or password",
+        "invalid-email-password"
+      );
     }
-
-    // Hash the password
-    const hashedPassword = await this.bcrypt.hash(password, 10);
-
-    // Create a new user with the Admin role
-    const user = new this.User({
-      username,
-      email,
-      password: hashedPassword,
-      role: adminRole._id, // Assign the Admin role to the user
-    });
-
-    await user.save();
 
     const token = this.jwt.sign({ userId: user._id }, this.secret);
 
-    return { user, token, role: adminRole }; // Return the adminRole object
+    const role = user.role || "user"; // default role is "user"
+
+    return { user, token, role }; // modified
   }
+
   async signup(username, email, password) {
     // Check if a user with the same email already exists
     const userExists = await this.User.findOne({ email });
@@ -78,7 +70,6 @@ class HajarAuth {
 
     // Create a new admin with a reference to the user
     const admin = new this.Admin({
-      username: username,
       profile: user._id, // Reference to the user
       role: adminRole._id, // Assign the Admin role to the admin
       uid: user._id, // Use user's _id as uid for admin
