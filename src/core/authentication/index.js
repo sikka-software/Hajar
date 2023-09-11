@@ -59,18 +59,14 @@ class HajarAuth {
         { email: email }
       );
     }
-
-    // Find the role associated with "Admin"
     const adminRole = await this.Role.findOne({ name: "Admin" });
 
     if (!adminRole) {
       throw new CustomError("Admin role not found", "admin-role-not-found");
     }
 
-    // Hash the password
     const hashedPassword = await this.bcrypt.hash(password, 10);
 
-    // Create a new user with the Admin role
     const user = new this.User({
       username,
       email,
@@ -82,10 +78,11 @@ class HajarAuth {
 
     // Create a new admin with a reference to the user
     const admin = new this.Admin({
+      username: username,
       profile: user._id, // Reference to the user
       role: adminRole._id, // Assign the Admin role to the admin
       uid: user._id, // Use user's _id as uid for admin
-      name: user.username, // Use user's username as the admin's name
+      name: username, // Use user's username as the admin's name
     });
 
     await admin.save();
