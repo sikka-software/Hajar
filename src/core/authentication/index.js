@@ -5,15 +5,17 @@ class HajarAuth {
     this.jwt = options.jwt;
     this.bcrypt = options.bcrypt;
     this.User = options.User;
+    this.Admin = options.Admin; // new
     this.Role = options.Role; // new
     this.Permission = options.Permission; // new
     this.secret = options.secret;
     this.cookieOptions = options.cookieOptions;
   }
 
-  async signup(username, email, password, confirmPassword) {
-    // modified
+  async signup(username, email, password) {
+    // Check if a user with the same email already exists
     const userExists = await this.User.findOne({ email });
+
     if (userExists) {
       throw new CustomError(
         "User with this email already exists",
@@ -21,24 +23,78 @@ class HajarAuth {
         { email: email }
       );
     }
-    const role = await this.Role.find({ name: "Admin" });
-    const RoleId = role._id;
+
+    // Find the role associated with "Admin"
+    const adminRole = await this.Role.findOne({ name: "Admin" });
+
+    if (!adminRole) {
+      throw new CustomError("Admin role not found", "admin-role-not-found");
+    }
+
+    // Hash the password
     const hashedPassword = await this.bcrypt.hash(password, 10);
-    const hashedconfirmPassword = await this.bcrypt.hash(confirmPassword, 10);
+
+    // Create a new user with the Admin role
     const user = new this.User({
       username,
       email,
       password: hashedPassword,
-      confirmPassword: hashedconfirmPassword,
-      role: RoleId, // new
+      role: adminRole._id, // Assign the Admin role to the user
     });
 
     await user.save();
 
     const token = this.jwt.sign({ userId: user._id }, this.secret);
 
-    return { user, token, role }; // modified
+    return { user, token, role: adminRole }; // Return the adminRole object
   }
+  async signup(username, email, password) {
+    // Check if a user with the same email already exists
+    const userExists = await this.User.findOne({ email });
+
+    if (userExists) {
+      throw new CustomError(
+        "User with this email already exists",
+        "user-already-exist",
+        { email: email }
+      );
+    }
+
+    // Find the role associated with "Admin"
+    const adminRole = await this.Role.findOne({ name: "Admin" });
+
+    if (!adminRole) {
+      throw new CustomError("Admin role not found", "admin-role-not-found");
+    }
+
+    // Hash the password
+    const hashedPassword = await this.bcrypt.hash(password, 10);
+
+    // Create a new user with the Admin role
+    const user = new this.User({
+      username,
+      email,
+      password: hashedPassword,
+      role: adminRole._id, // Assign the Admin role to the user
+    });
+
+    await user.save();
+
+    // Create a new admin with a reference to the user
+    const admin = new this.Admin({
+      profile: user._id, // Reference to the user
+      role: adminRole._id, // Assign the Admin role to the admin
+      uid: user._id, // Use user's _id as uid for admin
+      name: user.username, // Use user's username as the admin's name
+    });
+
+    await admin.save();
+
+    const token = this.jwt.sign({ userId: user._id }, this.secret);
+
+    return { user, admin, token, role: adminRole }; // Return the adminRole object
+  }
+
   async createRole(roleName, permissionIds) {
     const existingRole = await this.Role.findOne({ name: roleName });
     if (existingRole) {
