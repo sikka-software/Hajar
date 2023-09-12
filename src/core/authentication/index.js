@@ -150,7 +150,7 @@ class HajarAuth {
   }
 
   signout(res) {
-    res.clearCookie("@admin-tayar-token");
+    res.clearCookie("token");
     return true;
   }
 
@@ -162,26 +162,21 @@ class HajarAuth {
     try {
       const decodedToken = this.jwt.verify(token, this.secret);
       const user = await this.User.findById(decodedToken.userId);
+      console.log("decodedToken.userId : ", decodedToken.userId);
+      const admin = await this.Admin.findOne({ uid: user._id });
 
       if (!user) {
         console.error(`User not found for ID ${decodedToken.userId}`);
-        // return { error: "User not found" };
         return new CustomError("User not found", "user-not-found");
       }
 
-      // Find the admin associated with the user
-      const admin = await this.Admin.findOne({ profile: user._id });
-
       if (!admin) {
         console.error(`Admin not found for user ID ${user._id}`);
-        // return { error: "Admin not found" };
         return new CustomError("Admin not found", "admin-not-found");
       }
-
-      // Create a merged object with fields from both user and admin
       const mergedObject = {
-        ...user.toObject(),
         ...admin.toObject(),
+        ...user.toObject(),
       };
 
       return mergedObject;
