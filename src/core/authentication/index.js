@@ -41,46 +41,61 @@ class HajarAuth {
   }
 
   async signup(username, email, password) {
-    // Check if a user with the same email already exists
-    const userExists = await this.User.findOne({ email });
+    try {
+      // Check if a user with the same email already exists
+      const userExists = await this.User.findOne({ email });
 
-    if (userExists) {
-      throw new CustomError(
-        "User with this email already exists",
-        "user-already-exist",
-        { email: email }
-      );
+      if (userExists) {
+        throw new CustomError(
+          "User with this email already exists",
+          "user-already-exist",
+          { email: email }
+        );
+      }
+
+      const adminRole = await this.Role.findOne({ name: "Admin" });
+
+      if (!adminRole) {
+        throw new CustomError("Admin role not found", "admin-role-not-found");
+      }
+
+      const hashedPassword = await this.bcrypt.hash(password, 10);
+
+      const user = new this.User({
+        username,
+        email,
+        ref: "admins", // Set the reference to "admins"
+        password: hashedPassword,
+        role: adminRole._id,
+      });
+
+      const newUser = await user.save();
+
+      const admin = new this.Admin({
+        profile: newUser._id,
+        role: adminRole._id,
+        uid: newUser._id,
+        name: username,
+        username: username,
+        firstName: {
+          en: "ENGLISH FIRST NAME",
+          ar: "ARABIC FIRST NAME",
+        },
+        lastName: {
+          en: "ENGLISH LAST NAME",
+          ar: "ARABIC LAST NAME",
+        },
+      });
+
+      await admin.save();
+
+      const token = this.jwt.sign({ userId: newUser._id }, this.secret);
+
+      return { user: newUser, admin, token, role: adminRole };
+    } catch (error) {
+      console.error("Signup error:", error);
+      throw error; // Re-throw the error for the caller to handle
     }
-    const adminRole = await this.Role.findOne({ name: "Admin" });
-
-    if (!adminRole) {
-      throw new CustomError("Admin role not found", "admin-role-not-found");
-    }
-
-    const hashedPassword = await this.bcrypt.hash(password, 10);
-
-    const user = new this.User({
-      username,
-      email,
-      ref: "admins",
-      password: hashedPassword,
-      role: adminRole._id,
-    });
-
-    const newuser = await user.save();
-    console.log("newuser", newuser);
-    const admin = new this.Admin({
-      profile: newuser._id,
-      role: adminRole._id,
-      uid: newuser._id,
-      name: username,
-    });
-
-    await admin.save();
-
-    const token = this.jwt.sign({ userId: user._id }, this.secret);
-
-    return { user, admin, token, role: adminRole }; // Return the adminRole object
   }
 
   async createRole(roleName, permissionIds) {
@@ -150,7 +165,7 @@ class HajarAuth {
   }
 
   signout(res) {
-    res.clearCookie("token");
+    res.clearCookie("@admin-tayar-token");
     return true;
   }
 
