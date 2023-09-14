@@ -64,7 +64,7 @@ class HajarAuth {
       const user = new this.User({
         username,
         email,
-        ref: "admins", // Set the reference to "admins"
+        ref: "admins",
         password: hashedPassword,
         role: adminRole._id,
       });
@@ -159,7 +159,7 @@ class HajarAuth {
       // If the user's "ref" field is not equal to "admins", return an error
       throw new CustomError(
         "Access denied. Only admins can log in.",
-        "access-denied"
+        "access-denied-only-admins-can-log-in"
       );
     }
   }
