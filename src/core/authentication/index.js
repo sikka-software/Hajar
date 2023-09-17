@@ -170,10 +170,10 @@ class HajarAuth {
   }
 
   async getUserByToken(token) {
+    if (!token) {
+      return null;
+    }
     try {
-      if (!token) {
-        return null;
-      }
       const decodedToken = this.jwt.verify(token, this.secret);
       const user = await this.User.findById(decodedToken.userId);
       console.log("decodedToken.userId : ", decodedToken.userId);
