@@ -4,18 +4,27 @@
 
 # Hajar | حجر
 
-[![NPM](https://img.shields.io/npm/v/@sikka/hajar.svg?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@sikka/hajar)
-[![NPM](https://img.shields.io/npm/dt/@sikka/hajar.svg?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@sikka/hajar)
+[![NPM](https://img.shields.io/npm/v/@sikka/hajar.svg?style=flat&colorA=000000&colorB=1082c3)](https://www.npmjs.com/package/@sikka/hajar)
+[![NPM@beta](https://img.shields.io/npm/v/@sikka/hajar/beta.svg?style=flat&colorA=000000&colorB=ea7637)](https://www.npmjs.com/package/@sikka/hajar)
+[![Hajar CI - @latest](https://github.com/sikka-software/Hajar/actions/workflows/hajar-main.yml/badge.svg)](https://github.com/sikka-software/Hawa/actions/workflows/hajar-main.yml)
+[![Hajar CI - @beta](https://github.com/sikka-software/Hajar/actions/workflows/hajar-beta.yml/badge.svg)](https://github.com/sikka-software/Hajar/actions/workflows/hajar-beta.yml)
 
 > Javascript/Typescript engine Saas/Paas applications
+
+## Install
+
+**Note:** `@beta` only points to pre-releases.
+Use `@latest` for the latest stable release.
+
+```bash
+npm install @sikka/hajar
+```
 
 [documentation](https://zakher.gitbook.io/hajar/)
 
 # Benefits
 
 Many SaaS projects have the same foundation and architecture. Using a dynamic external library like Hajar will make it easier and faster to complete the internal functions of your SaaS project.
-
-
 
 # Table of content
 
@@ -54,8 +63,6 @@ Many SaaS projects have the same foundation and architecture. Using a dynamic ex
 
 <br>
 
-
-
 ## Install
 
 ```bash
@@ -74,12 +81,12 @@ npm install --save @sikka/hajar
 
 ### Invoices
 
- | <div style="width:220px">Function</div> | Discription |
-|---|---|
-| [CreateInvoice]() | This component is responsible for displaying Youtube videos that the developer preselects. |
-| [placeholder]() | Fixed banner is the area in charge of displaying a banner that is fixated on the home page. |
+| <div style="width:220px">Function</div> | Discription                                                                                 |
+| --------------------------------------- | ------------------------------------------------------------------------------------------- |
+| [CreateInvoice]()                       | This component is responsible for displaying Youtube videos that the developer preselects.  |
+| [placeholder]()                         | Fixed banner is the area in charge of displaying a banner that is fixated on the home page. |
 
-<!-- 
+<!--
 This will be used to create an invoice with ready a ready template.
 
 Arguments:
@@ -110,7 +117,7 @@ invoice_date: "01/11/2020"
 invoice_currency: "SAR"
 return: "base64" // default: create file in the root app in folder invoice and return boolean true or false
 ``` -->
-<!-- 
+<!--
 ### SendEmail()
 
 Send an email to the user for billing, verification, password reset, or other reasons
@@ -173,7 +180,6 @@ Quickly setup Firebase project
 arguments
 
 ### SetupPayment() -->
-
 
 ## Support
 
