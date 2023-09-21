@@ -94,10 +94,10 @@ class HajarAuth {
         _id: newUser._id,
         id: newUser._id,
         email: newUser.email,
-        uid: newAdmin.uid,
+        uid: newAdmin._id,
         firstName: newAdmin.firstName,
         lastName: newAdmin.lastName,
-        role: adminRole,
+        role: adminRole._id,
       };
       return {
         success: true,
@@ -106,7 +106,7 @@ class HajarAuth {
       };
     } catch (error) {
       console.error("Signup error:", error);
-      throw error; // Re-throw the error for the caller to handle
+      throw error;
     }
   }
 
