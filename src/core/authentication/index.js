@@ -87,11 +87,23 @@ class HajarAuth {
         },
       });
 
-      await admin.save();
+      const newAdmin = await admin.save();
 
       const token = this.jwt.sign({ userId: newUser._id }, this.secret);
-
-      return { user: newUser, admin, token, role: adminRole };
+      const finalUser = {
+        _id: newUser._id,
+        id: newUser._id,
+        email: newUser.email,
+        uid: newAdmin.uid,
+        firstName: newAdmin.firstName,
+        lastName: newAdmin.lastName,
+        role: adminRole,
+      };
+      return {
+        success: true,
+        user: finalUser,
+        token,
+      };
     } catch (error) {
       console.error("Signup error:", error);
       throw error; // Re-throw the error for the caller to handle
