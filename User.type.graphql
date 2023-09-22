@@ -1,23 +1,19 @@
-
-    type User {
-        name: String
-email: String
-password: String
-    }
-    input UserInput {
-      name: String
-email: String
-password: String
-    }
-    type Query {
-      getUsers: [User]
-      getUser(_id : ID): User
-
-    }
-    type Mutation {
-        createUser(input: UserInput): User
-        updateUser(_id: ID, input: UserInput): User
-        deleteUser(_id: ID): User
-    }
-    
-    
+type User {
+  name: String
+  email: String
+  password: String
+}
+input UserInput {
+  name: String
+  email: String
+  password: String
+}
+type Query {
+  getUsers: [User]
+  getUser(_id: ID): User
+}
+type Mutation {
+  createUser(input: UserInput): User
+  updateUser(_id: ID, input: UserInput): User
+  deleteUser(_id: ID): User
+}
