@@ -1,3 +1,5 @@
+// This class handles all authentication
+
 const CustomError = require("../../utils/customError");
 
 class HajarAuth {

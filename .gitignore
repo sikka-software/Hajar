@@ -66,3 +66,8 @@ lib
 
 # platform specific
 .DS_Store
+
+
+docs/.next
+/docs/node_modules
+
