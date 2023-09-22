@@ -11,7 +11,7 @@
   "license": "MIT",
   "homepage": "https://hajar.sikka.io",
   "dependencies": {
-    "@sikka/hawa": "^0.2.3",
+    "@sikka/hawa": "^0.2.19-beta",
     "next": "^13.0.6",
     "nextra": "latest",
     "nextra-theme-docs": "latest",

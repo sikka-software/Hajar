@@ -1,0 +1,17 @@
+{
+  "index": "Introduction",
+
+  "--Methods": {
+    "title": "Methods",
+    "type": "separator"
+  },
+
+  "authentication": "Authentication",
+  "database": "Database",
+  "email": "Emails",
+  "storage": "Storage",
+  "--queries": {
+    "title": "Queries",
+    "type": "separator"
+  }
+}

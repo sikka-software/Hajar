@@ -956,10 +956,10 @@
   dependencies:
     "@babel/runtime" "^7.13.10"
 
-"@sikka/hawa@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@sikka/hawa/-/hawa-0.2.3.tgz#aa4555d6ba63c39acdbc8ba20a23c676b889d054"
-  integrity sha512-7Je07p1JGdaKGZ+NGKSMiHFqyfiCF+Ux1UsCbtpd6cSZ9eiuKq2HrPDrxhlw7+uPcQCtvcYFvzId0+tv3aS3XQ==
+"@sikka/hawa@^0.2.19-beta":
+  version "0.2.19-beta"
+  resolved "https://registry.yarnpkg.com/@sikka/hawa/-/hawa-0.2.19-beta.tgz#fe9080fa0063b991e5d08701299464fdcad979d1"
+  integrity sha512-RL0HAd4l+1QneGwjUmaRHo4p6jVxPprLZFTvU0X3eqVV86TJgFdUjNZ1Ntisq2w9+8nOtbusR5DUoMcyTWt/Fw==
   dependencies:
     "@radix-ui/react-accordion" "^1.1.2"
     "@radix-ui/react-dialog" "^1.0.4"
