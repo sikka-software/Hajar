@@ -57,6 +57,7 @@ jobs:
         node-version: [16.x]
     steps:
       - uses: actions/checkout@v2
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
@@ -64,12 +65,12 @@ jobs:
       - name: Install Hajar Docs
         run: |
           rm -fr /home/cloudpanel/htdocs/hajar.sikka.io || true
-          cd /var/www/html/sikka-software/_work/Hajar/Hajar
+          cd /var/www/html/sikka-software/_work/Hajar/Hajar/docs
           rm -fr package-lock.json || true
           rm -fr node_modules  || true
           npm install
           npm run build --if-present
-          ln -s /var/www/html/sikka-software/_work/Hajar/Hajar /home/cloudpanel/htdocs/hajar.sikka.io
+          ln -s /var/www/html/sikka-software/_work/Hajar/Hajar/docs /home/cloudpanel/htdocs/hajar.sikka.io
           pm2 stop hajar-docs || true
           pm2 delete hajar-docs || true
           pm2 start npm --name "hajar-docs" -- start || true
