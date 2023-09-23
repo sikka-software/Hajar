@@ -1,6 +1,6 @@
 // This class handles all authentication
 
-const CustomError = require("../../utils/customError");
+const HajarError = require("../../utils/hajarError");
 
 class HajarAuth {
   constructor(options) {
@@ -17,7 +17,7 @@ class HajarAuth {
     const user = await this.User.findOne({ email });
     if (!user) {
       // throw new Error("Invalid email or password");
-      throw new CustomError(
+      throw new HajarError(
         "Invalid email or password",
         "invalid-email-password"
       );
@@ -29,7 +29,7 @@ class HajarAuth {
     );
     if (!isPasswordCorrect) {
       // throw new Error("Invalid email or password");
-      throw new CustomError(
+      throw new HajarError(
         "Invalid email or password",
         "invalid-email-password"
       );
@@ -48,7 +48,7 @@ class HajarAuth {
       const userExists = await this.User.findOne({ email });
 
       if (userExists) {
-        throw new CustomError(
+        throw new HajarError(
           "User with this email already exists",
           "user-already-exist",
           { email: email }
@@ -58,7 +58,7 @@ class HajarAuth {
       const adminRole = await this.Role.findOne({ name: "Admin" });
 
       if (!adminRole) {
-        throw new CustomError("Admin role not found", "admin-role-not-found");
+        throw new HajarError("Admin role not found", "admin-role-not-found");
       }
 
       const hashedPassword = await this.bcrypt.hash(password, 10);
@@ -116,7 +116,7 @@ class HajarAuth {
     const existingRole = await this.Role.findOne({ name: roleName });
     if (existingRole) {
       // throw new Error(`Role ${roleName} already exists`);
-      throw new CustomError("Role already exists", "role-already-exist", {
+      throw new HajarError("Role already exists", "role-already-exist", {
         role: roleName,
       });
     }
@@ -148,7 +148,7 @@ class HajarAuth {
     const user = await this.User.findOne({ email });
 
     if (!user) {
-      throw new CustomError(
+      throw new HajarError(
         "Invalid email or password",
         "invalid-email-password"
       );
@@ -160,7 +160,7 @@ class HajarAuth {
     );
 
     if (!isPasswordCorrect) {
-      throw new CustomError(
+      throw new HajarError(
         "Invalid email or password",
         "invalid-email-password"
       );
@@ -171,7 +171,7 @@ class HajarAuth {
       return { user, token, role: "admin" };
     } else {
       // If the user's "ref" field is not equal to "admins", return an error
-      throw new CustomError(
+      throw new HajarError(
         "Access denied. Only admins can log in.",
         "access-denied-only-admins-can-log-in"
       );
@@ -195,12 +195,12 @@ class HajarAuth {
 
       if (!user) {
         console.error(`User not found for ID ${decodedToken.userId}`);
-        return new CustomError("User not found", "user-not-found");
+        return new HajarError("User not found", "user-not-found");
       }
 
       if (!admin) {
         console.error(`Admin not found for user ID ${user._id}`);
-        return new CustomError("Admin not found", "admin-not-found");
+        return new HajarError("Admin not found", "admin-not-found");
       }
       const mergedObject = {
         ...admin.toObject(),
@@ -211,7 +211,7 @@ class HajarAuth {
     } catch (err) {
       console.error("JWT verification error:", err);
       // return { error: "Invalid token" };
-      return new CustomError("Invalid user token", "invalid-user-token");
+      return new HajarError("Invalid user token", "invalid-user-token");
     }
   }
 
@@ -225,7 +225,7 @@ class HajarAuth {
     });
     if (!user) {
       // throw new Error(`User with email ${email} not found`);
-      throw new CustomError("User not found", "user-not-found", {
+      throw new HajarError("User not found", "user-not-found", {
         email: email,
       });
     }
@@ -242,7 +242,7 @@ class HajarAuth {
     });
     if (!user) {
       // throw new Error(`User with ID ${userId} not found`);
-      throw new CustomError("User not found", "user-not-found", {
+      throw new HajarError("User not found", "user-not-found", {
         userID: userId,
       });
     }
@@ -253,7 +253,7 @@ class HajarAuth {
   async getRoleById(middelware, roleId) {
     if (!middelware.Types.ObjectId.isValid(roleId)) {
       // throw new Error("Invalid roleId");
-      throw new CustomError("Invalid Role ID", "invalid-role", {
+      throw new HajarError("Invalid Role ID", "invalid-role", {
         roleID: roleId,
       });
     }
@@ -261,14 +261,14 @@ class HajarAuth {
       const role = await this.Role.findOne({ _id: roleId });
       if (!role) {
         // throw new Error("Role not found");
-        throw new CustomError("Role not found", "role-not-found", {
+        throw new HajarError("Role not found", "role-not-found", {
           roleID: roleId,
         });
       }
       return role;
     } catch (error) {
       // throw new Error(`Unable to fetch role: ${error.message}`);
-      throw new CustomError(error.message, "fetch-role-error", {
+      throw new HajarError(error.message, "fetch-role-error", {
         roleID: roleId,
       });
     }
@@ -280,7 +280,7 @@ class HajarAuth {
       return roles;
     } catch (error) {
       // throw new Error(`Unable to fetch roles: ${error.message}`);
-      throw new CustomError(error.message, "fetch-role-error");
+      throw new HajarError(error.message, "fetch-role-error");
     }
   }
 
@@ -290,13 +290,13 @@ class HajarAuth {
       const role = await this.Role.findByIdAndRemove(roleId);
       if (!role) {
         // throw new Error("Role not found");
-        throw new CustomError("Role not found", "role-not-found", {
+        throw new HajarError("Role not found", "role-not-found", {
           roleID: roleId,
         });
       }
     } catch (error) {
       // throw new Error(`Unable to delete role: ${error.message}`);
-      throw new CustomError(error.message, "delete-role-error");
+      throw new HajarError(error.message, "delete-role-error");
     }
   }
 
@@ -304,7 +304,7 @@ class HajarAuth {
     const role = await this.Role.findById(roleId);
     if (!role) {
       // throw new Error("Role not found");
-      throw new CustomError("Role not found", "role-not-found", {
+      throw new HajarError("Role not found", "role-not-found", {
         roleID: roleId,
       });
     }
@@ -335,7 +335,7 @@ class HajarAuth {
       return [...grants];
     } catch (error) {
       // throw new Error(`Unable to fetch permissions: ${error.message}`);
-      throw new CustomError(error.message, "fetch-permission-error");
+      throw new HajarError(error.message, "fetch-permission-error");
     }
   }
 }

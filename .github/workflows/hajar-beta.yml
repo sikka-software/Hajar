@@ -2,7 +2,6 @@ name: Hajar CI - @beta
 
 env:
   NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-  GH_TOKEN: ${{ secrets.GH_TOKEN }}
   NPM_PUBLISH_TAG: beta # Specify the tag for publishing
 
 on:

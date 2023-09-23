@@ -1,4 +1,4 @@
-class CustomError extends Error {
+class HajarError extends Error {
   constructor(message, slug, customProperties) {
     super(message); // Pass the message parameter to the Error constructor
     this.slug = slug; // Assign the code parameter to a property on the error object
@@ -8,4 +8,4 @@ class CustomError extends Error {
   }
 }
 
-module.exports = CustomError;
+module.exports = HajarError;
