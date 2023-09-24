@@ -4,12 +4,24 @@
 
 # Hajar | حجر
 
+A Versatile SaaS Toolkit
+
 [![NPM](https://img.shields.io/npm/v/@sikka/hajar.svg?style=flat&colorA=000000&colorB=1082c3)](https://www.npmjs.com/package/@sikka/hajar)
 [![NPM@beta](https://img.shields.io/npm/v/@sikka/hajar/beta.svg?style=flat&colorA=000000&colorB=ea7637)](https://www.npmjs.com/package/@sikka/hajar)
 [![Hajar CI - @latest](https://github.com/sikka-software/Hajar/actions/workflows/hajar-main.yml/badge.svg)](https://github.com/sikka-software/Hawa/actions/workflows/hajar-main.yml)
 [![Hajar CI - @beta](https://github.com/sikka-software/Hajar/actions/workflows/hajar-beta.yml/badge.svg)](https://github.com/sikka-software/Hajar/actions/workflows/hajar-beta.yml)
 
-> Javascript/Typescript engine Saas/Paas applications
+
+
+Hajar is your all-in-one toolkit and engine, purpose-built to streamline SaaS application development. It empowers you with essential features, including:
+
+- Authentication
+- Email Management
+- Database Operations
+- Storage Solutions
+
+With Hajar, building SaaS applications becomes a breeze, as it simplifies these fundamental tasks and more, so you can focus on what truly matters—creating exceptional web applications.
+
 
 ## Install
 

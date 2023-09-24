@@ -1,3 +1,4 @@
 {
-  "setup": "SetupDatabase"
+  "setup": "Setup Database",
+  "connect": "Connect Database"
 }
