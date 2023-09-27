@@ -112,7 +112,7 @@ class HajarAuth {
     }
   }
 
-  async createRole(roleName, permissionIds) {
+  async createRole(roleName, permissionIds, description) {
     const existingRole = await this.Role.findOne({ name: roleName });
     if (existingRole) {
       // throw new Error(`Role ${roleName} already exists`);
@@ -139,6 +139,7 @@ class HajarAuth {
     const newRole = await this.Role.create({
       name: roleName,
       permissions: [...idPermissions],
+      description: description,
     });
 
     return newRole;
