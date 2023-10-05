@@ -45,7 +45,9 @@ class HajarAuth {
   async signup(username, email, password) {
     try {
       // Check if a user with the same email already exists
-      const userExists = await this.User.findOne({ email });
+      email = email.toLowerCase();
+
+      const userExists = await this.User.findOne({ email: email });
 
       if (userExists) {
         throw new HajarError(
