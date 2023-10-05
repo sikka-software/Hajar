@@ -1,0 +1,7 @@
+{
+  "setupMongoDB": "MongoDB",
+  "setupFirebaseDB": "Firebase DB",
+  "setupMySQL": "MySQL",
+  "setupPostgress": "PostgreSQL",
+  "setupSQL": "SQL"
+}

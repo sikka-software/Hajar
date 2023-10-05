@@ -1,1 +1,55 @@
-# This is login page
+
+## `signin(email, password, res)` Method
+
+The `signin` method is used to authenticate a user by verifying their email and password. If the provided email and password match a user's credentials in the database, this method returns a user object, a JSON Web Token (JWT) for user authentication, and their role. In case of invalid email, password, or other issues, this method throws a `HajarError` to handle the error gracefully.
+
+### Method Signature
+
+```javascript
+async signin(email, password, res)
+```
+
+### Parameters
+
+- `email` (String): The email address of the user attempting to sign in.
+- `password` (String): The password associated with the user's email.
+- `res` (Object, optional): The response object to set a cookie for the authenticated user. This parameter is optional and can be omitted if you do not want to set cookies.
+
+### Return Value
+
+This method returns an object containing the following properties:
+
+- `user` (Object): The user object retrieved from the database.
+- `token` (String): A JSON Web Token (JWT) for user authentication.
+- `role` (String): The role of the authenticated user.
+
+### Error Handling
+
+If the provided email or password is invalid or if there are other issues during the authentication process, this method throws a `HajarError`. The error object includes the following properties:
+
+- `message` (String): A descriptive error message.
+- `code` (String): A unique error code to identify the type of error.
+- `data` (Object, optional): Additional data related to the error.
+
+### Example Usage
+
+```javascript
+try {
+  const email = "user@example.com";
+  const password = "securePassword";
+  const res = {}; // Optional response object for setting cookies
+  const authResult = await hajarAuth.signin(email, password, res);
+  console.log("Authentication successful:", authResult);
+} catch (error) {
+  console.error("Authentication failed:", error);
+}
+```
+
+### Note
+
+- Make sure to securely store the JWT token provided by this method for subsequent authenticated requests.
+- The `res` parameter is optional and is typically used when setting cookies for user sessions. If not needed, you can omit it.
+
+---
+
+That concludes the documentation for the `signin` method of the HajarAuth class. You can use this method to authenticate users in your SaaS application securely.

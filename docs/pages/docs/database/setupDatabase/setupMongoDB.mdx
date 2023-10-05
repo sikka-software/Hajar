@@ -1,0 +1,50 @@
+## setupMongoDB(`options`, `middleware`)
+
+### Parameters
+
+- `options` (Object): Configuration options for MongoDB. These options typically include a database URL and any additional settings required for the connection.
+- `middleware` (Object): The MongoDB middleware or library used for connecting to MongoDB. This can be a library like Mongoose or the native MongoDB driver.
+
+### Returns
+
+The `setupMongoDB` function returns a MongoDB connection object. This object represents the connection to the MongoDB database and allows you to interact with the database.
+
+The MongoDB connection object typically has the following properties and methods:
+
+- `readyState` (Boolean): Indicates the current state of the connection (e.g., connected, disconnected, connecting).
+- `close` (Function): A method that can be used to close the MongoDB connection when it is no longer needed.
+
+### Errors
+
+The `setupMongoDB` function may throw an error if an issue occurs during the MongoDB connection setup. In such cases, an `Error` object is thrown with a descriptive error message.
+
+### Example
+
+```javascript
+const mongoose = require("mongoose");
+
+// Configuration options for MongoDB
+const mongoDBOptions = {
+  url: "mongodb://localhost/mydatabase",
+};
+
+try {
+  // Set up MongoDB connection using Mongoose middleware
+  const mongoDBConnection = setupMongoDB(mongoDBOptions, mongoose);
+
+  // Check the connection state
+  if (mongoDBConnection.readyState === mongoose.connection.readyState) {
+    console.log("MongoDB connected successfully.");
+  } else {
+    console.error("MongoDB connection failed.");
+  }
+} catch (error) {
+  console.error("Error setting up MongoDB connection:", error.message);
+}
+```
+
+In this example, the `setupMongoDB` function is used to set up and configure a MongoDB connection using the Mongoose middleware. It checks the connection state and logs whether the MongoDB connection was successful or encountered an error.
+
+---
+
+That's the complete documentation for the `setupMongoDB` function, providing details about its purpose, parameters, return value, potential errors, and a usage example. This documentation helps users understand how to set up a MongoDB connection in your application.
