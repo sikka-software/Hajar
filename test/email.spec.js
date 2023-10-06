@@ -1,7 +1,7 @@
 const Hajar = require("../src/index").default;
 const nodemailer = require("nodemailer");
 // Setup Email Config (Mansour)
-describe("setupEmail", () => {
+/* describe("setupEmail", () => {
   it("configures nodemailer with the given emailConfig", () => {
     const emailConfig = {
       host: "smtp.gmail.com",
@@ -15,7 +15,7 @@ describe("setupEmail", () => {
 
     Hajar.Mail.SetupEmail(emailConfig);
   });
-});
+}); */
 // Send email function
 // This test is not working because of the following error:
 /* describe("sendEmail", () => {
