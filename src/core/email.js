@@ -20,17 +20,24 @@ class HajarMail {
 
     return transporter;
   }
-  async sendEmail({ emailConfig, template, ...data }) {
-    // Use the emailConfig to setup the transporter
-    let transporter = this.nodemailer.createTransport(emailConfig);
+  async sendEmail({ emailConfig, resetPasswordEmailTemplate, ...emailData }) {
+    try {
+      // Use the emailConfig to setup the transporter
+      let transporter = this.nodemailer.createTransport(emailConfig);
 
-    // Use the emailConfig and html to send the email
-    await transporter.sendMail({
-      from: emailConfig.auth.user,
-      to: data.to,
-      subject: data.subject,
-      html: template(data),
-    });
+      // Use the emailConfig and resetPasswordEmailTemplate to send the email
+      await transporter.sendMail({
+        from: emailConfig.auth.user,
+        to: emailData.to,
+        subject: emailData.subject,
+        html: resetPasswordEmailTemplate,
+      });
+
+      console.log("Email sent successfully");
+    } catch (err) {
+      console.error(err);
+      throw err; // Rethrow the error for handling in your route handler
+    }
   }
 
   /* 
