@@ -1,35 +1,40 @@
 const nodemailer = require("nodemailer");
-async function setupEmail(emailConfig) {
-  // Create a transporter object using the emailConfig provided
-  let transporter = nodemailer.createTransport({
-    host: emailConfig.host,
-    port: emailConfig.port,
-    secure: emailConfig.secure,
-    auth: {
-      user: emailConfig.auth.user,
-      pass: emailConfig.auth.pass,
-    },
-  });
+class HajarMail {
+  constructor(options) {
+    this.nodemailer = options.nodemailer;
+  }
 
-  // Verify the transporter object is valid and can send emails
-  await transporter.verify();
+  async setupEmail(emailConfig) {
+    // Create a transporter object using the emailConfig provided
+    let transporter = nodemailer.createTransport({
+      host: emailConfig.host,
+      port: emailConfig.port,
+      secure: emailConfig.secure,
+      auth: {
+        user: emailConfig.auth.user,
+        pass: emailConfig.auth.pass,
+      },
+    });
 
-  return transporter;
-}
-async function sendEmail({ emailConfig, template, ...data }) {
-  // Use the emailConfig to setup the transporter
-  let transporter = nodemailer.createTransport(emailConfig);
+    // Verify the transporter object is valid and can send emails
+    await transporter.verify();
 
-  // Use the emailConfig and html to send the email
-  await transporter.sendMail({
-    from: emailConfig.auth.user,
-    to: data.to,
-    subject: data.subject,
-    html: template(data),
-  });
-}
+    return transporter;
+  }
+  async sendEmail({ emailConfig, template, ...data }) {
+    // Use the emailConfig to setup the transporter
+    let transporter = nodemailer.createTransport(emailConfig);
 
-/* 
+    // Use the emailConfig and html to send the email
+    await transporter.sendMail({
+      from: emailConfig.auth.user,
+      to: data.to,
+      subject: data.subject,
+      html: template(data),
+    });
+  }
+
+  /* 
 export async function sendEmail(transport, params) {
   return await new Promise((resolve, reject) => {
     transport.sendMail(params, function (error, info) {
@@ -43,7 +48,7 @@ export async function sendEmail(transport, params) {
     });
   });
 } */
-/* 
+  /* 
 export async function sendEmailVerify(transport) {
   return await new Promise((resolve, reject) => {
     transport.sendMail(getVerifyEmail, function (error, info) {
@@ -85,8 +90,5 @@ export async function sendEmailReset(transport) {
     });
   });
 } */
-
-module.exports = {
-  setupEmail,
-  sendEmail,
-};
+}
+module.exports = HajarMail;
