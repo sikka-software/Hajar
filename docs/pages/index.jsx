@@ -33,7 +33,7 @@ const IndexPage = () => (
         <img alt="downloads" src="https://badgen.net/npm/v/@sikka/hajar/beta" />
       </p>
     </div>
-    <div className="p-1 px-2 flex text-sm flex-row bg-yellow-100 border-yellow-300 border-2">
+    <div className="p-1 px-2 flex text-sm flex-row bg-yellow-100 border-yellow-300 border-2 dark:text-black">
       ⌛ This docs site is still work in progress
     </div>
     <div className="grid grid-cols-2 gap-2 w-full max-w-lg ">
