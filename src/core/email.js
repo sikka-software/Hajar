@@ -1,4 +1,3 @@
-const nodemailer = require("nodemailer");
 class HajarMail {
   constructor(options) {
     this.nodemailer = options.nodemailer;
@@ -6,7 +5,7 @@ class HajarMail {
 
   async setupEmail(emailConfig) {
     // Create a transporter object using the emailConfig provided
-    let transporter = nodemailer.createTransport({
+    let transporter = this.nodemailer.createTransport({
       host: emailConfig.host,
       port: emailConfig.port,
       secure: emailConfig.secure,
@@ -23,7 +22,7 @@ class HajarMail {
   }
   async sendEmail({ emailConfig, template, ...data }) {
     // Use the emailConfig to setup the transporter
-    let transporter = nodemailer.createTransport(emailConfig);
+    let transporter = this.nodemailer.createTransport(emailConfig);
 
     // Use the emailConfig and html to send the email
     await transporter.sendMail({
