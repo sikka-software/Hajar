@@ -29,8 +29,14 @@ const IndexPage = () => (
         </a>
       </div>
       <p className="flex h-6 mt-4 gap-2">
-        <img alt="downloads" src="https://badgen.net/npm/v/@sikka/hajar" />
-        <img alt="downloads" src="https://badgen.net/npm/v/@sikka/hajar/beta" />
+        <img
+          alt="hajar@latest"
+          src="https://img.shields.io/npm/v/@sikka/hajar.svg?style=flat&colorA=000000&colorB=1082c3"
+        />
+        <img
+          alt="hajar@beta"
+          src="https://img.shields.io/npm/v/@sikka/hajar/beta.svg?style=flat&colorA=000000&colorB=ea7637"
+        />
       </p>
     </div>
     <div className="p-1 px-2 flex text-sm flex-row bg-yellow-100 border-yellow-300 border-2 dark:text-black">
@@ -52,7 +58,11 @@ const IndexPage = () => (
         title="Storage"
         subtitle="Setup storage and upload/download files"
       />
-      <FeatureCard link="/docs/emails" title="Emails" subtitle="Setup, send, and schedule emails" />
+      <FeatureCard
+        link="/docs/emails"
+        title="Emails"
+        subtitle="Setup, send, and schedule emails"
+      />
     </div>
 
     <div className="flex w-full flex-col items-center opacity-50 ">
