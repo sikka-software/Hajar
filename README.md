@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://xakher-images.s3.ap-southeast-1.amazonaws.com/hajar-logo.png" alt="Hajar | حجر" />
+  <img src="https://res.cloudinary.com/dt8onsdfl/image/upload/v1697272140/hawa-logo_copy_4_fw0chv.jpg" alt="Hajar | حجر" />
 </p>
 
 # Hajar | حجر
