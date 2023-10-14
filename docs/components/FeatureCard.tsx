@@ -1,7 +1,5 @@
-import { Card, CardContent } from "@sikka/hawa";
 import Link from "next/link";
 import React from "react";
-import { Camera } from "lucide-react";
 
 const FeatureCard = (props) => {
   return (

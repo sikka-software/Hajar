@@ -1,8 +1,4 @@
-import { Callout } from "nextra-theme-docs";
-import Landing from "components/landing";
 import FeatureCard from "components/FeatureCard";
-import { Bleed } from "nextra-theme-docs";
-
 import { Button } from "@sikka/hawa";
 import Link from "next/link";
 import React from "react";

@@ -1,7 +1,7 @@
 import React from "react";
 import { DocsThemeConfig } from "nextra-theme-docs";
 import { useRouter } from "next/router";
-import { Footer } from "@sikka/hawa";
+import { CustomFooter } from "./components/CustomFooter";
 
 const config: DocsThemeConfig = {
   project: {
@@ -102,23 +102,7 @@ const config: DocsThemeConfig = {
   //   link: "https://discord.com",
   // },
   footer: {
-    component: (
-      <Footer
-        copyRights="Sikka Software"
-        variation="minimal"
-        logoURL=""
-        logoText="Sikka Software"
-      />
-    ),
-    // text: (
-    //   <span>
-    //     MIT {new Date().getFullYear()} ©{" "}
-    //     <a href="https://nextra.site" target="_blank">
-    //       Nextra
-    //     </a>
-    //     .
-    //   </span>
-    // ),
+    component: <CustomFooter />,
   },
   toc: {
     // extraContent: <div>something</div>,
