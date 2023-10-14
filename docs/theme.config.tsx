@@ -1,15 +1,37 @@
 import React from "react";
-import { DocsThemeConfig } from "nextra-theme-docs";
+import { DocsThemeConfig, useTheme } from "nextra-theme-docs";
 import { useRouter } from "next/router";
 import { CustomFooter } from "./components/CustomFooter";
+import Image from "next/image";
 
 const config: DocsThemeConfig = {
   project: {
     link: "https://github.com/sikka-software/hajar",
   },
   docsRepositoryBase: "https://github.com/sikka-software/hajar/docs",
+  
 
-  logo: <span>Hajar</span>,
+  //   logo: <p >
+  //   <img src="https://res.cloudinary.com/dt8onsdfl/image/upload/v1697272755/hajar-in-docs_rmyjh1.png" alt="Hajar | حجر" />
+  // </p>,
+
+  logo: () => {
+    const { resolvedTheme } = useTheme();
+    return (
+      <Image
+        alt="Sikka Logo"
+        height={100}
+        width={150}
+        src={
+          resolvedTheme === "dark"
+            ? "https://res.cloudinary.com/dt8onsdfl/image/upload/v1697272845/hajar-in-docs-white_z1n7te.png"
+            : "https://res.cloudinary.com/dt8onsdfl/image/upload/v1697272755/hajar-in-docs_rmyjh1.png"
+        }
+      />
+    );
+  },
+
+  // https://res.cloudinary.com/dt8onsdfl/image/upload/v1697272845/hajar-in-docs-white_z1n7te.png
   // docsRepository: "https://github.com/your-repo", // docs repo
   // branch: "master", // branch of docs
   // titleSuffix: " – Your Docs",

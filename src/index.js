@@ -22,9 +22,9 @@ const {
   update,
   deactivate,
   remove,
-  signIn,
-  signOutUser,
-  signInViaGoogle,
+  login,
+  logoutUser,
+  loginViaGoogle,
 } = require("../src/core/auth");
 const { updateOptions } = require("../src/core/options");
 const { setupCron } = require("../src/core/cron");
@@ -98,9 +98,9 @@ const Hajar = {
     UpdateUser: update,
     DeactivateUser: deactivate,
     DeleteUser: remove,
-    SignIn: signIn,
-    SignInViaGoogle: signInViaGoogle,
-    SignOut: signOutUser,
+    Login: login,
+    LoginViaGoogle: loginViaGoogle,
+    Logout: logoutUser,
   },
   S3: {
     InitializeS3: initializeS3,

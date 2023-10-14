@@ -1,17 +1,16 @@
+## `login(email, password, res)` Method
 
-## `signin(email, password, res)` Method
-
-The `signin` method is used to authenticate a user by verifying their email and password. If the provided email and password match a user's credentials in the database, this method returns a user object, a JSON Web Token (JWT) for user authentication, and their role. In case of invalid email, password, or other issues, this method throws a `HajarError` to handle the error gracefully.
+The `login` method is used to authenticate a user by verifying their email and password. If the provided email and password match a user's credentials in the database, this method returns a user object, a JSON Web Token (JWT) for user authentication, and their role. In case of invalid email, password, or other issues, this method throws a `HajarError` to handle the error gracefully.
 
 ### Method Signature
 
 ```javascript
-async signin(email, password, res)
+async login(email, password, res)
 ```
 
 ### Parameters
 
-- `email` (String): The email address of the user attempting to sign in.
+- `email` (String): The email address of the user attempting to login.
 - `password` (String): The password associated with the user's email.
 - `res` (Object, optional): The response object to set a cookie for the authenticated user. This parameter is optional and can be omitted if you do not want to set cookies.
 
@@ -38,7 +37,7 @@ try {
   const email = "user@example.com";
   const password = "securePassword";
   const res = {}; // Optional response object for setting cookies
-  const authResult = await hajarAuth.signin(email, password, res);
+  const authResult = await hajarAuth.login(email, password, res);
   console.log("Authentication successful:", authResult);
 } catch (error) {
   console.error("Authentication failed:", error);
@@ -52,4 +51,4 @@ try {
 
 ---
 
-That concludes the documentation for the `signin` method of the HajarAuth class. You can use this method to authenticate users in your SaaS application securely.
+That concludes the documentation for the `login` method of the HajarAuth class. You can use this method to authenticate users in your SaaS application securely.

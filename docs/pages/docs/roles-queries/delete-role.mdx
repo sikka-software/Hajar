@@ -1,0 +1,41 @@
+# `deleteRole`
+
+#### Description
+
+The `deleteRole` method is designed to delete a role from the database based on the provided role ID. If the role with the specified ID does not exist or if any error occurs during the deletion process, it throws an error encapsulated in a `HajarError` object.
+
+#### Syntax
+
+```javascript
+async deleteRole(roleId)
+```
+
+#### Parameters
+
+- `roleId` (String): The ID of the role to be deleted.
+
+#### Returns
+
+The method does not return any value if the operation is successful. In case of failure, it throws a `HajarError` object with an appropriate error message and metadata.
+
+#### Throws
+
+- `HajarError` with a message of "Role not found" and a metadata object containing the `roleID` if the role with the specified ID does not exist.
+- `HajarError` with the error message encapsulating any other error that occurs during the process, and a `delete-role-error` error code.
+
+#### Example
+
+```javascript
+try {
+  await hajarAuth.deleteRole("someRoleId");
+  console.log("Role deleted successfully");
+} catch (error) {
+  console.error("Error deleting role:", error.message);
+}
+```
+
+#### Notes
+
+- This method is asynchronous and should be awaited or handled with a promise chain to capture any errors.
+- Ensure the `roleId` provided is valid and corresponds to an existing role in the database.
+- The method internally uses the `findByIdAndRemove` method of the Mongoose model to perform the deletion operation.

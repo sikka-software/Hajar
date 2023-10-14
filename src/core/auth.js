@@ -9,10 +9,10 @@ const {
   updateProfile,
   updatePassword,
   updateEmail,
-  signInWithEmailAndPassword,
-  signOut,
+  loginWithEmailAndPassword,
+  logout,
   deleteUser,
-  signInWithPopup,
+  loginWithPopup,
 } = require("@firebase/auth");
 
 const CryptoJS = require("crypto-js");
@@ -25,16 +25,16 @@ async function initialize() {
   globalThis._provider = new GoogleAuthProvider();
 }
 
-async function signIn(auth, fieldValues) {
+async function login(auth, fieldValues) {
   const { email, password } = fieldValues;
 
-  const result = await signInWithEmailAndPassword(auth, email, password);
+  const result = await loginWithEmailAndPassword(auth, email, password);
   return result;
 }
 
-async function signInViaGoogle() {
+async function loginViaGoogle() {
   const provider = new GoogleAuthProvider();
-  const result = await signInWithPopup(globalThis._auth, provider);
+  const result = await loginWithPopup(globalThis._auth, provider);
   const user = result.user;
   return user;
 }
@@ -87,8 +87,8 @@ async function remove(auth, callback) {
   }
 }
 
-async function signOutUser(auth) {
-  return await signOut(auth);
+async function logoutUser(auth) {
+  return await logout(auth);
 }
 
 async function sendPasswordResetEmail(email, callback) {
@@ -118,13 +118,13 @@ async function resetPasswordViaEmail(oobCode, email, newPassword) {
 
 module.exports = {
   initialize,
-  signIn,
-  signInViaGoogle,
+  login,
+  loginViaGoogle,
   create,
   update,
   deactivate,
   remove,
-  signOutUser,
+  logoutUser,
   resetPasswordViaEmail,
   sendPasswordResetEmail,
 };

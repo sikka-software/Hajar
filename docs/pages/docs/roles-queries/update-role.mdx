@@ -1,0 +1,48 @@
+# `updateRole`
+
+---
+
+#### Description:
+
+The `updateRole` method is designed to update an existing role in the database with new details. The role to be updated is identified by the `roleId` parameter. The method allows you to change the name of the role and its associated permissions.
+
+#### Parameters:
+
+- `roleId` (String): The identifier of the role to be updated. This should correspond to a valid `_id` value of a role in the database.
+- `name` (String): The new name to assign to the role.
+- `permissionIds` (Array of Objects): An array containing objects that represent permissions to be associated with the role. Each object should have the following structure:
+  - `grant` (String): The name of the grant.
+  - `read` (Boolean): Permission to read.
+  - `write` (Boolean): Permission to write.
+  - `update` (Boolean): Permission to update.
+  - `delete` (Boolean): Permission to delete.
+
+#### Returns:
+
+- Returns a Promise that resolves to the updated role object if the operation is successful. The updated role object will reflect the changes made.
+
+#### Errors:
+
+- Throws a `HajarError` with message "Role not found" and error code "role-not-found" if no role is found with the specified `roleId`.
+- Any other errors encountered during the operation will also throw a `HajarError` with the respective error message.
+
+#### Behavior:
+
+1. The method starts by attempting to find a role in the database with the specified `roleId` using `this.Role.findById(roleId)`.
+2. If no role is found, it throws a `HajarError` with the message "Role not found" and error code "role-not-found".
+3. If a role is found, it proceeds to update the role's `name` field with the new name provided.
+4. It initializes an empty array `idPermissions` to hold the `_id` values of the permissions to be associated with the role.
+5. It iterates through the `permissionIds` array, and for each permission object, it attempts to find a corresponding permission in the database based on the `grant`, `read`, `write`, `update`, and `delete` fields using `this.Permission.findOne()`.
+6. It adds the `_id` of each found permission to the `idPermissions` array.
+7. It updates the `permissions` field of the role with the array of `_id` values collected in `idPermissions`.
+8. It saves the updated role object to the database using `role.save()`.
+9. It returns the updated role object.
+
+#### Usage:
+
+```javascript
+const hajarAuth = new HajarAuth(options);
+const updatedRole = await hajarAuth.updateRole(roleId, name, permissionIds);
+```
+
+Here, `options` would be an object containing necessary configurations and dependencies, `roleId` is the identifier of the role to be updated, `name` is the new name for the role, and `permissionIds` is an array of permission objects to be associated with the role.

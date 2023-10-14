@@ -1,0 +1,54 @@
+# `getRoles`
+
+### Description
+
+The `getRoles` method is a part of the `HajarAuth` class which is designed to handle authentication and authorization within your application. This particular method is utilized to fetch all roles from the database. The roles are important for managing the permissions and access levels of different user types in your system.
+
+### Syntax
+
+```javascript
+async getRoles()
+```
+
+### Parameters
+
+This method does not accept any parameters.
+
+### Returns
+
+- Returns a promise that resolves to an array of role objects if the operation is successful.
+- Throws a `HajarError` object with a message `Unable to fetch roles: ${error.message}` if there is an error during the execution, where `error.message` provides detail on what went wrong.
+
+### Throws
+
+- `HajarError`: This is a custom error class used throughout the `HajarAuth` class to provide structured error handling. In this method, it's used to catch and throw errors related to fetching roles from the database.
+
+### Example Usage
+
+This method is generally called within an async function or with promise handling to ensure the asynchronous operation completes before proceeding.
+
+```javascript
+async function fetchAllRoles() {
+  try {
+    const hajarAuthInstance = new HajarAuth(options);
+    const roles = await hajarAuthInstance.getRoles();
+    console.log(roles);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// OR with promise handling
+
+const hajarAuthInstance = new HajarAuth(options);
+hajarAuthInstance
+  .getRoles()
+  .then((roles) => console.log(roles))
+  .catch((error) => console.error(error));
+```
+
+In the examples above, `options` would be an object containing the necessary configurations for the `HajarAuth` class.
+
+### Remarks
+
+The `getRoles` method is straightforward and essential for managing access within your application. Ensure that your database connection is properly configured and active when calling this method to avoid unexpected errors.

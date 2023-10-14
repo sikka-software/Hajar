@@ -13,7 +13,7 @@ class HajarAuth {
     this.secret = options.secret;
     this.cookieOptions = options.cookieOptions;
   }
-  async signin(email, password, res) {
+  async login(email, password, res) {
     const user = await this.User.findOne({ email });
     if (!user) {
       // throw new Error("Invalid email or password");
@@ -42,7 +42,7 @@ class HajarAuth {
     return { user, token, role }; // modified
   }
 
-  async signup(username, email, password) {
+  async register(username, email, password) {
     try {
       // Check if a user with the same email already exists
       email = email.toLowerCase();
@@ -109,7 +109,7 @@ class HajarAuth {
         token,
       };
     } catch (error) {
-      console.error("Signup error:", error);
+      console.error("Registration error:", error);
       throw error;
     }
   }
@@ -147,7 +147,7 @@ class HajarAuth {
     return newRole;
   }
 
-  async signin(email, password, res) {
+  async login(email, password, res) {
     const user = await this.User.findOne({ email });
 
     if (!user) {
@@ -181,7 +181,7 @@ class HajarAuth {
     }
   }
 
-  signout(res) {
+  logout(res) {
     res.clearCookie("@admin-tayar-token");
     return true;
   }

@@ -1,7 +1,6 @@
+## `register(username, email, password)`
 
-## `signup(username, email, password)`
-
-The `signup` method allows you to register a new user in your SaaS application. It takes three parameters: `username`, `email`, and `password`. Upon successful registration, it returns a response object containing user information and a JWT token for authentication.
+The `register` method allows you to register a new user in your SaaS application. It takes three parameters: `username`, `email`, and `password`. Upon successful registration, it returns a response object containing user information and a JWT token for authentication.
 
 ### Parameters
 
@@ -15,6 +14,7 @@ A successful registration returns an object with the following properties:
 
 - `success` (Boolean): Indicates whether the registration was successful.
 - `user` (Object): An object containing user information, including:
+
   - `_id` (String): The unique ID of the registered user.
   - `id` (String): An alias for the user's ID.
   - `email` (String): The email address of the registered user.
@@ -30,11 +30,13 @@ A successful registration returns an object with the following properties:
 This method may throw errors in the following situations:
 
 - If a user with the provided email already exists:
+
   - Error message: "User with this email already exists"
   - Error code: "user-already-exist"
   - Additional information: `{ email: email }`
 
 - If the "Admin" role is not found:
+
   - Error message: "Admin role not found"
   - Error code: "admin-role-not-found"
 
@@ -45,7 +47,11 @@ This method may throw errors in the following situations:
 
 ```javascript
 try {
-  const registrationResult = await hajarAuth.signup("john_doe", "john@example.com", "securePassword");
+  const registrationResult = await hajarAuth.register(
+    "john_doe",
+    "john@example.com",
+    "securePassword"
+  );
 
   if (registrationResult.success) {
     console.log("User registered successfully:", registrationResult.user);
@@ -58,8 +64,8 @@ try {
 }
 ```
 
-In this example, the `signup` method is used to register a new user with the provided username, email, and password. If the registration is successful, the user's information and JWT token are logged. If an error occurs, it is caught and logged.
+In this example, the `register` method is used to register a new user with the provided username, email, and password. If the registration is successful, the user's information and JWT token are logged. If an error occurs, it is caught and logged.
 
 ---
 
-That's the complete documentation for the `signup` method of the `HajarAuth` class. You can use this method to facilitate user registration in your SaaS application and manage the associated errors effectively.
+That's the complete documentation for the `register` method of the `HajarAuth` class. You can use this method to facilitate user registration in your SaaS application and manage the associated errors effectively.

@@ -12,12 +12,7 @@
     "title": "Docs"
   },
 
-  "contact": {
-    "title": "Contact ↗",
-    "type": "page",
-    "href": "https://twitter.com/sikka_sa",
-    "newWindow": true
-  },
+  
   "404": {
     "type": "page",
     "theme": {
