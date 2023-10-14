@@ -42,7 +42,7 @@ const config: DocsThemeConfig = {
   // footer: true,
   // footerText: "MIT 2023 © Your Name.",
   // footerEditOnGitHubLink: true, // will link to the docs repo
-  gitTimestamp: false,
+  // gitTimestamp: false,
 
   head: (
     <>

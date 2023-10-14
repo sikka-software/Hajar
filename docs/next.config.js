@@ -5,6 +5,7 @@ const withNextra = require("nextra")({
 
 module.exports = withNextra({
   images: {
+    domains: ["img.shields.io"],
     remotePatterns: [
       {
         protocol: "https",
