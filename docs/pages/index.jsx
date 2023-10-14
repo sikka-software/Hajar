@@ -8,7 +8,7 @@ import Link from "next/link";
 import React from "react";
 
 const IndexPage = () => (
-  <div className="flex flex-col justify-center items-center text-center p-10 gap-6">
+  <div className="flex flex-col justify-center items-center text-center p-10 gap-6  h-screen">
     <div className="flex flex-col  justify-center items-center max-w-lg">
       <h1 className="text-center text-4xl tracking-tighter font-extrabold md:text-5xl mb-10">
         Hajar
@@ -65,7 +65,7 @@ const IndexPage = () => (
       />
     </div>
 
-    <div className="flex w-full flex-col items-center opacity-50 ">
+    <div className="flex w-full flex-col items-center opacity-50 relative bottom-0 md:absolute">
       <a href="https://sikka.io">
         <img
           width="20"

@@ -11,7 +11,7 @@
   "license": "MIT",
   "homepage": "https://hajar.sikka.io",
   "dependencies": {
-    "@sikka/hawa": "^0.2.19-beta",
+    "@sikka/hawa": "^0.7.14-next",
     "lucide-react": "^0.279.0",
     "next": "^13.0.6",
     "nextra": "latest",
