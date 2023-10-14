@@ -1,37 +1,24 @@
 import React from "react";
-import { DocsThemeConfig, useTheme } from "nextra-theme-docs";
-import { useRouter } from "next/router";
+import { DocsThemeConfig } from "nextra-theme-docs";
 import { CustomFooter } from "./components/CustomFooter";
-import Image from "next/image";
 
 const config: DocsThemeConfig = {
-  project: {
-    link: "https://github.com/sikka-software/hajar",
-  },
+  project: { link: "https://github.com/sikka-software/hajar" },
   docsRepositoryBase: "https://github.com/sikka-software/hajar/docs",
-  
-
-  //   logo: <p >
-  //   <img src="https://res.cloudinary.com/dt8onsdfl/image/upload/v1697272755/hajar-in-docs_rmyjh1.png" alt="Hajar | حجر" />
-  // </p>,
-
-  logo: () => {
-    const { resolvedTheme } = useTheme();
-    return (
-      <Image
-        alt="Sikka Logo"
-        height={100}
-        width={150}
-        src={
-          resolvedTheme === "dark"
-            ? "https://res.cloudinary.com/dt8onsdfl/image/upload/v1697272845/hajar-in-docs-white_z1n7te.png"
-            : "https://res.cloudinary.com/dt8onsdfl/image/upload/v1697272755/hajar-in-docs_rmyjh1.png"
-        }
+  logo: (
+    <div className="flex flex-row gap-2">
+      <img
+        alt="Hajar Logo Symbol"
+        className="hawa-h-12 hawa-w-auto"
+        src="https://res.cloudinary.com/dt8onsdfl/image/upload/v1697279632/hajar-symbol_1_msyxvs.png"
       />
-    );
-  },
+      <div className="flex flex-col">
+        <span className="font-bold hawa-text-2xl">Hajar</span>
+        <span className="hawa-text-xs">Engine</span>
+      </div>
+    </div>
+  ),
 
-  // https://res.cloudinary.com/dt8onsdfl/image/upload/v1697272845/hajar-in-docs-white_z1n7te.png
   // docsRepository: "https://github.com/your-repo", // docs repo
   // branch: "master", // branch of docs
   // titleSuffix: " – Your Docs",
@@ -114,22 +101,12 @@ const config: DocsThemeConfig = {
   useNextSeoProps() {
     return {
       titleTemplate: "%s – Hajar",
-      twitter: {
-        handle: "@sikka_sa",
-      },
+      twitter: { handle: "@sikka_sa" },
     };
   },
 
-  // chat: {
-  //   link: "https://discord.com",
-  // },
-  footer: {
-    component: <CustomFooter />,
-  },
-  toc: {
-    // extraContent: <div>something</div>,
-    backToTop: true,
-  },
+  footer: { component: <CustomFooter /> },
+  toc: { backToTop: true },
 };
 
 export default config;

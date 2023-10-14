@@ -41,7 +41,6 @@ class HajarAuth {
 
     return { user, token, role }; // modified
   }
-
   async register(username, email, password) {
     try {
       // Check if a user with the same email already exists
@@ -113,7 +112,6 @@ class HajarAuth {
       throw error;
     }
   }
-
   async createRole(roleName, permissionIds, description) {
     const existingRole = await this.Role.findOne({ name: roleName });
     if (existingRole) {
@@ -146,7 +144,6 @@ class HajarAuth {
 
     return newRole;
   }
-
   async login(email, password, res) {
     const user = await this.User.findOne({ email });
 
@@ -180,12 +177,10 @@ class HajarAuth {
       );
     }
   }
-
   logout(res) {
     res.clearCookie("@admin-tayar-token");
     return true;
   }
-
   async getUserByToken(token) {
     if (!token) {
       return null;
@@ -217,7 +212,6 @@ class HajarAuth {
       return new HajarError("Invalid user token", "invalid-user-token");
     }
   }
-
   async getUserByEmail(email) {
     const user = await this.User.findOne({ email }).populate({
       path: "roles",
@@ -252,7 +246,6 @@ class HajarAuth {
 
     return user;
   }
-
   async getRoleById(middelware, roleId) {
     if (!middelware.Types.ObjectId.isValid(roleId)) {
       // throw new Error("Invalid roleId");
@@ -286,7 +279,6 @@ class HajarAuth {
       throw new HajarError(error.message, "fetch-role-error");
     }
   }
-
   // Delete a role from the database
   async deleteRole(roleId) {
     try {
@@ -302,7 +294,6 @@ class HajarAuth {
       throw new HajarError(error.message, "delete-role-error");
     }
   }
-
   async updateRole(roleId, name, permissionIds) {
     const role = await this.Role.findById(roleId);
     if (!role) {

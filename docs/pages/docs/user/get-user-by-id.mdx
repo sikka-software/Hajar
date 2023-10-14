@@ -1,0 +1,43 @@
+# `getUserById`
+
+#### Description
+
+The `getUserById` method is designed to fetch a user from the database based on their unique identifier (`userId`). Along with the basic user information, it also retrieves the roles and permissions associated with the user by populating the related fields from the database.
+
+#### Syntax
+
+```javascript
+async getUserById(userId)
+```
+
+#### Parameters
+
+- `userId` (Type: `String` | `ObjectId`): The unique identifier of the user. This is typically a string representation of the MongoDB ObjectId.
+
+#### Returns
+
+- If successful, it returns a user object populated with its associated roles and permissions.
+- If the user is not found, a `HajarError` is thrown with a message of "User not found" and an error code of "user-not-found". The thrown error also contains the `userId` as part of the error object for reference.
+
+#### Throws
+
+- `HajarError`:
+  - If the user is not found in the database, a `HajarError` is thrown with a message of "User not found", an error code of "user-not-found", and an object containing the `userId`.
+
+#### Example Usage
+
+```javascript
+try {
+  const user = await hajarAuth.getUserById("60d3b41e7c213e45f0720719");
+  console.log(user);
+} catch (error) {
+  console.error(error.message);
+}
+```
+
+#### Remarks
+
+- The `getUserById` method relies on Mongoose's `findById` and `populate` methods to fetch and populate the data from the database.
+- The `populate` method is used to fetch the related `roles` and `permissions` data from the `roles` and `permissions` collections respectively.
+- The method is asynchronous and should be used within an async function or handled with Promises.
+- The `HajarError` class is utilized for error handling, providing a standardized way of handling errors across the `HajarAuth` class.

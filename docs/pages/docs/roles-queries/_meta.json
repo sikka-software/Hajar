@@ -1,5 +1,0 @@
-{
-  "get-roles": "getRoles",
-  "delete-role": "deleteRole",
-  "update-role": "updateRole"
-}

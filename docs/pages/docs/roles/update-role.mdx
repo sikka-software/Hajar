@@ -2,11 +2,11 @@
 
 ---
 
-#### Description:
+#### Description
 
 The `updateRole` method is designed to update an existing role in the database with new details. The role to be updated is identified by the `roleId` parameter. The method allows you to change the name of the role and its associated permissions.
 
-#### Parameters:
+#### Parameters
 
 - `roleId` (String): The identifier of the role to be updated. This should correspond to a valid `_id` value of a role in the database.
 - `name` (String): The new name to assign to the role.
@@ -17,16 +17,16 @@ The `updateRole` method is designed to update an existing role in the database w
   - `update` (Boolean): Permission to update.
   - `delete` (Boolean): Permission to delete.
 
-#### Returns:
+#### Returns
 
 - Returns a Promise that resolves to the updated role object if the operation is successful. The updated role object will reflect the changes made.
 
-#### Errors:
+#### Errors
 
 - Throws a `HajarError` with message "Role not found" and error code "role-not-found" if no role is found with the specified `roleId`.
 - Any other errors encountered during the operation will also throw a `HajarError` with the respective error message.
 
-#### Behavior:
+#### Behavior
 
 1. The method starts by attempting to find a role in the database with the specified `roleId` using `this.Role.findById(roleId)`.
 2. If no role is found, it throws a `HajarError` with the message "Role not found" and error code "role-not-found".
@@ -38,7 +38,7 @@ The `updateRole` method is designed to update an existing role in the database w
 8. It saves the updated role object to the database using `role.save()`.
 9. It returns the updated role object.
 
-#### Usage:
+#### Usage
 
 ```javascript
 const hajarAuth = new HajarAuth(options);

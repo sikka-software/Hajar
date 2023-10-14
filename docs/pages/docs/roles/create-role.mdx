@@ -1,0 +1,51 @@
+# `createRole`
+
+#### Description
+
+The `createRole` method is designed to create a new role within the system, ensuring that there isn't an existing role with the same name. It associates a list of permissions with the new role and stores it in the database.
+
+#### Parameters
+
+- `roleName` (String): The name of the role to be created.
+- `permissionIds` (Array): An array of objects representing the permissions to be associated with the role. Each object should contain fields for `grant`, `read`, `write`, `update`, and `delete`.
+- `description` (String): A textual description of the role.
+
+#### Returns
+
+- An object representing the newly created role if the operation is successful.
+- Throws a `HajarError` with message "Role already exists" and code "role-already-exist" if a role with the specified name already exists.
+- Throws any other errors that may occur during the operation.
+
+#### Behavior
+
+1. Checks the database to see if a role with the specified `roleName` already exists using the `Role` model's `findOne` method.
+2. If a role with the specified `roleName` already exists, a `HajarError` is thrown with the message "Role already exists" and code "role-already-exist".
+3. Iterates through the `permissionIds` array and for each permission object, it searches the database using the `Permission` model's `findOne` method to get the `_id` of each permission based on its properties (`grant`, `read`, `write`, `update`, `delete`).
+4. Creates a new role using the `Role` model's `create` method, with the `roleName`, an array of permission `_ids` and the `description`.
+5. Returns the newly created role object.
+
+#### Example Usage
+
+```javascript
+const HajarAuth = require("./path-to-HajarAuth-class");
+const auth = new HajarAuth(options);
+
+const roleName = "Admin";
+const permissionIds = [
+  { grant: "users", read: true, write: true, update: true, delete: true },
+  // ...other permissions
+];
+const description = "Administrator role with full permissions";
+
+auth
+  .createRole(roleName, permissionIds, description)
+  .then((role) => console.log("Role created:", role))
+  .catch((error) => console.error("Error creating role:", error));
+```
+
+#### Notes
+
+- It's important to ensure the `permissionIds` array contains valid permission objects as expected by the system, otherwise the method may fail or result in incorrect data being stored in the database.
+- The method is asynchronous and returns a Promise, so it should be handled accordingly with `then`/`catch` or `async`/`await`.
+- Errors are thrown using a custom `HajarError` class, so they can be caught and handled in a manner consistent with other errors in the system.
+- This method interacts with the `Role` and `Permission` models, assuming they are correctly set up and connected to the database.

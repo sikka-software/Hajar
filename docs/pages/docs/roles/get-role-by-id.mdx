@@ -1,0 +1,46 @@
+# `getRoleById`
+
+```javascript
+async getRoleById(middelware, roleId)
+```
+
+#### Description
+
+The `getRoleById` method is a member of the `HajarAuth` class and is designed to fetch a role from the database based on a given `roleId`. This method performs a validity check on the `roleId` parameter using a middleware object's `Types.ObjectId.isValid` method to ensure that the `roleId` is a valid Object ID before attempting to query the database. If the `roleId` is invalid or if no role is found for the given `roleId`, or if there's an error during the database query, a `HajarError` is thrown with relevant error information.
+
+#### Parameters
+
+1. `middelware` (Object):
+
+   - An object which holds middleware methods. Specifically, the `Types.ObjectId.isValid` method is used from this object to check the validity of the `roleId`.
+
+2. `roleId` (String):
+   - A string representing the ID of the role to be fetched from the database.
+
+#### Returns
+
+- If successful, returns the role object from the database matching the given `roleId`.
+- If the `roleId` is invalid, throws a `HajarError` with the message `"Invalid Role ID"`.
+- If no role is found for the given `roleId`, throws a `HajarError` with the message `"Role not found"`.
+- If there's an error during the database query, throws a `HajarError` with an error message detailing the issue.
+
+#### Throws
+
+- `HajarError` with the message `"Invalid Role ID"`, `"Role not found"`, or a message detailing the database query error.
+
+#### Usage
+
+```javascript
+const hajarAuth = new HajarAuth(options);
+try {
+  const role = await hajarAuth.getRoleById(
+    middleware,
+    "60d5f9aeb69fbb001c8f3a8c"
+  );
+  console.log(role);
+} catch (error) {
+  console.error(error.message);
+}
+```
+
+In the usage example above, an instance of the `HajarAuth` class is created and the `getRoleById` method is called with a middleware object and a string `roleId`. If the `roleId` is valid and a role is found in the database, the role object is logged to the console. Any errors encountered are caught and logged to the console.

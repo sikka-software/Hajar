@@ -1,0 +1,50 @@
+# `getUserByToken`
+
+#### Description
+
+The `getUserByToken` method is designed to retrieve a user object based on a provided JWT (JSON Web Token). If a valid token is provided, the method decodes the token to extract a user ID, which is then used to fetch the corresponding user and admin data from the database. The method combines the user and admin objects into a merged object, which is then returned. If any step in this process fails (e.g., the token is invalid, the user or admin is not found), an error is logged and a `HajarError` object is thrown.
+
+#### Syntax
+
+```javascript
+async getUserByToken(token)
+```
+
+#### Parameters
+
+- `token` (String): A JSON Web Token (JWT) used to identify the user.
+
+#### Returns
+
+- If successful, returns an object containing the merged data of the user and admin objects.
+- If unsuccessful, throws a `HajarError` object with appropriate error information.
+
+#### Errors
+
+- Throws a `HajarError` with a message of "Invalid user token" if the token is invalid or cannot be verified.
+- Throws a `HajarError` with a message of "User not found" if no user is found for the decoded user ID.
+- Throws a `HajarError` with a message of "Admin not found" if no admin is found for the user ID.
+
+#### Example Usage
+
+```javascript
+const hajarAuth = new HajarAuth(options);
+try {
+  const userObject = await hajarAuth.getUserByToken(token);
+  console.log(userObject);
+} catch (error) {
+  console.error(error.message);
+}
+```
+
+#### Detailed Workflow
+
+1. Check if the `token` parameter is provided. If not, return `null`.
+2. Try to decode the provided `token` using the `jwt.verify` method, with the secret key stored in the `this.secret` property.
+3. Use the `User.findById` method to attempt to find a user with the decoded user ID.
+4. Log the decoded user ID for debugging purposes.
+5. Use the `Admin.findOne` method to attempt to find an admin with the user ID.
+6. If the user or admin is not found, log an error and throw a `HajarError` with appropriate error information.
+7. If both the user and admin are found, merge the two objects into a new object and return this merged object.
+
+This method encapsulates the functionality needed to retrieve a user's information based on a provided token, handling errors appropriately to ensure the calling code is informed of any issues that occur during this process.

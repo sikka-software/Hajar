@@ -1,0 +1,7 @@
+{
+  "get-roles": "getRoles",
+  "get-role-by-id": "getRoleById",
+  "create-role": "createRole",
+  "update-role": "updateRole",
+  "delete-role": "deleteRole"
+}

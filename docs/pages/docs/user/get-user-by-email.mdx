@@ -1,0 +1,44 @@
+# `getUserByEmail(email)`
+
+#### Description
+
+The `getUserByEmail` method is a member of the `HajarAuth` class. This method is designed to retrieve a user from the database based on the provided email address. It also populates the roles and permissions associated with the retrieved user.
+
+#### Parameters
+
+- `email` (type: `String`): The email address of the user to be retrieved.
+
+#### Returns
+
+- A `Promise` that resolves to the user object populated with roles and permissions if a user with the provided email exists.
+- Throws a `HajarError` with message `"User not found"` and error code `"user-not-found"`, including the email in the error details if no user is found with the provided email.
+
+#### Throws
+
+- `HajarError`: This error is thrown if a user with the specified email cannot be found in the database.
+
+#### Usage
+
+```javascript
+const email = "user@example.com";
+try {
+  const user = await HajarAuthInstance.getUserByEmail(email);
+  console.log(user);
+} catch (error) {
+  console.error(error.message);
+}
+```
+
+#### Behavior
+
+1. The method initiates a query on the `User` model, calling `findOne` with the provided `email` as the search criteria.
+2. The method also populates the `roles` and `permissions` associated with the user by chaining the `populate` method to the query, specifying the path `'roles'` with further population of `'permissions'` under `'roles'`.
+3. If a user is found, the method returns the user object populated with roles and permissions.
+4. If no user is found, a `HajarError` is thrown with a message of `"User not found"`, an error code of `"user-not-found"`, and the email included in the error details.
+
+#### Implementation Details
+
+- The method makes use of Mongoose's `findOne` and `populate` methods to query the database and populate the resulting user object.
+- The `populate` method is chained to the `findOne` query, specifying the path `'roles'` for population, and further specifying the path `'permissions'` under `'roles'` for nested population.
+- The `populate` method specifies the model `'permissions'` for the nested population of permissions.
+- The `HajarError` custom error class is used to provide structured error handling, including a human-readable message, an error code, and additional error details.

@@ -1,0 +1,5 @@
+{
+  "get-user-by-token": "getUserByToken",
+  "get-user-by-email": "getUserByEmail",
+  "get-user-by-id": "getUserById"
+}

@@ -10,8 +10,10 @@
   "database": "Database",
   "email": "Emails",
   "storage": "Storage",
-  "--queries": {
-    "title": "Queries",
+  "--": {
     "type": "separator"
-  }
+  },
+  "user": "User",
+  "roles": "Roles",
+  "permissions": "Permissions"
 }

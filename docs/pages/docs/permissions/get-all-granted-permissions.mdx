@@ -1,0 +1,42 @@
+# `getAllGrantedPermissions`
+
+#### Description
+
+The `getAllGrantedPermissions` method is a member of the `HajarAuth` class. This method is utilized for fetching all distinct grant values from the permissions stored in the database. It provides a unique list of granted permissions, which could be useful in scenarios where you need to list or verify the different grants available in the system.
+
+#### Syntax
+
+```javascript
+async getAllGrantedPermissions()
+```
+
+#### Parameters
+
+None.
+
+#### Returns
+
+An array of strings containing distinct grant values. If the operation is successful, it returns an array with the distinct grant values. In case of an error during the operation, a `HajarError` is thrown with a message describing the error and an error code of `"fetch-permission-error"`.
+
+#### Throws
+
+- `HajarError`: If there's an error while fetching the distinct grant values from the database, a `HajarError` object is thrown with an error message describing the failure and a code of `"fetch-permission-error"`.
+
+#### Example Usage
+
+```javascript
+const auth = new HajarAuth(options);
+try {
+  const grants = await auth.getAllGrantedPermissions();
+  console.log(grants); // Output: ['grant1', 'grant2', ..., 'grantN']
+} catch (error) {
+  console.error(error.message);
+}
+```
+
+#### Notes
+
+- This method relies on the `Permission` model to interact with the permissions collection in the database.
+- The `distinct` method of the `Permission` model is used to obtain unique grant values from the database.
+- It's an asynchronous method, so it should be handled with `await` or within a `Promise` chain to ensure proper error handling and function sequencing.
+- The `HajarError` class is used for error handling, providing a structured way to catch and handle errors with a consistent error code and message format.
