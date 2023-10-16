@@ -13,34 +13,7 @@ class HajarAuth {
     this.secret = options.secret;
     this.cookieOptions = options.cookieOptions;
   }
-  async login(email, password, res) {
-    const user = await this.User.findOne({ email });
-    if (!user) {
-      // throw new Error("Invalid email or password");
-      throw new HajarError(
-        "Invalid email or password",
-        "invalid-email-password"
-      );
-    }
 
-    const isPasswordCorrect = await this.bcrypt.compare(
-      password,
-      user.password
-    );
-    if (!isPasswordCorrect) {
-      // throw new Error("Invalid email or password");
-      throw new HajarError(
-        "Invalid email or password",
-        "invalid-email-password"
-      );
-    }
-
-    const token = this.jwt.sign({ userId: user._id }, this.secret);
-
-    const role = user.role || "user"; // default role is "user"
-
-    return { user, token, role }; // modified
-  }
   async register(username, email, password) {
     try {
       // Check if a user with the same email already exists
@@ -112,6 +85,7 @@ class HajarAuth {
       throw error;
     }
   }
+
   async createRole(roleName, permissionIds, description) {
     const existingRole = await this.Role.findOne({ name: roleName });
     if (existingRole) {
@@ -144,43 +118,55 @@ class HajarAuth {
 
     return newRole;
   }
-  async login(email, password, res) {
-    const user = await this.User.findOne({ email });
 
-    if (!user) {
-      throw new HajarError(
-        "Invalid email or password",
-        "invalid-email-password"
-      );
-    }
+  async login(email, password, isGoogle = false) {
+    try {
+      const user = await this.User.findOne({ email: email });
 
-    const isPasswordCorrect = await this.bcrypt.compare(
-      password,
-      user.password
-    );
+      if (!user) {
+        throw new HajarError(
+          "Invalid email or password",
+          "invalid-email-password"
+        );
+      }
+      if (!isGoogle) {
+        const isPasswordCorrect = await this.bcrypt.compare(
+          password,
+          user.password
+        );
 
-    if (!isPasswordCorrect) {
-      throw new HajarError(
-        "Invalid email or password",
-        "invalid-email-password"
-      );
-    }
-    if (user.ref === "admins") {
-      const token = this.jwt.sign({ userId: user._id }, this.secret);
+        if (!isPasswordCorrect) {
+          throw new HajarError(
+            "Invalid email or password",
+            "invalid-email-password"
+          );
+        }
+      }
 
-      return { user, token, role: "admin" };
-    } else {
-      // If the user's "ref" field is not equal to "admins", return an error
-      throw new HajarError(
-        "Access denied. Only admins can log in.",
-        "access-denied-only-admins-can-log-in"
-      );
+      if (user.ref === "admins") {
+        // Password is correct, sign a token for the admin user
+        const token = this.jwt.sign({ userId: user._id }, this.secret);
+
+        return { user, token, role: "admin" };
+      } else {
+        // If the user's "ref" field is not equal to "admins", return an error
+        throw new HajarError(
+          "Access denied. Only admins can log in.",
+          "access-denied-only-admins-can-log-in"
+        );
+      }
+    } catch (error) {
+      // Handle errors and return appropriate responses
+      console.error(error);
+      return new HajarError(error.message, "login-error");
     }
   }
+
   logout(res) {
     res.clearCookie("@admin-tayar-token");
     return true;
   }
+
   async getUserByToken(token) {
     if (!token) {
       return null;
@@ -212,6 +198,7 @@ class HajarAuth {
       return new HajarError("Invalid user token", "invalid-user-token");
     }
   }
+
   async getUserByEmail(email) {
     const user = await this.User.findOne({ email }).populate({
       path: "roles",
@@ -246,6 +233,7 @@ class HajarAuth {
 
     return user;
   }
+
   async getRoleById(middelware, roleId) {
     if (!middelware.Types.ObjectId.isValid(roleId)) {
       // throw new Error("Invalid roleId");
@@ -279,6 +267,7 @@ class HajarAuth {
       throw new HajarError(error.message, "fetch-role-error");
     }
   }
+
   // Delete a role from the database
   async deleteRole(roleId) {
     try {
@@ -294,6 +283,7 @@ class HajarAuth {
       throw new HajarError(error.message, "delete-role-error");
     }
   }
+
   async updateRole(roleId, name, permissionIds) {
     const role = await this.Role.findById(roleId);
     if (!role) {
