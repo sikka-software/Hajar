@@ -18,7 +18,6 @@ class HajarAuth {
     try {
       // Check if a user with the same email already exists
       email = email.toLowerCase();
-
       const userExists = await this.User.findOne({ email: email });
 
       if (userExists) {
@@ -33,6 +32,17 @@ class HajarAuth {
 
       if (!adminRole) {
         throw new HajarError("Admin role not found", "admin-role-not-found");
+      }
+
+      // Check if the username already exists
+      let existingUserWithSameUsername = await this.User.findOne({
+        username: username,
+      });
+
+      // If the username already exists, generate a unique one
+      if (existingUserWithSameUsername) {
+        // You can generate a unique username here, for example, by appending a random number
+        username = generateUniqueUsername(username);
       }
 
       const hashedPassword = await this.bcrypt.hash(password, 10);
@@ -51,7 +61,6 @@ class HajarAuth {
         profile: newUser._id,
         role: adminRole._id,
         uid: newUser._id,
-        name: username,
         username: username,
         firstName: {
           en: "ENGLISH FIRST NAME",
@@ -67,13 +76,8 @@ class HajarAuth {
 
       const token = this.jwt.sign({ userId: newUser._id }, this.secret);
       const finalUser = {
-        _id: newUser._id,
-        id: newUser._id,
-        email: newUser.email,
-        uid: newAdmin._id,
-        firstName: newAdmin.firstName,
-        lastName: newAdmin.lastName,
-        role: adminRole._id,
+        ...newAdmin.toObject(),
+        ...newUser.toObject(),
       };
       return {
         success: true,
