@@ -275,7 +275,7 @@ class HajarAuth {
   // Delete a role from the database
   async deleteRole(roleId) {
     try {
-      const role = await this.Role.findByIdAndRemove(roleId);
+      const role = await this.Role.findByIdAndDelete(roleId);
       if (!role) {
         // throw new Error("Role not found");
         throw new HajarError("Role not found", "role-not-found", {
