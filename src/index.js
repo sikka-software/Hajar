@@ -57,9 +57,9 @@ const {
 
 const HajarAuth = require("../src/core/authentication/index");
 const HajarMail = require("../src/core/email");
-let auth = new HajarAuth()
+// let auth = new HajarAuth()
 
-console.log("hajar auth is ", auth);
+// console.log("hajar auth is ", auth);
 /* const HajarRoles = require("../src/core/authentication/roles/index");
 const HajarPermissions = require("../src/core/authentication/permissions/index"); */
 global._config;
