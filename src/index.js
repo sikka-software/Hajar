@@ -156,5 +156,5 @@ const Hajar = {
   },
 };
 
-// export default Hajar;
-module.exports = Hajar;
+export default Hajar;
+// module.exports = Hajar;

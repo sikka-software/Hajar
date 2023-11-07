@@ -4,14 +4,14 @@ const HajarError = require("../../utils/hajarError");
 
 class HajarAuth {
   constructor(options) {
-    this.jwt = options?.jwt;
-    this.bcrypt = options?.bcrypt;
-    this.User = options?.User;
-    this.Admin = options?.Admin; // new
-    this.Role = options?.Role; // new
-    this.Permission = options?.Permission; // new
-    this.secret = options?.secret;
-    this.cookieOptions = options?.cookieOptions;
+    this.jwt = options.jwt;
+    this.bcrypt = options.bcrypt;
+    this.User = options.User;
+    this.Admin = options.Admin; // new
+    this.Role = options.Role; // new
+    this.Permission = options.Permission; // new
+    this.secret = options.secret;
+    this.cookieOptions = options.cookieOptions;
   }
   async register(username, email, password) {
     try {
@@ -89,7 +89,7 @@ class HajarAuth {
     }
   }
 
-  async createRole({ roleName, permissionIds, ...options }) {
+  async createRole({ roleName, permissionIds, ...newRoleOptions }) {
     const existingRole = await this.Role.findOne({ name: roleName });
     if (existingRole) {
       // throw new Error(`Role ${roleName} already exists`);
@@ -116,7 +116,7 @@ class HajarAuth {
     const newRole = await this.Role.create({
       name: roleName,
       permissions: [...idPermissions],
-      ...options,
+      ...newRoleOptions,
     });
 
     return newRole;
