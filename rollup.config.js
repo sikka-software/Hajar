@@ -1,9 +1,7 @@
-// import resolve from '@rollup/plugin-node-resolve';
-// import commonjs from '@rollup/plugin-commonjs';
-import babel from "@rollup/plugin-babel";
-import { terser } from "rollup-plugin-terser";
-import pkg from "./package.json";
-import json from "@rollup/plugin-json";
+const babel = require("@rollup/plugin-babel");
+const { terser } = require("@wwa/rollup-plugin-terser");
+const pkg = require("./package.json");
+const json = require("@rollup/plugin-json");
 
 const LIBRARY_NAME = "Hajar"; // Change with your library's name
 const EXTERNAL = []; // Indicate which modules should be treated as external
@@ -21,13 +19,9 @@ const banner = `/*!
  */`;
 
 const makeConfig = (env = "development") => {
-  let bundleSuffix = "";
+  let bundleSuffix = env === "production" ? "min." : "";
 
-  if (env === "production") {
-    bundleSuffix = "min.";
-  }
-
-  const config = {
+  return {
     input: "src/index.js",
     external: EXTERNAL,
     output: [
@@ -67,27 +61,21 @@ const makeConfig = (env = "development") => {
       }),
     ],
   };
-
-  if (env === "production") {
-    config.plugins.push(
-      terser({
-        output: {
-          comments: /^!/,
-        },
-      })
-    );
-  }
-
-  return config;
 };
 
-export default (commandLineArgs) => {
-  const configs = [makeConfig()];
+// Production build
+const productionConfig = makeConfig("production");
 
-  // Production
-  if (commandLineArgs.environment === "BUILD:production") {
-    configs.push(makeConfig("production"));
-  }
-
-  return configs;
+// Add terser only for production build
+productionConfig.plugins.push(
+  terser({
+    output: {
+      comments: /^!/,
+    },
+  })
+);
+module.exports = (commandLineArgs) => {
+  return commandLineArgs.environment === "BUILD:production"
+    ? [makeConfig(), productionConfig]
+    : [makeConfig()];
 };
