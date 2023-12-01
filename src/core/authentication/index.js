@@ -121,9 +121,9 @@ class HajarAuth {
 
     return newRole;
   }
-  async login(email, password, isGoogle = false) {
+  async loginAdmin(email, password, isGoogle = false) {
     try {
-      const user = await this.User.findOne({ email: email });
+      const user = await this.User.findOne({ email: email, ref: "admins" });
 
       if (!user) {
         throw new HajarError(
@@ -131,6 +131,7 @@ class HajarAuth {
           "invalid-email-password"
         );
       }
+
       if (!isGoogle) {
         const isPasswordCorrect = await this.bcrypt.compare(
           password,
@@ -145,24 +146,51 @@ class HajarAuth {
         }
       }
 
-      if (user.ref === "admins") {
-        // Password is correct, sign a token for the admin user
-        const token = this.jwt.sign({ userId: user._id }, this.secret);
+      // Password is correct, sign a token for the admin user
+      const token = this.jwt.sign({ userId: user._id }, this.secret);
 
-        return { user, token, role: "admin" };
-      } else {
-        // If the user's "ref" field is not equal to "admins", return an error
-        throw new HajarError(
-          "Access denied. Only admins can log in.",
-          "access-denied-only-admins-can-log-in"
-        );
-      }
+      return { user, token, role: "admin" };
     } catch (error) {
-      // Handle errors and return appropriate responses
       console.error(error);
-      return new HajarError(error.message, "login-error");
+      return new HajarError(error.message, "admin-login-error");
     }
   }
+
+  async loginCustomer(email, password, isGoogle = false) {
+    try {
+      const user = await this.User.findOne({ email: email, ref: "customers" });
+
+      if (!user) {
+        throw new HajarError(
+          "Invalid email or password",
+          "invalid-email-password"
+        );
+      }
+
+      if (!isGoogle) {
+        const isPasswordCorrect = await this.bcrypt.compare(
+          password,
+          user.password
+        );
+
+        if (!isPasswordCorrect) {
+          throw new HajarError(
+            "Invalid email or password",
+            "invalid-email-password"
+          );
+        }
+      }
+
+      // Password is correct, sign a token for the customer user
+      const token = this.jwt.sign({ userId: user._id }, this.secret);
+
+      return { user, token, role: "customer" };
+    } catch (error) {
+      console.error(error);
+      return new HajarError(error.message, "customer-login-error");
+    }
+  }
+
   logout(res) {
     res.clearCookie("@admin-tayar-token");
     return true;
