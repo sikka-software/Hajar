@@ -13,17 +13,16 @@ class HajarAuth {
     this.secret = options.secret;
     this.cookieOptions = options.cookieOptions;
   }
-  async register(username, email, password) {
+  async register(userDetails) {
     try {
-      // Check if a user with the same email already exists
-      email = email.toLowerCase();
-      const userExists = await this.User.findOne({ email: email });
+      userDetails.email = userDetails.email.toLowerCase();
+      const userExists = await this.User.findOne({ email: userDetails.email });
 
       if (userExists) {
         throw new HajarError(
           "User with this email already exists",
           "user-already-exist",
-          { email: email }
+          { email: userDetails.email }
         );
       }
 
@@ -33,22 +32,19 @@ class HajarAuth {
         throw new HajarError("Admin role not found", "admin-role-not-found");
       }
 
-      // Check if the username already exists
       let existingUserWithSameUsername = await this.User.findOne({
-        username: username,
+        username: userDetails.username,
       });
 
-      // If the username already exists, generate a unique one
       if (existingUserWithSameUsername) {
-        // You can generate a unique username here, for example, by appending a random number
-        username = generateUniqueUsername(username);
+        userDetails.username = generateUniqueUsername(userDetails.username);
       }
 
-      const hashedPassword = await this.bcrypt.hash(password, 10);
+      const hashedPassword = await this.bcrypt.hash(userDetails.password, 10);
 
       const user = new this.User({
-        username,
-        email,
+        username: userDetails.username,
+        email: userDetails.email,
         ref: "admins",
         password: hashedPassword,
         role: adminRole._id,
@@ -60,7 +56,7 @@ class HajarAuth {
         profile: newUser._id,
         role: adminRole._id,
         uid: newUser._id,
-        username: username,
+        username: userDetails.username,
         firstName: {
           en: "ENGLISH FIRST NAME",
           ar: "ARABIC FIRST NAME",
@@ -76,6 +72,81 @@ class HajarAuth {
       const token = this.jwt.sign({ userId: newUser._id }, this.secret);
       const finalUser = {
         ...newAdmin.toObject(),
+        ...newUser.toObject(),
+      };
+      return {
+        success: true,
+        user: finalUser,
+        token,
+      };
+    } catch (error) {
+      console.error("Registration error:", error);
+      throw error;
+    }
+  }
+
+  async registerCustomer(userDetails) {
+    try {
+      userDetails.email = userDetails.email.toLowerCase();
+      const userExists = await this.User.findOne({ email: userDetails.email });
+
+      if (userExists) {
+        throw new HajarError(
+          "User with this email already exists",
+          "user-already-exist",
+          { email: userDetails.email }
+        );
+      }
+
+      const customerRole = await this.Role.findOne({ name: "Admin" });
+
+      if (!customerRole) {
+        throw new HajarError(
+          "Customer role not found",
+          "customer-role-not-found"
+        );
+      }
+
+      let existingUserWithSameUsername = await this.User.findOne({
+        username: userDetails.username,
+      });
+
+      if (existingUserWithSameUsername) {
+        userDetails.username = generateUniqueUsername(userDetails.username);
+      }
+
+      const hashedPassword = await this.bcrypt.hash(userDetails.password, 10);
+
+      const user = new this.User({
+        username: userDetails.username,
+        email: userDetails.email,
+        ref: "customers",
+        password: hashedPassword,
+        role: customerRole._id,
+      });
+
+      const newUser = await user.save();
+
+      const customer = new this.Customer({
+        profile: newUser._id,
+        role: customerRole._id,
+        uid: newUser._id,
+        username: userDetails.username,
+        firstName: {
+          en: "ENGLISH FIRST NAME",
+          ar: "ARABIC FIRST NAME",
+        },
+        lastName: {
+          en: "ENGLISH LAST NAME",
+          ar: "ARABIC LAST NAME",
+        },
+      });
+
+      const newCustomer = await customer.save();
+
+      const token = this.jwt.sign({ userId: newUser._id }, this.secret);
+      const finalUser = {
+        ...newCustomer.toObject(),
         ...newUser.toObject(),
       };
       return {
