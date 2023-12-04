@@ -103,7 +103,11 @@ class HajarAuth {
       });
 
       if (existingUserWithSameUsername) {
-        userDetails.username = generateUniqueUsername(userDetails.username);
+        throw new HajarError(
+          "User with this username already exists",
+          "user-already-exist",
+          { username: userDetails.username }
+        );
       }
 
       const hashedPassword = await this.bcrypt.hash(userDetails.password, 10);
