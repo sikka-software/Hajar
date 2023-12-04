@@ -11,7 +11,7 @@ class HajarAuth {
     this.Role = options.Role; // new
     this.Permission = options.Permission; // new
     this.secret = options.secret;
-    this.cookieOptions = options.cookieOptions;
+    this.Customer = options.Customer;
   }
   async register(userDetails) {
     try {
