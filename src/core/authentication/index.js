@@ -98,15 +98,6 @@ class HajarAuth {
         );
       }
 
-      const customerRole = await this.Role.findOne({ name: "Admin" });
-
-      if (!customerRole) {
-        throw new HajarError(
-          "Customer role not found",
-          "customer-role-not-found"
-        );
-      }
-
       let existingUserWithSameUsername = await this.User.findOne({
         username: userDetails.username,
       });
@@ -122,14 +113,12 @@ class HajarAuth {
         email: userDetails.email,
         ref: "customers",
         password: hashedPassword,
-        role: customerRole._id,
       });
 
       const newUser = await user.save();
 
       const customer = new this.Customer({
         profile: newUser._id,
-        role: customerRole._id,
         uid: newUser._id,
         username: userDetails.username,
         firstName: {
