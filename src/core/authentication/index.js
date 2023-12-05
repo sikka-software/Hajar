@@ -244,8 +244,10 @@ class HajarAuth {
           );
         }
       }
+      const customerData = await this.Customer.findOne({ profile: user._id });
 
-      // Password is correct, sign a token for the customer user
+      user.customerData = customerData;
+
       const token = this.jwt.sign({ userId: user._id }, this.secret);
 
       return { user, token, role: "customer" };
