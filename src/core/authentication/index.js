@@ -246,11 +246,9 @@ class HajarAuth {
       }
       const customerData = await this.Customer.findOne({ profile: user._id });
 
-      user.customerData = customerData;
-
       const token = this.jwt.sign({ userId: user._id }, this.secret);
 
-      return { user, token, role: "customer" };
+      return { user, token, customerData, role: "customer" };
     } catch (error) {
       console.error(error);
       return new HajarError(error.message, "customer-login-error");
