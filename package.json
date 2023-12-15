@@ -1,6 +1,6 @@
 {
   "name": "@sikka/hajar",
-  "version": "1.1.31",
+  "version": "1.1.32",
   "description": "Toolkit to create SaaS applications",
   "author": "Sikka Software <contact@sikka.io> (http://sikka.io)",
   "license": "MIT",
@@ -46,6 +46,7 @@
     "@rollup/plugin-babel": "~6.0.4",
     "@rollup/plugin-commonjs": "~25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "~11.1.5",
     "@types/jest": "~29.5.8",
     "@types/node": "~20.9.0",
     "@wwa/rollup-plugin-terser": "~1.1.2",

@@ -2,6 +2,7 @@ const babel = require("@rollup/plugin-babel");
 const { terser } = require("@wwa/rollup-plugin-terser");
 const pkg = require("./package.json");
 const json = require("@rollup/plugin-json");
+const typescript = require("@rollup/plugin-typescript");
 
 const LIBRARY_NAME = "Hajar"; // Change with your library's name
 const EXTERNAL = []; // Indicate which modules should be treated as external
@@ -59,6 +60,7 @@ const makeConfig = (env = "development") => {
         babelHelpers: "bundled",
         exclude: ["node_modules/**"],
       }),
+      typescript(),
     ],
   };
 };

@@ -2,7 +2,7 @@
   "compilerOptions": {
     /* Basic Options */
     "target": "es5", // Specify ECMAScript target version
-    "module": "commonjs", // Specify module code generation
+    "module": "ESNext", // Specify module code generation
     "lib": ["es6", "dom"], // Specify library files to be included in the compilation
     "allowJs": true, // Allow JavaScript files to be compiled
     "outDir": "./dist", // Redirect output structure to the directory
