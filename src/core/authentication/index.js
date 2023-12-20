@@ -7,9 +7,9 @@ class HajarAuth {
     this.jwt = options.jwt;
     this.bcrypt = options.bcrypt;
     this.User = options.User;
-    this.Admin = options.Admin; // new
-    this.Role = options.Role; // new
-    this.Permission = options.Permission; // new
+    this.Admin = options.Admin;
+    this.Role = options.Role;
+    this.Permission = options.Permission;
     this.secret = options.secret;
     this.Customer = options.Customer;
   }
@@ -29,7 +29,16 @@ class HajarAuth {
       const adminRole = await this.Role.findOne({ name: "Admin" });
 
       if (!adminRole) {
-        throw new HajarError("Admin role not found", "admin-role-not-found");
+        // Get all permissions
+        const allPermissions = await this.Permission.find({});
+
+        // Create admin role
+        const adminRole = new Role({
+          name: "Admin",
+          permissions: allPermissions,
+        });
+
+        await adminRole.save();
       }
 
       let existingUserWithSameUsername = await this.User.findOne({
