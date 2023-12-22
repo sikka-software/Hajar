@@ -217,10 +217,15 @@ class HajarAuth {
         }
       }
 
+      const adminData = await this.Admin.findOne({ profile: user._id });
       // Password is correct, sign a token for the admin user
       const token = this.jwt.sign({ userId: user._id }, this.secret);
-
-      return { user, token, role: "admin" };
+      return {
+        success: true,
+        user: { ...user.toObject() },
+        admin: { ...adminData.toObject() },
+        token,
+      };
     } catch (error) {
       console.error(error);
       return new HajarError(error.message, "admin-login-error");
@@ -235,6 +240,14 @@ class HajarAuth {
         throw new HajarError(
           "Invalid email or password",
           "invalid-email-password"
+        );
+      }
+
+      // Check if the user has customer privileges
+      if (user.role !== "customer") {
+        throw new HajarError(
+          "User does not have customer privileges",
+          "no-customer-privileges"
         );
       }
 
@@ -254,8 +267,12 @@ class HajarAuth {
       const customerData = await this.Customer.findOne({ profile: user._id });
 
       const token = this.jwt.sign({ userId: user._id }, this.secret);
-
-      return { user, token, customerData, role: "customer" };
+      return {
+        success: true,
+        user: { ...user.toObject() },
+        customer: { ...customerData.toObject() },
+        token,
+      };
     } catch (error) {
       console.error(error);
       return new HajarError(error.message, "customer-login-error");
