@@ -243,14 +243,6 @@ class HajarAuth {
         );
       }
 
-      // Check if the user has customer privileges
-      if (user.role !== "customer") {
-        throw new HajarError(
-          "User does not have customer privileges",
-          "no-customer-privileges"
-        );
-      }
-
       if (!isGoogle) {
         const isPasswordCorrect = await this.bcrypt.compare(
           password,
