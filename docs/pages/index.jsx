@@ -7,7 +7,7 @@ const IndexPage = () => (
   <div className="flex flex-col justify-center items-center text-center p-10 gap-6  h-screen">
     <div className="flex flex-col  justify-center items-center max-w-lg">
       <h1 className="text-center text-4xl tracking-tighter font-extrabold md:text-5xl mb-10">
-        Hajar @6:47 AM
+        Hajar
       </h1>
       <span>
         Hajar is a comprehensive toolkit for SaaS application development,
