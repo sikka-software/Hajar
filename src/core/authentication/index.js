@@ -66,14 +66,9 @@ class HajarAuth {
         role: adminRole._id,
         uid: newUser._id,
         username: userDetails.username,
-        firstName: {
-          en: "ENGLISH FIRST NAME",
-          ar: "ARABIC FIRST NAME",
-        },
-        lastName: {
-          en: "ENGLISH LAST NAME",
-          ar: "ARABIC LAST NAME",
-        },
+        // TODO: i removed the ARABIC FIRST NAME and ENGLISH FIRST NAME placeholders
+        firstName: { en: "", ar: "" },
+        lastName: { en: "", ar: "" },
       });
 
       const newAdmin = await admin.save();
