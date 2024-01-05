@@ -229,16 +229,46 @@ class HajarAuth {
 
   async loginCustomerGoogle(googleUserData, isGoogle = true) {
     try {
-      // If user is logging in with Google, just return the Google user data
+      let user;
       if (isGoogle) {
+        user = await this.User.findOne({
+          email: googleUserData.email,
+          ref: "customers",
+        });
+        if (!user) {
+          // If the user doesn't exist, create a new one
+          user = new this.User({
+            username: googleUserData.username,
+            email: googleUserData.email,
+            ref: "customers",
+            password: await this.bcrypt.hash(googleUserData.password, 10),
+            //   role: googleUserData.role,
+          });
+          await user.save();
+        }
+        const customerData = await this.Customer.findOne({ profile: user._id });
+        if (!customerData) {
+          const customer = new this.Customer({
+            profile: user._id,
+            // role: googleUserData.role,
+            uid: user._id,
+            username: googleUserData.username,
+            firstName: googleUserData.firstName,
+            lastName: googleUserData.lastName,
+          });
+
+          await customer.save();
+        }
+
         return {
           success: true,
-          user: googleUserData,
+          user: user,
+          customer: customerData,
+          token: this.jwt.sign({ userId: user._id }, this.secret),
         };
       }
 
-      // If user is not logging in with Google, check their email and password
-      const user = await this.User.findOne({
+      user = await this.User.findOne({
         email: googleUserData.email,
         ref: "customers",
       });
@@ -275,7 +305,6 @@ class HajarAuth {
       return new HajarError(error.message, "customer-login-error");
     }
   }
-
   async loginCustomer(email, password, isGoogle = false) {
     try {
       const user = await this.User.findOne({ email: email, ref: "customers" });
