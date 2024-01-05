@@ -227,6 +227,55 @@ class HajarAuth {
     }
   }
 
+  async loginCustomerGoogle(googleUserData, isGoogle = true) {
+    try {
+      // If user is logging in with Google, just return the Google user data
+      if (isGoogle) {
+        return {
+          success: true,
+          user: googleUserData,
+        };
+      }
+
+      // If user is not logging in with Google, check their email and password
+      const user = await this.User.findOne({
+        email: googleUserData.email,
+        ref: "customers",
+      });
+
+      if (!user) {
+        throw new HajarError(
+          "Invalid email or password",
+          "invalid-email-password"
+        );
+      }
+
+      const isPasswordCorrect = await this.bcrypt.compare(
+        googleUserData.password,
+        user.password
+      );
+
+      if (!isPasswordCorrect) {
+        throw new HajarError(
+          "Invalid email or password",
+          "invalid-email-password"
+        );
+      }
+
+      const customerData = await this.Customer.findOne({ profile: user._id });
+      const token = this.jwt.sign({ userId: user._id }, this.secret);
+      return {
+        success: true,
+        user: { ...user.toObject() },
+        customer: { ...customerData.toObject() },
+        token,
+      };
+    } catch (error) {
+      console.error(error);
+      return new HajarError(error.message, "customer-login-error");
+    }
+  }
+
   async loginCustomer(email, password, isGoogle = false) {
     try {
       const user = await this.User.findOne({ email: email, ref: "customers" });
