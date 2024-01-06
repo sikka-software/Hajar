@@ -230,23 +230,22 @@ class HajarAuth {
   async loginCustomerGoogle(googleUserData, isGoogle = true) {
     try {
       let user;
-      if (isGoogle) {
-        user = await this.User.findOne({
+
+      user = await this.User.findOne({
+        email: googleUserData.email,
+        ref: "customers",
+      });
+
+      if (!user) {
+        user = new this.User({
+          username: googleUserData.username,
           email: googleUserData.email,
           ref: "customers",
+          password: await this.bcrypt.hash(googleUserData.password, 10),
+          // role: googleUserData.role,
         });
 
-        if (!user) {
-          user = new this.User({
-            username: googleUserData.username,
-            email: googleUserData.email,
-            ref: "customers",
-            password: await this.bcrypt.hash(googleUserData.password, 10),
-            // role: googleUserData.role,
-          });
-
-          await user.save();
-        }
+        await user.save();
 
         let customerData = await this.Customer.findOne({ uid: user._id });
 
@@ -270,40 +269,29 @@ class HajarAuth {
           message: "Registration success",
           token: this.jwt.sign({ userId: user._id }, this.secret),
         };
-      }
-      user = await this.User.findOne({
-        email: googleUserData.email,
-        ref: "customers",
-      });
-
-      if (!user) {
-        throw new HajarError(
-          "Invalid email or password",
-          "invalid-email-password"
+      } else {
+        const isPasswordCorrect = await this.bcrypt.compare(
+          googleUserData.password,
+          user.password
         );
+
+        if (!isPasswordCorrect) {
+          throw new HajarError(
+            "Invalid email or password",
+            "invalid-email-password"
+          );
+        }
+
+        const customerData = await this.Customer.findOne({ profile: user._id });
+        const token = this.jwt.sign({ userId: user._id }, this.secret);
+        return {
+          success: true,
+          user: { ...user.toObject() },
+          message: "Login successful",
+          customer: { ...customerData.toObject() },
+          token,
+        };
       }
-
-      const isPasswordCorrect = await this.bcrypt.compare(
-        googleUserData.password,
-        user.password
-      );
-
-      if (!isPasswordCorrect) {
-        throw new HajarError(
-          "Invalid email or password",
-          "invalid-email-password"
-        );
-      }
-
-      const customerData = await this.Customer.findOne({ profile: user._id });
-      const token = this.jwt.sign({ userId: user._id }, this.secret);
-      return {
-        success: true,
-        user: { ...user.toObject() },
-        message: "Login successful",
-        customer: { ...customerData.toObject() },
-        token,
-      };
     } catch (error) {
       console.error(error);
       return new HajarError(error.message, "customer-login-error");
