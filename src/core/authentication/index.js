@@ -266,19 +266,8 @@ class HajarAuth {
         };
       } else {
         // User exists, perform login
-        const isPasswordCorrect = await this.bcrypt.compare(
-          googleUserData.password,
-          user.password
-        );
 
-        if (!isPasswordCorrect) {
-          throw new HajarError(
-            "Invalid email or password",
-            "invalid-email-password"
-          );
-        }
-
-        const customerData = await this.Customer.findOne({ profile: user._id });
+        const customerData = await this.Customer.findOne({ uid: user._id });
         return {
           success: true,
           user: { ...user.toObject() },
