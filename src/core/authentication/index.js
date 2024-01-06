@@ -235,19 +235,23 @@ class HajarAuth {
           email: googleUserData.email,
           ref: "customers",
         });
+
         if (!user) {
           user = new this.User({
             username: googleUserData.username,
             email: googleUserData.email,
             ref: "customers",
             password: await this.bcrypt.hash(googleUserData.password, 10),
-            //   role: googleUserData.role,
+            // role: googleUserData.role,
           });
+
           await user.save();
         }
-        const customerData = await this.Customer.findOne({ profile: user._id });
+
+        let customerData = await this.Customer.findOne({ uid: user._id });
+
         if (!customerData) {
-          const customer = new this.Customer({
+          customerData = new this.Customer({
             profile: user._id,
             // role: googleUserData.role,
             uid: user._id,
@@ -256,7 +260,7 @@ class HajarAuth {
             lastName: googleUserData.lastName,
           });
 
-          await customer.save();
+          await customerData.save();
         }
 
         return {
@@ -267,7 +271,6 @@ class HajarAuth {
           token: this.jwt.sign({ userId: user._id }, this.secret),
         };
       }
-
       user = await this.User.findOne({
         email: googleUserData.email,
         ref: "customers",
