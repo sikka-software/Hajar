@@ -227,7 +227,7 @@ class HajarAuth {
     }
   }
 
-  async loginCustomerGoogle(googleUserData, isGoogle = true) {
+  async loginCustomerGoogle(googleUserData) {
     try {
       let user;
 
@@ -237,30 +237,25 @@ class HajarAuth {
       });
 
       if (!user) {
+        // User doesn't exist, perform registration
         user = new this.User({
           username: googleUserData.username,
           email: googleUserData.email,
           ref: "customers",
           password: await this.bcrypt.hash(googleUserData.password, 10),
-          // role: googleUserData.role,
         });
 
         await user.save();
 
-        let customerData = await this.Customer.findOne({ uid: user._id });
+        let customerData = new this.Customer({
+          profile: user._id,
+          uid: user._id,
+          username: googleUserData.username,
+          firstName: googleUserData.firstName,
+          lastName: googleUserData.lastName,
+        });
 
-        if (!customerData) {
-          customerData = new this.Customer({
-            profile: user._id,
-            // role: googleUserData.role,
-            uid: user._id,
-            username: googleUserData.username,
-            firstName: googleUserData.firstName,
-            lastName: googleUserData.lastName,
-          });
-
-          await customerData.save();
-        }
+        await customerData.save();
 
         return {
           success: true,
@@ -270,6 +265,7 @@ class HajarAuth {
           token: this.jwt.sign({ userId: user._id }, this.secret),
         };
       } else {
+        // User exists, perform login
         const isPasswordCorrect = await this.bcrypt.compare(
           googleUserData.password,
           user.password
@@ -283,13 +279,12 @@ class HajarAuth {
         }
 
         const customerData = await this.Customer.findOne({ profile: user._id });
-        const token = this.jwt.sign({ userId: user._id }, this.secret);
         return {
           success: true,
           user: { ...user.toObject() },
           message: "Login successful",
           customer: { ...customerData.toObject() },
-          token,
+          token: this.jwt.sign({ userId: user._id }, this.secret),
         };
       }
     } catch (error) {
