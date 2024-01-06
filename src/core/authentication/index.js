@@ -236,7 +236,6 @@ class HajarAuth {
           ref: "customers",
         });
         if (!user) {
-          // If the user doesn't exist, create a new one
           user = new this.User({
             username: googleUserData.username,
             email: googleUserData.email,
@@ -264,6 +263,7 @@ class HajarAuth {
           success: true,
           user: user,
           customer: customerData,
+          message: "Registration success",
           token: this.jwt.sign({ userId: user._id }, this.secret),
         };
       }
@@ -297,6 +297,7 @@ class HajarAuth {
       return {
         success: true,
         user: { ...user.toObject() },
+        message: "Login successful",
         customer: { ...customerData.toObject() },
         token,
       };
