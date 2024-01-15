@@ -266,8 +266,7 @@ class HajarAuth {
         };
       } else {
         // User exists, perform login
-
-        const customerData = await this.Customer.findOne({ uid: user._id });
+        const customerData = await this.Customer.findOne({ profile: user._id });
         return {
           success: true,
           user: { ...user.toObject() },
