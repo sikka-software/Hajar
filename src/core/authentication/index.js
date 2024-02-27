@@ -74,13 +74,11 @@ class HajarAuth {
       const newAdmin = await admin.save();
 
       const token = this.jwt.sign({ userId: newUser._id }, this.secret);
-      const finalUser = {
-        ...newAdmin.toObject(),
-        ...newUser.toObject(),
-      };
+
       return {
         success: true,
-        user: finalUser,
+        user: { ...newUser.toObject() },
+        admin: { ...newAdmin.toObject() },
         token,
       };
     } catch (error) {
