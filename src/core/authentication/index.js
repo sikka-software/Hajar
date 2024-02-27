@@ -45,9 +45,9 @@ class HajarAuth {
         username: userDetails.username,
       });
 
-      if (existingUserWithSameUsername) {
+      /*  if (existingUserWithSameUsername) {
         userDetails.username = generateUniqueUsername(userDetails.username);
-      }
+      } */
 
       const hashedPassword = await this.bcrypt.hash(userDetails.password, 10);
 
@@ -220,6 +220,9 @@ class HajarAuth {
         user: { ...user.toObject() },
         admin: { ...adminData.toObject() },
         token,
+        refreshToken: this.jwt.sign({ userId: user._id }, this.refreshSecret, {
+          expiresIn: "7d",
+        }),
       };
     } catch (error) {
       console.error(error);
@@ -273,6 +276,11 @@ class HajarAuth {
           message: "Login successful",
           customer: { ...customerData.toObject() },
           token: this.jwt.sign({ userId: user._id }, this.secret),
+          refreshToken: this.jwt.sign(
+            { userId: user._id },
+            this.refreshSecret,
+            { expiresIn: "7d" }
+          ), // Add refresh token
         };
       }
     } catch (error) {
@@ -312,6 +320,9 @@ class HajarAuth {
         user: { ...user.toObject() },
         customer: { ...customerData.toObject() },
         token,
+        refreshToken: this.jwt.sign({ userId: user._id }, this.refreshSecret, {
+          expiresIn: "7d",
+        }), // Add refresh token
       };
     } catch (error) {
       console.error(error);
