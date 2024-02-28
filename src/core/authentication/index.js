@@ -17,7 +17,15 @@ class HajarAuth {
     try {
       userDetails.email = userDetails.email.toLowerCase();
       const userExists = await this.User.findOne({ email: userDetails.email });
+      const usernameCheck = await this.User.findOne({ username: userDetails.username });
 
+      if (usernameCheck) {
+        throw new HajarError(
+          "User with this username already exists",
+          "username-already-exist",
+          { username: userDetails.username }
+        );
+      }
       if (userExists) {
         throw new HajarError(
           "User with this email already exists",
