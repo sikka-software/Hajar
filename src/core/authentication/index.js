@@ -17,7 +17,9 @@ class HajarAuth {
     try {
       userDetails.email = userDetails.email.toLowerCase();
       const userExists = await this.User.findOne({ email: userDetails.email });
-      const usernameCheck = await this.User.findOne({ username: userDetails.username });
+      const usernameCheck = await this.User.findOne({
+        username: userDetails.username,
+      });
 
       if (usernameCheck) {
         throw new HajarError(
@@ -226,9 +228,6 @@ class HajarAuth {
         user: { ...user.toObject() },
         admin: { ...adminData.toObject() },
         token,
-        refreshToken: this.jwt.sign({ userId: user._id }, this.refreshSecret, {
-          expiresIn: "7d",
-        }),
       };
     } catch (error) {
       console.error(error);
