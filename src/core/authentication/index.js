@@ -97,7 +97,7 @@ class HajarAuth {
     }
   }
 
-  async registerCustomer(userDetails) {
+  async registerClient(userDetails) {
     try {
       userDetails.email = userDetails.email.toLowerCase();
       const userExists = await this.User.findOne({ email: userDetails.email });
@@ -127,13 +127,13 @@ class HajarAuth {
       const user = new this.User({
         username: userDetails.username,
         email: userDetails.email,
-        ref: "customers",
+        ref: "clients",
         password: hashedPassword,
       });
 
       const newUser = await user.save();
 
-      const customer = new this.Customer({
+      const client = new this.Client({
         profile: newUser._id,
         uid: newUser._id,
         username: userDetails.username,
@@ -147,14 +147,14 @@ class HajarAuth {
         },
       });
 
-      const newCustomer = await customer.save();
+      const newClient = await client.save();
 
       const token = this.jwt.sign({ userId: newUser._id }, this.secret);
 
       return {
         success: true,
         user: { ...newUser.toObject() },
-        customer: { ...newCustomer.toObject() },
+        client: { ...newClient.toObject() },
         token,
       };
     } catch (error) {
@@ -162,7 +162,6 @@ class HajarAuth {
       throw error;
     }
   }
-
   async createRole({ roleName, permissionIds, ...newRoleOptions }) {
     const existingRole = await this.Role.findOne({ name: roleName });
     if (existingRole) {
@@ -235,13 +234,13 @@ class HajarAuth {
     }
   }
 
-  async loginCustomerGoogle(googleUserData) {
+  async loginClientGoogle(googleUserData) {
     try {
       let user;
 
       user = await this.User.findOne({
         email: googleUserData.email,
-        ref: "customers",
+        ref: "clients",
       });
 
       if (!user) {
@@ -249,13 +248,13 @@ class HajarAuth {
         user = new this.User({
           username: googleUserData.username,
           email: googleUserData.email,
-          ref: "customers",
+          ref: "clients",
           password: await this.bcrypt.hash(googleUserData.password, 10),
         });
 
         await user.save();
 
-        let customerData = new this.Customer({
+        let clientData = new this.Client({
           profile: user._id,
           uid: user._id,
           username: googleUserData.username,
@@ -263,39 +262,34 @@ class HajarAuth {
           lastName: googleUserData.lastName,
         });
 
-        await customerData.save();
+        await clientData.save();
 
         return {
           success: true,
           user: user,
-          customer: customerData,
+          client: clientData,
           message: "Registration success",
           token: this.jwt.sign({ userId: user._id }, this.secret),
         };
       } else {
         // User exists, perform login
-        const customerData = await this.Customer.findOne({ profile: user._id });
+        const clientData = await this.Client.findOne({ profile: user._id });
         return {
           success: true,
           user: { ...user.toObject() },
           message: "Login successful",
-          customer: { ...customerData.toObject() },
+          client: { ...clientData.toObject() },
           token: this.jwt.sign({ userId: user._id }, this.secret),
-          refreshToken: this.jwt.sign(
-            { userId: user._id },
-            this.refreshSecret,
-            { expiresIn: "7d" }
-          ), // Add refresh token
         };
       }
     } catch (error) {
       console.error(error);
-      return new HajarError(error.message, "customer-login-error");
+      return new HajarError(error.message, "client-login-error");
     }
   }
-  async loginCustomer(email, password, isGoogle = false) {
+  async loginClient(email, password, isGoogle = false) {
     try {
-      const user = await this.User.findOne({ email: email, ref: "customers" });
+      const user = await this.User.findOne({ email: email, ref: "clients" });
 
       if (!user) {
         throw new HajarError(
@@ -317,21 +311,18 @@ class HajarAuth {
           );
         }
       }
-      const customerData = await this.Customer.findOne({ profile: user._id });
+      const clientData = await this.Client.findOne({ profile: user._id });
 
       const token = this.jwt.sign({ userId: user._id }, this.secret);
       return {
         success: true,
         user: { ...user.toObject() },
-        customer: { ...customerData.toObject() },
+        client: { ...clientData.toObject() },
         token,
-        refreshToken: this.jwt.sign({ userId: user._id }, this.refreshSecret, {
-          expiresIn: "7d",
-        }), // Add refresh token
       };
     } catch (error) {
       console.error(error);
-      return new HajarError(error.message, "customer-login-error");
+      return new HajarError(error.message, "client-login-error");
     }
   }
 
