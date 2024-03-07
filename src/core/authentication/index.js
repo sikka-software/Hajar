@@ -11,7 +11,7 @@ class HajarAuth {
     this.Role = options.Role;
     this.Permission = options.Permission;
     this.secret = options.secret;
-    this.Customer = options.Customer;
+    this.Client = options.Client;
   }
   async register(userDetails) {
     try {
@@ -252,6 +252,12 @@ class HajarAuth {
           password: await this.bcrypt.hash(googleUserData.password, 10),
         });
 
+        if (user.ref === "clients") {
+          throw new HajarError(
+            "This login is for admins only",
+            "admin-login-only"
+          );
+        }
         await user.save();
 
         let clientData = new this.Client({
@@ -290,7 +296,7 @@ class HajarAuth {
   async loginClient(email, password, isGoogle = false) {
     try {
       const user = await this.User.findOne({ email: email, ref: "clients" });
-
+      console.log("user : ", user);
       if (!user) {
         throw new HajarError(
           "Invalid email or password",
@@ -311,8 +317,9 @@ class HajarAuth {
           );
         }
       }
-      const clientData = await this.Client.findOne({ profile: user._id });
-
+      const clientData = await this.Client.findOne({
+        uid: user._id.toString(),
+      });
       const token = this.jwt.sign({ userId: user._id }, this.secret);
       return {
         success: true,
