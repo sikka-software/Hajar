@@ -64,7 +64,7 @@ class HajarAuth {
       const user = new this.User({
         username: userDetails.username,
         email: userDetails.email,
-        ref: "admins",
+        ref: "admin",
         password: hashedPassword,
         role: adminRole._id,
       });
@@ -127,7 +127,7 @@ class HajarAuth {
       const user = new this.User({
         username: userDetails.username,
         email: userDetails.email,
-        ref: "clients",
+        ref: "client",
         password: hashedPassword,
       });
 
@@ -196,7 +196,7 @@ class HajarAuth {
   }
   async loginAdmin(email, password, isGoogle = false) {
     try {
-      const user = await this.User.findOne({ email: email, ref: "admins" });
+      const user = await this.User.findOne({ email: email, ref: "admin" });
 
       if (!user) {
         throw new HajarError(
@@ -240,7 +240,7 @@ class HajarAuth {
 
       user = await this.User.findOne({
         email: googleUserData.email,
-        ref: "clients",
+        ref: "client",
       });
 
       if (!user) {
@@ -248,11 +248,11 @@ class HajarAuth {
         user = new this.User({
           username: googleUserData.username,
           email: googleUserData.email,
-          ref: "clients",
+          ref: "client",
           password: await this.bcrypt.hash(googleUserData.password, 10),
         });
 
-        if (user.ref === "clients") {
+        if (user.ref === "client") {
           throw new HajarError(
             "This login is for admins only",
             "admin-login-only"
@@ -295,7 +295,7 @@ class HajarAuth {
   }
   async loginClient(email, password, isGoogle = false) {
     try {
-      const user = await this.User.findOne({ email: email, ref: "clients" });
+      const user = await this.User.findOne({ email: email, ref: "client" });
       console.log("user : ", user);
       if (!user) {
         throw new HajarError(
