@@ -11,8 +11,8 @@ class HajarError extends Error {
     slug: string,
     customProperties?: CustomProperties
   ) {
-    super(message); // Pass the message parameter to the Error constructor
-    this.slug = slug; // Assign the code parameter to a property on the error object
+    super(message);
+    this.slug = slug;
     if (customProperties) {
       Object.assign(this, customProperties);
     }

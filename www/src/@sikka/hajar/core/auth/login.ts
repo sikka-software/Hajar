@@ -1,41 +1,45 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { secret } from "../init";
-import { User, Admin } from "../init";
+import { User } from "../init";
+
 interface ILoginResponse {
   success: boolean;
   user: object;
-  admin: object;
   token: string;
 }
 
-async function loginAdmin(
+async function login(
+  userType: string,
   email: string,
   password: string,
-  isGoogle = false
+  mongoose: any
 ): Promise<ILoginResponse> {
-  const user = await User.findOne({ email, ref: "admin" });
+  const user = await User.findOne({ email, ref: userType });
 
   if (!user) {
     throw new Error("Invalid email or password");
   }
 
-  if (!isGoogle) {
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
-      throw new Error("Invalid email or password");
-    }
+  if (!(await bcrypt.compare(password, user.password))) {
+    throw new Error("Invalid email or password");
   }
 
-  const adminData = await Admin.findOne({ profile: user._id });
-  const token = jwt.sign({ userId: user._id }, secret);
+  const userData = await mongoose
+    .model(userType)
+    .findOne({ profile: user._id });
+
+  if (!userData) {
+    throw new Error(`${userType} data not found`);
+  }
+
+  const token = jwt.sign({ userId: user._id }, secret, { expiresIn: "1h" });
 
   return {
     success: true,
-    user: { ...user.toObject() },
-    admin: { ...adminData.toObject() },
+    user: userData,
     token,
   };
 }
 
-export default loginAdmin;
+export default login;
