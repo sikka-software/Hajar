@@ -1,8 +1,15 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { User, secret } from "../init.js";
-async function login(userType, email, password) {
-  const user = await User.findOne({ email, ref: userType });
+import {
+  User,
+  secret,
+  getClientData,
+  getAdminData,
+  getUserType,
+} from "../init.js";
+
+async function login(email, password) {
+  const user = await User.findOne({ email });
 
   if (!user) {
     throw new Error("Invalid email or password");
@@ -14,10 +21,21 @@ async function login(userType, email, password) {
 
   const token = jwt.sign({ userId: user._id }, secret, { expiresIn: "1h" });
 
-  return {
+  const userData = {
     success: true,
-    user: user,
+    user: user.toObject(),
     token,
   };
+
+  switch (await getUserType(email)) {
+    case "admin":
+      userData.admin = await getAdminData(user);
+      break;
+    case "client":
+      userData.client = await getClientData(user);
+      break;
+  }
+
+  return userData;
 }
 export default login;
