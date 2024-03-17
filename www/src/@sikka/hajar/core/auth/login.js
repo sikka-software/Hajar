@@ -1,7 +1,6 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const { User, secret } = require("../init.js");
-
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import { User, secret } from "../init.js";
 async function login(userType, email, password) {
   const user = await User.findOne({ email, ref: userType });
 
@@ -21,5 +20,4 @@ async function login(userType, email, password) {
     token,
   };
 }
-
-module.exports = login;
+export default login;
