@@ -1,30 +1,18 @@
-import mongoose, { Model } from "mongoose";
-
-interface IUser {
-  findOne: (query: any) => Promise<any>;
-}
-
-interface IAdmin {
-  findOne: (query: any) => Promise<any>;
-}
-
-interface IClient {
-  findOne: (query: any) => Promise<any>;
-}
+const mongoose = require("mongoose");
 
 let initialized = false;
-let secret: string;
-let mongooseInstance: typeof mongoose;
-let User: IUser;
-let Admin: IAdmin;
-let Client: IClient;
+let secret;
+let mongooseInstance;
+let User;
+let Admin;
+let Client;
 
-export function initHajar(
-  jwtSecret: string,
-  inputMongooseInstance: typeof mongoose,
-  userModel: IUser,
-  adminModel: IAdmin,
-  clientModel: IClient
+function initHajar(
+  jwtSecret,
+  inputMongooseInstance,
+  userModel,
+  adminModel,
+  clientModel
 ) {
   if (initialized) {
     throw new Error("Hajar is already initialized");
@@ -38,7 +26,7 @@ export function initHajar(
   initialized = true;
 }
 
-export async function getUserType(email: string): Promise<string> {
+async function getUserType(email) {
   const user = await User.findOne({ email });
   if (!user) {
     throw new Error("User not found");
@@ -46,7 +34,7 @@ export async function getUserType(email: string): Promise<string> {
   return user.ref;
 }
 
-export async function getAdminData(user: any): Promise<any> {
+async function getAdminData(user) {
   if (user.ref === "admin") {
     const adminData = await Admin.findOne({ uid: user._id });
     if (!adminData) {
@@ -57,7 +45,7 @@ export async function getAdminData(user: any): Promise<any> {
   return null;
 }
 
-export async function getClientData(user: any): Promise<any> {
+async function getClientData(user) {
   if (user.ref === "client") {
     const clientData = await Client.findOne({ uid: user._id });
     if (!clientData) {
@@ -68,4 +56,14 @@ export async function getClientData(user: any): Promise<any> {
   return null;
 }
 
-export { secret, mongooseInstance, User, Admin, Client };
+module.exports = {
+  initHajar,
+  getUserType,
+  getAdminData,
+  getClientData,
+  secret,
+  mongooseInstance,
+  User,
+  Admin,
+  Client,
+};

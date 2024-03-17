@@ -1,19 +1,8 @@
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import { secret } from "../init";
-import { User } from "../init";
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const { User, secret } = require("../init.js");
 
-interface ILoginResponse {
-  success: boolean;
-  user: object;
-  token: string;
-}
-
-async function login(
-  userType: string,
-  email: string,
-  password: string
-): Promise<ILoginResponse> {
+async function login(userType, email, password) {
   const user = await User.findOne({ email, ref: userType });
 
   if (!user) {
@@ -33,4 +22,4 @@ async function login(
   };
 }
 
-export default login;
+module.exports = login;

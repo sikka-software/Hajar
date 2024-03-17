@@ -20,8 +20,8 @@
     "forceConsistentCasingInFileNames": true // Disallow inconsistently-cased references to the same file
   },
   "include": [
-    "www/src/@sikka/hajar/core/**/*", // Include all files in the src directory
-    "www/src/@sikka/hajar/index.ts"
+    "www/src/@sikka/hajar/core/**/*",
+    "www/src/@sikka/hajar/index.js"
   ],
   "exclude": [
     "node_modules", // Exclude the node_modules directory
