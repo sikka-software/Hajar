@@ -12,8 +12,7 @@ interface ILoginResponse {
 async function login(
   userType: string,
   email: string,
-  password: string,
-  mongoose: any
+  password: string
 ): Promise<ILoginResponse> {
   const user = await User.findOne({ email, ref: userType });
 
@@ -25,19 +24,11 @@ async function login(
     throw new Error("Invalid email or password");
   }
 
-  const userData = await mongoose
-    .model(userType)
-    .findOne({ profile: user._id });
-
-  if (!userData) {
-    throw new Error(`${userType} data not found`);
-  }
-
   const token = jwt.sign({ userId: user._id }, secret, { expiresIn: "1h" });
 
   return {
     success: true,
-    user: userData,
+    user: user,
     token,
   };
 }
