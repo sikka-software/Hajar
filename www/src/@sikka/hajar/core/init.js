@@ -1,5 +1,3 @@
-const mongoose = require("mongoose");
-
 let initialized = false;
 let secret;
 let mongooseInstance;
@@ -56,7 +54,7 @@ async function getClientData(user) {
   return null;
 }
 
-module.exports = {
+export {
   initHajar,
   getUserType,
   getAdminData,

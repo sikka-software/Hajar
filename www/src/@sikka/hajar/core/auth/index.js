@@ -1,6 +1,4 @@
-const login = require("./login");
+import login from "./login";
 
 // @TODO add register function here
-module.exports = {
-  login,
-};
+export { login };
