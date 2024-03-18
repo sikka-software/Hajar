@@ -38,9 +38,7 @@ const makeConfig = (env = "development") => {
         banner,
         file: `dist/${LIBRARY_NAME}.cjs.${bundleSuffix}js`, // CommonJS
         format: "cjs",
-        // We use `default` here as we are only exporting one thing using `export default`.
-        // https://rollupjs.org/guide/en/#outputexports
-        exports: "default",
+        exports: "auto", // change this line
         globals: GLOBALS,
       },
       {
@@ -53,9 +51,6 @@ const makeConfig = (env = "development") => {
     ],
     plugins: [
       json(),
-      // Uncomment the following 2 lines if your library has external dependencies
-      // resolve(), // teach Rollup how to find external modules
-      // commonjs(), // so Rollup can convert external modules to an ES module
       babel({
         babelHelpers: "bundled",
         exclude: ["node_modules/**"],
