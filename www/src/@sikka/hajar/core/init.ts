@@ -68,4 +68,18 @@ export async function getClientData(user: any): Promise<any> {
   return null;
 }
 
+<<<<<<< Updated upstream:www/src/@sikka/hajar/core/init.ts
 export { secret, mongooseInstance, User, Admin, Client };
+=======
+module.exports = {
+  initHajar,
+  getUserType,
+  getAdminData,
+  getClientData,
+  secret,
+  mongooseInstance,
+  User,
+  Admin,
+  Client,
+};
+>>>>>>> Stashed changes:www/src/@sikka/hajar/core/init.js
