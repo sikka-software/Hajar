@@ -1,12 +1,12 @@
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import {
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const {
   User,
   secret,
   getClientData,
   getAdminData,
   getUserType,
-} from "../init.js";
+} = require("../init.js");
 
 async function login(email, password) {
   const user = await User.findOne({ email });
@@ -38,4 +38,5 @@ async function login(email, password) {
 
   return userData;
 }
-export default login;
+
+module.exports = login;
