@@ -3,7 +3,7 @@ const { terser } = require("@wwa/rollup-plugin-terser");
 const pkg = require("./package.json");
 const json = require("@rollup/plugin-json");
 const typescript = require("@rollup/plugin-typescript");
-
+const alias = require("rollup-plugin-alias");
 const LIBRARY_NAME = "Hajar"; // Change with your library's name
 const EXTERNAL = []; // Indicate which modules should be treated as external
 const GLOBALS = {}; // https://rollupjs.org/guide/en/#outputglobals
@@ -50,6 +50,22 @@ const makeConfig = (env = "development") => {
       },
     ],
     plugins: [
+      alias({
+        entries: [
+          {
+            find: "./core/init.js",
+            replacement: "../../www/src/@sikka/hajar/core/init.js",
+          },
+          {
+            find: "./core/auth/index.js",
+            replacement: "../../www/src/@sikka/hajar/core/auth/index.js",
+          },
+          {
+            find: "../../../../package.json",
+            replacement: "../package.json",
+          },
+        ],
+      }),
       json(),
       babel({
         babelHelpers: "bundled",
