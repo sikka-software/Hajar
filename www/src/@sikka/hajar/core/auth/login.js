@@ -1,10 +1,18 @@
 import { sign } from "jsonwebtoken";
 import { compare } from "bcrypt";
 import * as initHajarModule from "../init.js";
-const { User, secret, getClientData, getAdminData, getUserType } =
-  initHajarModule;
 
 async function login(email, password) {
+  const {
+    User,
+    getClientData,
+    getAdminData,
+    getUserType,
+    jwtSecret,
+    //  mongoose,
+  } = initHajarModule;
+  const { secret } = initHajarModule;
+
   const user = await User.findOne({ email });
 
   if (!user) {
@@ -15,7 +23,9 @@ async function login(email, password) {
     throw new Error("Invalid email or password");
   }
 
-  const token = sign({ userId: user._id }, secret, { expiresIn: "1h" });
+  const token = sign({ userId: user._id }, jwtSecret || secret, {
+    expiresIn: "1h",
+  });
 
   const userData = {
     success: true,

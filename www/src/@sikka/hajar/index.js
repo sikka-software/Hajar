@@ -1,9 +1,9 @@
-import * as initHajarModule from "./core/init.js";
+import { initHajar } from "./core/init.js";
 import auth from "./core/auth/index.js";
 import { version as _version } from "../../../../package.json";
 
 const hajar = {
-  ...initHajarModule,
+  initHajar: initHajar,
   auth,
   version: _version,
 };

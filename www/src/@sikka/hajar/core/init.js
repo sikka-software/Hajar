@@ -1,67 +1,80 @@
-let initialized = false;
-let secret;
-let mongooseInstance;
-let User;
-let Admin;
-let Client;
-
 function initHajar(
   jwtSecret,
-  inputMongooseInstance,
+  mongooseInstance,
   userModel,
   adminModel,
   clientModel
 ) {
-  if (initialized) {
-    throw new Error("Hajar is already initialized");
-  }
+  let initialized = false;
 
-  secret = jwtSecret;
-  mongooseInstance = inputMongooseInstance;
-  User = userModel;
-  Admin = adminModel;
-  Client = clientModel;
-  initialized = true;
-}
+  let User = userModel;
+  let Admin = adminModel;
+  let Client = clientModel;
+  let secret = jwtSecret;
+  let mongoose = mongooseInstance;
 
-async function getUserType(email) {
-  const user = await User.findOne({ email });
-  if (!user) {
-    throw new Error("User not found");
-  }
-  return user.ref;
-}
-
-async function getAdminData(user) {
-  if (user.ref === "admin") {
-    const adminData = await Admin.findOne({ uid: user._id });
-    if (!adminData) {
-      throw new Error("Admin data not found");
+  const initialize = () => {
+    if (initialized) {
+      throw new Error("Hajar is already initialized");
     }
-    return adminData;
-  }
-  return null;
-}
 
-async function getClientData(user) {
-  if (user.ref === "client") {
-    const clientData = await Client.findOne({ uid: user._id });
-    if (!clientData) {
-      throw new Error("Client data not found");
+    initialized = true;
+    console.log("Hajar initialized successfully.");
+  };
+
+  const getUserType = async (email) => {
+    if (!initialized) {
+      throw new Error("Hajar is not initialized");
     }
-    return clientData;
-  }
-  return null;
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    return user.ref;
+  };
+
+  const getAdminData = async (user) => {
+    if (!initialized) {
+      throw new Error("Hajar is not initialized");
+    }
+    if (user.ref === "admin") {
+      const adminData = await Admin.findOne({ uid: user._id });
+      if (!adminData) {
+        throw new Error("Admin data not found");
+      }
+      return adminData;
+    }
+    return null;
+  };
+
+  const getClientData = async (user) => {
+    if (!initialized) {
+      throw new Error("Hajar is not initialized");
+    }
+    if (user.ref === "client") {
+      const clientData = await Client.findOne({ uid: user._id });
+      if (!clientData) {
+        throw new Error("Client data not found");
+      }
+      return clientData;
+    }
+    return null;
+  };
+
+  // Initialize hajar with external data
+  initialize();
+
+  // Expose functions and models
+  return {
+    getUserType,
+    getAdminData,
+    getClientData,
+    User, // Expose User model
+    Admin, // Expose Admin model
+    Client, // Expose Client model
+    secret, // Expose secret
+    mongoose, // Expose mongoose
+  };
 }
 
-export {
-  initHajar,
-  getUserType,
-  getAdminData,
-  getClientData,
-  secret,
-  mongooseInstance,
-  User,
-  Admin,
-  Client,
-};
+export { initHajar };
