@@ -2,8 +2,6 @@ const babel = require("@rollup/plugin-babel");
 const { terser } = require("@wwa/rollup-plugin-terser");
 const pkg = require("./package.json");
 const json = require("@rollup/plugin-json");
-const replace = require("@rollup/plugin-replace");
-const path = require("path");
 
 const LIBRARY_NAME = "Hajar";
 const EXTERNAL = [];
@@ -12,7 +10,7 @@ const banner = `/*!
  * ${pkg.name}
  * ${pkg.description}
  *
- * @version v${pkg.version}
+ * @version v${pkg.version}   
  * @author ${pkg.author}
  * @homepage ${pkg.homepage}
  * @repository ${pkg.repository.url}
@@ -50,20 +48,6 @@ const makeConfig = (env = "development") => {
       },
     ],
     plugins: [
-      replace({
-        preventAssignment: true,
-        values: {
-          '"./core/init.js"': JSON.stringify(
-            path.resolve(__dirname, "./www/src/@sikka/hajar/core/init.js")
-          ),
-          '"./core/auth/index.js"': JSON.stringify(
-            path.resolve(__dirname, "./www/src/@sikka/hajar/core/auth/index.js")
-          ),
-          '"../../../../package.json"': JSON.stringify(
-            path.resolve(__dirname, "./package.json")
-          ),
-        },
-      }),
       json(),
       babel({
         babelHelpers: "bundled",

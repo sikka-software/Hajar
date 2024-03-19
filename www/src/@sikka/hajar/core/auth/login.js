@@ -12,7 +12,6 @@ async function login(email, password) {
     //  mongoose,
   } = initHajarModule;
   const { secret } = initHajarModule;
-
   const user = await User.findOne({ email });
 
   if (!user) {
