@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "noImplicitAny": false,
     /* Basic Options */
     "target": "es5", // Specify ECMAScript target version
     "module": "ESNext", // Specify module code generation

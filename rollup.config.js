@@ -5,9 +5,9 @@ const json = require("@rollup/plugin-json");
 const replace = require("@rollup/plugin-replace");
 const path = require("path");
 
-const LIBRARY_NAME = "Hajar"; // Change with your library's name
-const EXTERNAL = []; // Indicate which modules should be treated as external
-const GLOBALS = {}; // https://rollupjs.org/guide/en/#outputglobals
+const LIBRARY_NAME = "Hajar";
+const EXTERNAL = [];
+const GLOBALS = {};
 const banner = `/*!
  * ${pkg.name}
  * ${pkg.description}
