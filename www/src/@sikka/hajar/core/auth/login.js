@@ -1,7 +1,8 @@
 import { sign } from "jsonwebtoken";
 import { compare } from "bcrypt";
-import init from "../init.js";
-const { User, secret, getClientData, getAdminData, getUserType } = init;
+import * as initHajarModule from "../init.js";
+const { User, secret, getClientData, getAdminData, getUserType } =
+  initHajarModule;
 
 async function login(email, password) {
   const user = await User.findOne({ email });
