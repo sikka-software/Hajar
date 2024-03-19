@@ -37,7 +37,7 @@ jobs:
           if [ -e 'package-lock.json' ]; then 
             npm ci
           else 
-            npm install
+            npm install --legacy-peer-deps
           fi
       - name: Build Library
         run: npm run build --if-present

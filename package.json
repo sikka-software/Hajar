@@ -47,7 +47,6 @@
     "@rollup/plugin-commonjs": "~25.0.7",
     "@rollup/plugin-node-resolve": "~15.2.3",
     "@rollup/plugin-replace": "~5.0.5",
-    "@rollup/plugin-typescript": "~11.1.5",
     "@wwa/rollup-plugin-terser": "~1.1.2",
     "cross-env": "~7.0.3",
     "eslint": "~8.57.0",
