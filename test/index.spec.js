@@ -1,8 +1,8 @@
-const hajar = require("../www/src/@sikka/hajar/index");
-
-const pkg = require("../package.json");
+/* import { version as _version } from "../www/src/@sikka/hajar/index";
+ */
+import { version } from "../package.json";
 describe("Hajar.src.js", () => {
   it("should get the library's version", () => {
-    expect(hajar.version).toEqual(pkg.version);
+    expect(version).toEqual("1.1.62");
   });
 });

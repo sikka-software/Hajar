@@ -1,12 +1,7 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const {
-  User,
-  secret,
-  getClientData,
-  getAdminData,
-  getUserType,
-} = require("../init.js");
+import { sign } from "jsonwebtoken";
+import { compare } from "bcrypt";
+import init from "../init.js";
+const { User, secret, getClientData, getAdminData, getUserType } = init;
 
 async function login(email, password) {
   const user = await User.findOne({ email });
@@ -15,11 +10,11 @@ async function login(email, password) {
     throw new Error("Invalid email or password");
   }
 
-  if (!(await bcrypt.compare(password, user.password))) {
+  if (!(await compare(password, user.password))) {
     throw new Error("Invalid email or password");
   }
 
-  const token = jwt.sign({ userId: user._id }, secret, { expiresIn: "1h" });
+  const token = sign({ userId: user._id }, secret, { expiresIn: "1h" });
 
   const userData = {
     success: true,
@@ -39,4 +34,4 @@ async function login(email, password) {
   return userData;
 }
 
-module.exports = login;
+export default login;

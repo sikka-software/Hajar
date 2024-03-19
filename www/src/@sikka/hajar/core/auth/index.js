@@ -1,6 +1,6 @@
-const login = require("./login");
+import login from "./login";
 
-module.exports = {
+export default {
   login,
 };
 // @TODO add register function here

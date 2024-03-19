@@ -1,10 +1,10 @@
-const { initHajar } = require("./core/init.js");
-const auth = require("./core/auth/index.js");
-const pkg = require("../../../../package.json");
+import initHajar from "./core/init.js";
+import auth from "./core/auth/index.js";
+import { version as _version } from "../../../../package.json";
 const hajar = {
   initHajar,
   auth,
-  version: pkg.version,
+  version: _version,
 };
 
-module.exports = hajar;
+export default hajar;
