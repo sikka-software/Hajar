@@ -3,6 +3,6 @@
 import { version } from "../package.json";
 describe("Hajar.src.js", () => {
   it("should get the library's version", () => {
-    expect(version).toEqual("1.1.62");
+    expect(version).toEqual("1.1.63");
   });
 });
