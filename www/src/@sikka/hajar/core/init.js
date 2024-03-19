@@ -54,7 +54,7 @@ async function getClientData(user) {
   return null;
 }
 
-export default {
+export {
   initHajar,
   getUserType,
   getAdminData,
