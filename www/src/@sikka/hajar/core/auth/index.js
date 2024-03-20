@@ -50,6 +50,7 @@ async function login(email, password, config) {
   };
 }
 
+// @TODO: Add the ability to register a client in the same function
 async function register(userDetails, config) {
   try {
     const { models } = config.mongoose;
@@ -93,7 +94,7 @@ async function register(userDetails, config) {
 
     const newUser = await user.save();
 
-    const admin = new config.mongoose.models.Admin({
+    const admin = new models.Admin({
       profile: newUser._id,
       role: adminRole._id,
       uid: newUser._id,
@@ -105,12 +106,17 @@ async function register(userDetails, config) {
     const newAdmin = await admin.save();
 
     const token = sign({ _id: newUser._id }, config.secret);
+    // i need to add the refresh token here
+    const refreshToken = sign({ _id: newUser._id }, config.refreshTokenSecret, {
+      expiresIn: "30d",
+    });
 
     return {
       success: true,
       user: { ...newUser.toObject() },
       admin: { ...newAdmin.toObject() },
       token,
+      refreshToken,
     };
   } catch (error) {
     console.error("Registration error:", error);
