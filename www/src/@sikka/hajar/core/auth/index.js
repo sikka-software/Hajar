@@ -18,12 +18,12 @@ async function login(config, email, password) {
   let clientData = null;
 
   if (ref === "admin") {
-    adminData = await models.Admin.findOne({ userId: user._id });
+    adminData = await models.Admin.findOne({ uid: user._id });
     if (!adminData) {
       throw new Error("Admin not found");
     }
   } else if (ref === "client") {
-    clientData = await models.Client.findOne({ userId: user._id });
+    clientData = await models.Client.findOne({ uid: user._id });
     if (!clientData) {
       throw new Error("Client not found");
     }
