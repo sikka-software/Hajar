@@ -6,6 +6,34 @@ import {
 } from "./auth/index.js";
 
 class Hajar {
+  async init(url, secrets, mongooseInstance) {
+    if (this.initialized) {
+      throw new Error("🚫 Hajar is already initialized");
+    }
+    console.log("⌛ Starting the database connection process...");
+    try {
+      await mongooseInstance.connect(url);
+      mongooseInstance.connection.once("open", () => {
+        console.log("✅🔗 Connected to the database successfully!");
+      });
+      mongooseInstance.connection.on("error", (error) => {
+        console.error("❌🔗 Error connecting to the database:", error);
+        throw error;
+      });
+
+      this.config = {
+        accessToken: secrets.accessToken,
+        refreshToken: secrets.refreshToken,
+        mongoose: mongooseInstance,
+      };
+
+      this.initialized = true;
+      console.log("✅🚀 Hajar initialized successfully.");
+    } catch (error) {
+      console.error("❌🔗 Attempt to connect to the database failed: ", error);
+      throw error;
+    }
+  }
   constructor() {
     this.config = null;
     this.initialized = false;
@@ -35,18 +63,6 @@ class Hajar {
         return refreshAccessToken(refreshToken, this.config);
       },
     };
-  }
-  initHajar(jwtSecret, refreshToken, mongooseInstance) {
-    if (this.initialized) {
-      throw new Error("Hajar is already initialized");
-    }
-    this.config = {
-      secret: jwtSecret,
-      refreshTokenSecret: refreshToken,
-      mongoose: mongooseInstance,
-    };
-    this.initialized = true;
-    console.log("Hajar initialized successfully.");
   }
 }
 
