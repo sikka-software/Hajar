@@ -33,11 +33,11 @@ async function login(email, password, config) {
       throw new Error("Invalid user reference");
   }
 
-  const token = sign({ _id: user._id }, config.secret, {
+  const token = sign({ _id: user._id }, config.accessToken, {
     expiresIn: "7d",
   });
 
-  const refreshToken = sign({ _id: user._id }, config.refreshTokenSecret, {
+  const refreshToken = sign({ _id: user._id }, config.refreshToken, {
     expiresIn: "30d",
   });
 
@@ -105,9 +105,8 @@ async function register(userDetails, config) {
 
     const newAdmin = await admin.save();
 
-    const token = sign({ _id: newUser._id }, config.secret);
-    // i need to add the refresh token here
-    const refreshToken = sign({ _id: newUser._id }, config.refreshTokenSecret, {
+    const token = sign({ _id: newUser._id }, config.accessToken);
+    const refreshToken = sign({ _id: newUser._id }, config.refreshToken, {
       expiresIn: "30d",
     });
 
@@ -127,7 +126,7 @@ async function register(userDetails, config) {
 async function getUserFromToken(accessToken, config) {
   try {
     const { models } = config.mongoose;
-    const decodedToken = verify(accessToken, config.secret);
+    const decodedToken = verify(accessToken, config.accessToken);
     const user = await models.User.findById(decodedToken._id);
     return user;
   } catch (error) {
@@ -144,7 +143,7 @@ async function refreshAccessToken(refreshToken, config) {
 
   let payload = {};
   try {
-    payload = verify(refreshToken, config.refreshTokenSecret);
+    payload = verify(refreshToken, config.refreshToken);
   } catch (err) {
     throw new Error("Invalid token");
   }
@@ -154,7 +153,7 @@ async function refreshAccessToken(refreshToken, config) {
     throw new Error("User not found");
   }
 
-  const newAccessToken = sign({ _id: user._id }, config.secret, {
+  const newAccessToken = sign({ _id: user._id }, config.accessToken, {
     expiresIn: "1h",
   });
   return newAccessToken;
