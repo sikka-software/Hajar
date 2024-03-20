@@ -1,5 +1,5 @@
 import { compare } from "bcrypt";
-import { sign } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 
 async function login(config, email, password) {
   const { models } = config.mongoose;
@@ -50,4 +50,40 @@ async function login(config, email, password) {
   }
 }
 
-export { login };
+async function getUserFromToken(accessToken, config) {
+  try {
+    const { models } = config.mongoose;
+    const decodedToken = verify(accessToken, config.secret);
+    const user = await models.User.findById(decodedToken._id);
+    return user;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+async function refreshAccessToken(refreshToken, config) {
+  if (!refreshToken) {
+    throw new Error("No token provided");
+  }
+  const { models } = config.mongoose;
+
+  let payload = {};
+  try {
+    payload = verify(refreshToken, config.refreshTokenSecret);
+  } catch (err) {
+    throw new Error("Invalid token");
+  }
+
+  const user = await models.User.findById(payload._id);
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const newAccessToken = sign({ _id: user._id }, config.secret, {
+    expiresIn: "1h",
+  });
+  return newAccessToken;
+}
+
+export { login, getUserFromToken, refreshAccessToken };

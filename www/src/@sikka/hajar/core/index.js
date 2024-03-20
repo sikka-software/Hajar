@@ -1,4 +1,4 @@
-import { login } from "./auth/index.js";
+import { login, getUserFromToken, refreshAccessToken } from "./auth/index.js";
 
 class Hajar {
   constructor() {
@@ -10,6 +10,18 @@ class Hajar {
           throw new Error("Hajar is not initialized");
         }
         return login(this.config, email, password);
+      }.bind(this),
+      getUserFromToken: function (accessToken) {
+        if (!this.initialized) {
+          throw new Error("Hajar is not initialized");
+        }
+        return getUserFromToken(accessToken, this.config);
+      }.bind(this),
+      refreshAccessToken: function (refreshToken) {
+        if (!this.initialized) {
+          throw new Error("Hajar is not initialized");
+        }
+        return refreshAccessToken(refreshToken, this.config);
       }.bind(this),
     };
   }
