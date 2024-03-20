@@ -1,13 +1,11 @@
 const { NODE_ENV } = process.env;
 
-module.exports = {
-  presets: [
-    [
-      "@babel/preset-env",
-      {
-        modules: NODE_ENV === "test" ? "auto" : false,
-      },
-    ],
+export const presets = [
+  [
+    "@babel/preset-env",
+    {
+      modules: NODE_ENV === "test" ? "auto" : false,
+    },
   ],
-  plugins: ["@babel/plugin-proposal-object-rest-spread"],
-};
+];
+export const plugins = ["@babel/plugin-proposal-object-rest-spread"];
