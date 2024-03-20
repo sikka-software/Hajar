@@ -1,4 +1,3 @@
-// @ts-ignore
 import { Models } from "../index"; // Adjust the path as needed
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -11,7 +10,7 @@ export async function login(
   email: string,
   password: string
 ): Promise<string> {
-  const user = await models.User.findOne({ email });
+  const user: any = await models.User.findOne({ email });
   if (!user) {
     throw new Error("User not found");
   }

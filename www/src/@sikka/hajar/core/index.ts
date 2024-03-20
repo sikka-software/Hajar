@@ -1,23 +1,19 @@
 import { login } from "./auth";
+import { Model, Document } from "mongoose";
 
-//@Todo : move this to a separate file
 export type Models = {
-  User: any;
-  Admin: any;
-  Client: any;
+  User: Model<Document<any>>;
+  Admin: Model<Document<any>>;
+  Client: Model<Document<any>>;
 };
 
 export type Config = {
   secret: string;
   mongoose: any;
 };
-const initmodesl = {
-  User: null,
-  Admin: null,
-  Client: null,
-};
+
 class Hajar {
-  models: Models;
+  models!: Models;
   config!: Config;
   initialized: boolean;
   auth: {
@@ -26,11 +22,6 @@ class Hajar {
 
   constructor() {
     this.initialized = false;
-    this.models = initmodesl;
-    this.config = {
-      secret: "",
-      mongoose: null,
-    };
     this.auth = {
       login: (email: string, password: string) =>
         login(this.models, this.config, email, password),
@@ -40,19 +31,23 @@ class Hajar {
   initHajar(
     jwtSecret: string,
     mongooseInstance: any,
-    userModel: any,
-    adminModel: any,
-    clientModel: any
+    userModel: Model<Document<any>>,
+    adminModel: Model<Document<any>>,
+    clientModel: Model<Document<any>>
   ) {
     if (this.initialized) {
       throw new Error("Hajar is already initialized");
     }
 
-    this.models.User = userModel;
-    this.models.Admin = adminModel;
-    this.models.Client = clientModel;
-    this.config.secret = jwtSecret;
-    this.config.mongoose = mongooseInstance;
+    this.models = {
+      User: userModel,
+      Admin: adminModel,
+      Client: clientModel,
+    };
+    this.config = {
+      secret: jwtSecret,
+      mongoose: mongooseInstance,
+    };
     this.initialized = true;
 
     console.log("Hajar initialized successfully.");
