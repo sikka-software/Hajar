@@ -1,7 +1,8 @@
 import { compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
 
-async function login(models, config, email, password) {
+async function login(config, email, password) {
+  const { models } = config.mongoose;
   const user = await models.User.findOne({ email });
   if (!user) {
     throw new Error("User not found");
@@ -12,8 +13,14 @@ async function login(models, config, email, password) {
     throw new Error("Invalid password");
   }
 
-  const token = sign({ _id: user._id }, config.secret);
-  return token;
+  const accessToken = sign({ _id: user._id }, config.secret, {
+    expiresIn: "7d",
+  });
+  const refreshToken = sign({ userId: user._id }, config.refreshTokenSecret, {
+    expiresIn: "7d",
+  });
+
+  return { accessToken, refreshToken };
 }
 
 export { login };
