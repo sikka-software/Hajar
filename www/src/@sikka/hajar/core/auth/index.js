@@ -1,7 +1,7 @@
-import { compare } from "bcrypt";
+import { compare, hash } from "bcrypt";
 import { sign, verify } from "jsonwebtoken";
 
-async function login(config, email, password) {
+async function login(email, password, config) {
   const { models } = config.mongoose;
   const user = await models.User.findOne({ email });
   if (!user) {
@@ -14,39 +14,107 @@ async function login(config, email, password) {
   }
 
   const ref = user.ref;
-  let adminData = null;
-  let clientData = null;
+  let additionalData = null;
 
-  if (ref === "admin") {
-    adminData = await models.Admin.findOne({ uid: user._id });
-    if (!adminData) {
-      throw new Error("Admin not found");
-    }
-  } else if (ref === "client") {
-    clientData = await models.Client.findOne({ uid: user._id });
-    if (!clientData) {
-      throw new Error("Client not found");
-    }
+  switch (ref) {
+    case "admin":
+      additionalData = await models.Admin.findOne({ uid: user._id });
+      if (!additionalData) {
+        throw new Error("Admin not found");
+      }
+      break;
+    case "client":
+      additionalData = await models.Client.findOne({ uid: user._id });
+      if (!additionalData) {
+        throw new Error("Client not found");
+      }
+      break;
+    default:
+      throw new Error("Invalid user reference");
   }
 
   const token = sign({ _id: user._id }, config.secret, {
     expiresIn: "7d",
   });
 
-  if (ref === "admin") {
+  const refreshToken = sign({ _id: user._id }, config.refreshTokenSecret, {
+    expiresIn: "30d",
+  });
+
+  return {
+    success: true,
+    user: { ...user.toObject() },
+    [ref]: { ...additionalData.toObject() },
+    token,
+    refreshToken,
+  };
+}
+
+async function register(userDetails, config) {
+  try {
+    const { models } = config.mongoose;
+    userDetails.email = userDetails.email.toLowerCase();
+    const userExists = await models.User.findOne({
+      email: userDetails.email,
+    });
+    const usernameCheck = await models.User.findOne({
+      username: userDetails.username,
+    });
+
+    if (usernameCheck) {
+      throw new Error("User with this username already exists");
+    }
+    if (userExists) {
+      throw new Error("User with this email already exists");
+    }
+
+    const adminRole = await models.Role.findOne({
+      name: "Admin",
+    });
+
+    if (!adminRole) {
+      const allPermissions = await models.Permission.find({});
+      const newAdminRole = new models.Role({
+        name: "Admin",
+        permissions: allPermissions,
+      });
+      await newAdminRole.save();
+    }
+
+    const hashedPassword = await hash(userDetails.password, 10);
+
+    const user = new models.User({
+      username: userDetails.username,
+      email: userDetails.email,
+      ref: "admin",
+      password: hashedPassword,
+      role: adminRole._id,
+    });
+
+    const newUser = await user.save();
+
+    const admin = new config.mongoose.models.Admin({
+      profile: newUser._id,
+      role: adminRole._id,
+      uid: newUser._id,
+      username: userDetails.username,
+      firstName: { en: "", ar: "" },
+      lastName: { en: "", ar: "" },
+    });
+
+    const newAdmin = await admin.save();
+
+    const token = sign({ _id: newUser._id }, config.secret);
+
     return {
       success: true,
-      user: { ...user.toObject() },
-      admin: { ...adminData.toObject() },
+      user: { ...newUser.toObject() },
+      admin: { ...newAdmin.toObject() },
       token,
     };
-  } else if (ref === "client") {
-    return {
-      success: true,
-      user: { ...user.toObject() },
-      client: { ...clientData.toObject() },
-      token,
-    };
+  } catch (error) {
+    console.error("Registration error:", error);
+    throw error;
   }
 }
 
@@ -86,4 +154,4 @@ async function refreshAccessToken(refreshToken, config) {
   return newAccessToken;
 }
 
-export { login, getUserFromToken, refreshAccessToken };
+export { login, register, getUserFromToken, refreshAccessToken };

@@ -1,28 +1,39 @@
-import { login, getUserFromToken, refreshAccessToken } from "./auth/index.js";
+import {
+  login,
+  register,
+  getUserFromToken,
+  refreshAccessToken,
+} from "./auth/index.js";
 
 class Hajar {
   constructor() {
     this.config = null;
     this.initialized = false;
     this.auth = {
-      login: function (email, password) {
+      login: (email, password) => {
         if (!this.initialized) {
           throw new Error("Hajar is not initialized");
         }
-        return login(this.config, email, password);
-      }.bind(this),
-      getUserFromToken: function (accessToken) {
+        return login(email, password, this.config);
+      },
+      register: (userDetails) => {
+        if (!this.initialized) {
+          throw new Error("Hajar is not initialized");
+        }
+        return register(userDetails, this.config);
+      },
+      getUserFromToken: (accessToken) => {
         if (!this.initialized) {
           throw new Error("Hajar is not initialized");
         }
         return getUserFromToken(accessToken, this.config);
-      }.bind(this),
-      refreshAccessToken: function (refreshToken) {
+      },
+      refreshAccessToken: (refreshToken) => {
         if (!this.initialized) {
           throw new Error("Hajar is not initialized");
         }
         return refreshAccessToken(refreshToken, this.config);
-      }.bind(this),
+      },
     };
   }
   initHajar(jwtSecret, refreshToken, mongooseInstance) {
