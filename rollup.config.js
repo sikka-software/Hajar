@@ -21,7 +21,7 @@ const makeConfig = (env = "development") => {
   let bundleSuffix = env === "production" ? "min." : "";
 
   return {
-    input: "./www/src/@sikka/hajar/core/index.ts",
+    input: "./www/src/@sikka/hajar/core/index.js",
     external: EXTERNAL,
     output: [
       {
