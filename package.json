@@ -1,6 +1,6 @@
 {
   "name": "@sikka/hajar",
-  "version": "1.1.67",
+  "version": "1.1.68",
   "description": "Toolkit to create SaaS applications",
   "author": "Sikka Software <contact@sikka.io> (http://sikka.io)",
   "license": "MIT",
@@ -24,7 +24,7 @@
   "module": "dist/Hajar.esm.min.js",
   "unpkg": "dist/Hajar.umd.min.js",
   "files": [
-    "www/src",
+    "www/src/@sikka/hajar/core",
     "dist/"
   ],
   "scripts": {

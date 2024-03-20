@@ -7,7 +7,7 @@
     "lib": ["es6", "dom"], // Specify library files to be included in the compilation
     "allowJs": true, // Allow JavaScript files to be compiled
     "outDir": "./dist", // Redirect output structure to the directory
-    "rootDir": "./www/src", // Specify the root directory of input files
+    "rootDir": "./www/src/@sikka/hajar/core", // Specify the root directory of input files
     "removeComments": true, // Do not emit comments to output
     "strict": true, // Enable all strict type-checking options
 
@@ -22,7 +22,7 @@
   },
   "include": [
     "www/src/@sikka/hajar/core/**/*",
-    "www/src/@sikka/hajar/index.js"
+    "www/src/@sikka/hajar/core/**/**/*"
   ],
   "exclude": [
     "node_modules", // Exclude the node_modules directory
