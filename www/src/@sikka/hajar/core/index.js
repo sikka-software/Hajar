@@ -23,7 +23,6 @@ class Hajar {
       mongoose: mongooseInstance,
     };
     this.initialized = true;
-
     console.log("Hajar initialized successfully.");
   }
 }
