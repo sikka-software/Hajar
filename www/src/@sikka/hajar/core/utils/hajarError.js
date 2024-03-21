@@ -8,4 +8,4 @@ class HajarError extends Error {
   }
 }
 
-module.exports = HajarError;
+export default HajarError;
