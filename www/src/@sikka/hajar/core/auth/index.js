@@ -1,16 +1,17 @@
 import { compare, hash } from "bcrypt";
 import { sign, verify } from "jsonwebtoken";
+import HajarError from "../utils/hajarError";
 
 async function login(email, password, config) {
   const { models } = config.mongoose;
   const user = await models.User.findOne({ email });
   if (!user) {
-    throw new Error("User not found");
+    throw new HajarError("User not found", "invalid-email-password");
   }
 
   const validPassword = await compare(password, user.password);
   if (!validPassword) {
-    throw new Error("Invalid password");
+    throw new HajarError("Invalid password", "invalid-email-password");
   }
 
   const ref = user.ref;
@@ -20,17 +21,17 @@ async function login(email, password, config) {
     case "admin":
       additionalData = await models.Admin.findOne({ uid: user._id });
       if (!additionalData) {
-        throw new Error("Admin not found");
+        throw new HajarError("Admin not found", "admin_not_found");
       }
       break;
     case "client":
       additionalData = await models.Client.findOne({ uid: user._id });
       if (!additionalData) {
-        throw new Error("Client not found");
+        throw new HajarError("Client not found", "client_not_found");
       }
       break;
     default:
-      throw new Error("Invalid user reference");
+      throw new HajarError("Invalid user reference", "invalid_user_reference");
   }
 
   const token = sign({ _id: user._id }, config.accessToken, {
@@ -51,6 +52,7 @@ async function login(email, password, config) {
 }
 
 // @TODO: Add the ability to register a client in the same function
+
 async function register(userDetails, config) {
   try {
     const { models } = config.mongoose;
@@ -63,10 +65,16 @@ async function register(userDetails, config) {
     });
 
     if (usernameCheck) {
-      throw new Error("User with this username already exists");
+      throw new HajarError(
+        "User with this username already exists",
+        "username_exists"
+      );
     }
     if (userExists) {
-      throw new Error("User with this email already exists");
+      throw new HajarError(
+        "User with this email already exists",
+        "email_exists"
+      );
     }
 
     const adminRole = await models.Role.findOne({
