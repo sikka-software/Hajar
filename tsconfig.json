@@ -7,7 +7,7 @@
     "lib": ["es6", "dom"], // Specify library files to be included in the compilation
     "allowJs": true, // Allow JavaScript files to be compiled
     "outDir": "./dist", // Redirect output structure to the directory
-    "rootDir": "./www/src/@sikka/hajar/core", // Specify the root directory of input files
+    "rootDir": "./package/core", // Specify the root directory of input files
     "removeComments": true, // Do not emit comments to output
     "strict": true, // Enable all strict type-checking options
 
@@ -20,10 +20,7 @@
     "esModuleInterop": true, // Enables emit interoperability between CommonJS and ES Modules
     "forceConsistentCasingInFileNames": true // Disallow inconsistently-cased references to the same file
   },
-  "include": [
-    "www/src/@sikka/hajar/core/**/*",
-    "www/src/@sikka/hajar/core/**/**/*"
-  ],
+  "include": ["package/core/**/*", "package/core/**/**/*"],
   "exclude": [
     "node_modules", // Exclude the node_modules directory
     "**/*.test.ts" // Exclude test files

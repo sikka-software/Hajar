@@ -1,6 +1,6 @@
 {
   "name": "@sikka/hajar",
-  "version": "1.1.78",
+  "version": "1.1.79",
   "description": "Toolkit to create SaaS applications",
   "author": "Sikka Software <contact@sikka.io> (http://sikka.io)",
   "license": "MIT",
@@ -24,13 +24,13 @@
   "module": "dist/Hajar.esm.min.js",
   "unpkg": "dist/Hajar.umd.min.js",
   "files": [
-    "www/src/@sikka/hajar/core",
+    "package/core",
     "dist/"
   ],
   "scripts": {
     "build": "rollup -c --environment BUILD:production",
     "dev": "rollup -c -w",
-    "lint": "eslint --ext .js,.ts www/src/@sikka/hajar/core",
+    "lint": "eslint --ext .js,.ts package/core",
     "test": "jest --config jest.config.js",
     "test:watch": "npm run test -- --watch",
     "test:coverage": "npm run test -- --coverage",
