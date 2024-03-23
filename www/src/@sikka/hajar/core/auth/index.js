@@ -2,57 +2,55 @@ import { compare, hash } from "bcrypt";
 import { sign, verify } from "jsonwebtoken";
 import HajarError from "../utils/hajarError";
 
-async function login(email, password, config) {
-  const { models } = config.mongoose;
-  const user = await models.User.findOne({ email });
-  if (!user) {
-    throw new HajarError("User not found", "invalid-email-password");
+async function login(email, password, userType, config) {
+  try {
+    const { models } = config.mongoose;
+    const user = await models.User.findOne({ email });
+    if (!user) {
+      throw new HajarError("User not found", "invalid-email-password");
+    }
+
+    const validPassword = await compare(password, user.password);
+
+    if (!validPassword) {
+      throw new HajarError("Invalid password", "invalid-email-password");
+    }
+
+    // Capitalize the first letter of userType
+    const modelType = userType.charAt(0).toUpperCase() + userType.slice(1);
+
+    // Check if the model exists in models on our mongoose instance
+    if (!models[modelType]) {
+      throw new HajarError("Invalid user type", "invalid_user_type");
+    }
+
+    const additionalData = await models[modelType].findOne({ uid: user._id });
+    if (!additionalData) {
+      throw new HajarError(`${modelType} not found`, `${userType}_not_found`);
+    }
+
+    const token = sign({ _id: user._id }, config.accessToken, {
+      expiresIn: "1h",
+    });
+
+    const refreshToken = sign({ _id: user._id }, config.refreshToken, {
+      expiresIn: "7d",
+    });
+
+    return {
+      success: true,
+      user: { ...user.toObject() },
+      [userType]: { ...additionalData.toObject() },
+      token,
+      refreshToken,
+    };
+  } catch (error) {
+    console.error("Login error:", error);
+    throw error;
   }
-
-  const validPassword = await compare(password, user.password);
-  if (!validPassword) {
-    throw new HajarError("Invalid password", "invalid-email-password");
-  }
-
-  const ref = user.ref;
-  let additionalData = null;
-
-  switch (ref) {
-    case "admin":
-      additionalData = await models.Admin.findOne({ uid: user._id });
-      if (!additionalData) {
-        throw new HajarError("Admin not found", "admin_not_found");
-      }
-      break;
-    case "client":
-      additionalData = await models.Client.findOne({ uid: user._id });
-      if (!additionalData) {
-        throw new HajarError("Client not found", "client_not_found");
-      }
-      break;
-    default:
-      throw new HajarError("Invalid user reference", "invalid_user_reference");
-  }
-
-  const token = sign({ _id: user._id }, config.accessToken, {
-    expiresIn: "7d",
-  });
-
-  const refreshToken = sign({ _id: user._id }, config.refreshToken, {
-    expiresIn: "30d",
-  });
-
-  return {
-    success: true,
-    user: { ...user.toObject() },
-    [ref]: { ...additionalData.toObject() },
-    token,
-    refreshToken,
-  };
 }
 
 // @TODO: Add the ability to register a client in the same function
-
 async function register(userDetails, config) {
   try {
     const { models } = config.mongoose;
