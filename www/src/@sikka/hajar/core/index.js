@@ -38,11 +38,11 @@ class Hajar {
     this.config = null;
     this.initialized = false;
     this.auth = {
-      login: (email, password) => {
+      login: (email, password, userType) => {
         if (!this.initialized) {
           throw new Error("Hajar is not initialized");
         }
-        return login(email, password, this.config);
+        return login(email, password, userType, this.config);
       },
       register: (userDetails) => {
         if (!this.initialized) {
